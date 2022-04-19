@@ -119,13 +119,13 @@
                               <?php 
                              }else{
                              ?>
-                              <li><a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                              <?php
                               }
                              ?>
                              
 
-                             <li><a href="{{URL::to('/giohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                             <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
                              <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
@@ -177,8 +177,8 @@
                         </div>
                     </div>
                     <div class="col-sm-5">
-                        {{-- <form action="{{URL::to('/tim-kiem')}}" method="POST">
-                            {{csrf_field()}} --}}
+                        <form action="{{URL::to('/tim-kiem')}}" method="POST">
+                            {{csrf_field()}}
                         <div class="search_box pull-right">
                             <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
                             <input type="submit" style="margin-top:0;color:#666" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm">

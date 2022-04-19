@@ -22,7 +22,7 @@
     <ul >
         <li><a href=""style="color: black!important ">Danh mục</a>
         <ul >
-            <li><a href="/trangchu"style="color: black!important ">Thêm danh mục</a></li>
+            <li><a href="/"style="color: black!important ">Thêm danh mục</a></li>
             
             <li><a href=""style="color: black!important ">Danh sách danh mục</a></li>
            

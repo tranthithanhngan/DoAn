@@ -43,8 +43,9 @@ class AdminController extends Controller
 
         $admin_email = $request->admin_email;
         $admin_password = $request->admin_password;
-        $admin_name  ='Ngân';
-        $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->where('admin_name',$admin_name)->first();
+        $admin_status  ='1';
+       
+        $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->where('admin_status',$admin_status)->first();
      
         if($request)
         {

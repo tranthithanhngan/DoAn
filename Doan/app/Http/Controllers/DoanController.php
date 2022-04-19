@@ -21,11 +21,31 @@ class DoanController extends Controller
         $sanpham = DB::table('sanphams')
         ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
         ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
-        ->orderby('sanphams.idsanpham')->paginate(1);
+        ->orderby('sanphams.idsanpham')->paginate(9);
         
         return view('layout.trangchusp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham);
     }
-   
+    public function timkiem(Request $request){
+        //slide
+    //    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+
+       //seo 
+       $meta_desc = "Tìm kiếm sản phẩm"; 
+       $meta_keywords = "Tìm kiếm sản phẩm";
+       $meta_title = "Tìm kiếm sản phẩm";
+       $url_canonical = $request->url();
+       //--seo
+       $keywords = $request->keywords_submit;
+
+       $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+       $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+
+       $timkiem_sp = DB::table('sanphams')->where('tensanpham','like','%'.$keywords.'%')->get(); 
+
+
+       return view('layout.timkiem')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('timkiem_sp',$timkiem_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+
+   }
     /**
      * Show the form for creating a new resource.
      *

@@ -31,7 +31,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		Session::put('message',null);
 	}
 	?>
-		<form action="{{URL::to('/trangchuadmin')}}" method="post">
+		<form action="{{URL::to('/trangchuaadmin')}}" method="post">
 			{{ csrf_field() }}
 			@foreach($errors->all() as $val)
 			<ul>

@@ -13,13 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
-Route::get('/trangchu', 'App\Http\Controllers\DoanController@index')->name('doan.trangchu');
+Route::get('/', 'App\Http\Controllers\DoanController@index')->name('doan.trangchu');
 Route::get('/trangchuchitiet', 'App\Http\Controllers\DoanController@create');
+Route::post('/tim-kiem','App\Http\Controllers\DoanController@timkiem');
+//Đơn hàng
+Route::get('/donhang','App\Http\Controllers\DonhangController@donhang');
+Route::get('/xemdonhang/{order_id}','App\Http\Controllers\DonhangController@xemdonhang');
 // show thuong hiệu theo danhmuc
 Route::get('/danh-muc/{iddanhmuc}','App\Http\Controllers\DanhmucController@showthuonghieudanhmuc');
 Route::get('/thuong-hieu/{idthuonghieu}','App\Http\Controllers\ThuonghieuController@showsanphamthuonghieu');
@@ -47,7 +51,7 @@ Route::get('/show' , 'App\Http\Controllers\AdminController@show');
 //đăng nhập, đăng xuất
 Route::get('/logout','App\Http\Controllers\AdminController@logout');
 Route::get('/login', 'App\Http\Controllers\AdminController@login');
-Route::post('/trangchuadmin', 'App\Http\Controllers\AdminController@dashboard');
+Route::post('/trangchuaadmin', 'App\Http\Controllers\AdminController@dashboard');
 Route::get('/trangadmin','App\Http\Controllers\AdminController@show_dashboard');
 
 

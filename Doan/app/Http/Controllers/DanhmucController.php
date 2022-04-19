@@ -46,7 +46,7 @@ class DanhmucController extends Controller
     }
     public function showdanhmuc(){
         $this->AuthLogin();
-    	$showdanhmuc = DB::table('danhmucs')->paginate(2);
+    	$showdanhmuc = DB::table('danhmucs')->paginate(5);
         
        
     	$manager_category_product  = view('admin.lietkedanhmuc')->with('showdanhmuc',$showdanhmuc);

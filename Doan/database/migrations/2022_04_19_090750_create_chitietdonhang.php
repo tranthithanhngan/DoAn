@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChitietdonhangs extends Migration
+class CreateChitietdonhang extends Migration
 {
     /**
      * Run the migrations.
@@ -20,6 +20,8 @@ class CreateChitietdonhangs extends Migration
               $table->string('tensanpham');
                $table->float('giasanpham');
                 $table->integer('product_sales_quantity');
+                $table->string('product_coupon');
+                $table->string('product_feeship');
            $table->timestamps();
         });
     }

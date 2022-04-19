@@ -65,7 +65,7 @@ public function dangnhap(Request $request){
         Session::put('customer_id',$result->customer_id);
         return Redirect::to('/checkout');
     }else{
-        return Redirect::to('/login-checkoutp');
+        return Redirect::to('/login-checkout');
     }
     Session::save();
 
@@ -125,7 +125,7 @@ public function dathang(Request $request){
     //--seo 
     $data = array();
     $data['payment_method'] = $request->payment_option;
-    $data['payment_status'] = '1';
+    $data['payment_status'] = 'Đang chờ xử lí';
     $payment_id = DB::table('tinhtrangs')->insert($data);
 // dd($payment_id);
     //insert order
@@ -134,7 +134,7 @@ public function dathang(Request $request){
     $order_data['shipping_id'] = Session::get('shipping_id');
     $order_data['payment_id'] = $payment_id;
     $order_data['order_total'] = Cart::total();
-    $order_data['order_status'] = '1';
+    $order_data['order_status'] = 'Đang chờ xử lí';
     // dd($order_data);
     $order_id = DB::table('donhangs')->insert($order_data);
 // dd($order_id);
