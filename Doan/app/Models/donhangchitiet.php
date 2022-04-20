@@ -10,13 +10,13 @@ class donhangchitiet extends Model
 	use HasFactory;
     public $timestamps = false; //set time to false
     protected $fillable = [
-    	 'idsanpham', 'tennanpham','giasanpham','product_sales_quantity','order_id'
+    	 'idsanpham', 'tensanpham','giasanpham','product_sales_quantity','order_id','product_coupon','product_feeship'
         
     ];
     protected $primaryKey = 'order_details_id';
  	protected $table = 'chitietdonhangs';
 
  	public function sanpham(){
- 		return $this->belongsTo('App\Model\SP','idsanpham');
+ 		return $this->belongsTo('App\Models\SP','idsanpham');
  	}
 }

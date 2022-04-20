@@ -20,7 +20,7 @@
                                     {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                    <input type="text" data-validation="length" data-validation-length="min10" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự" name="tensanpham" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
+                                    <input type="text" data-validation="length" data-validation-length="min3" data-validation-error-msg="Làm ơn điền ít nhất 3 ký tự" name="tensanpham" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
                                 </div>
                                  <div class="form-group">
                                     <label for="exampleInputEmail1">SL sản phẩm</label>
@@ -32,12 +32,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">size</label>
-                                    <input type="text" data-validation="length"   name="size" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
+                                    <input type="text" data-validation="length"  data-validation-length="min3"  name="size" class="form-control " id="slug" placeholder="Tên danh mục" onkeyup="ChangeToSlug();"> 
                                 </div>
                       
                                      <div class="form-group">
                                     <label for="exampleInputEmail1">Giá sản phẩm</label>
-                                    <input type="text" data-validation="number" data-validation-error-msg="Làm ơn điền số tiền" name="giasanpham" class="form-control" id="" placeholder="Tên danh mục">
+                                    <input type="text" data-validation="number"  data-validation-error-msg="Làm ơn điền số tiền" name="giasanpham" class="form-control" id="" placeholder="Tên danh mục">
                                 </div>
                                   <div class="form-group">
                                     <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>

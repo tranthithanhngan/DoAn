@@ -1,16 +1,17 @@
 <?php
 
-namespace App;
-
+namespace App\Models;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class SP extends Model
 {
+    use HasFactory;
     public $timestamps = false; //set time to false
     protected $fillable = [
     	'tensanpham', 'iddanhmuc','idthuonghieu','giasanpham','hinhsanpham','motasanpham','size','dotuoi','slsanpham',
       
     ];
     protected $primaryKey = 'idsanpham';
- 	protected $table = 'sanpham';
+ 	protected $table = 'sanphams';
 }

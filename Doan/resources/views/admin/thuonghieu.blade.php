@@ -20,7 +20,7 @@
                                     {{ csrf_field() }}
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Tên thương hiệu</label>
-                                    <input type="text" data-validation="length" data-validation-length="min10" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự" name="tenthuonghieu" class="form-control " id="slug" placeholder="Tên thương hiệu" onkeyup="ChangeToSlug();"> 
+                                    <input type="text" data-validation="length" data-validation-length="min3" data-validation-error-msg="Làm ơn điền ít nhất 10 ký tự" name="tenthuonghieu" class="form-control " id="slug" placeholder="Tên thương hiệu" onkeyup="ChangeToSlug();"> 
                                 </div>
                                   
                                  <div class="form-group"> 

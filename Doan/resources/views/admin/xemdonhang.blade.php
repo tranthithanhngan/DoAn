@@ -46,7 +46,7 @@
     
     <div class="panel panel-default">
       <div class="panel-heading">
-       Thông tin vận chuyển hàng
+       Thông tin người nhận hàng
       </div>
       
       
@@ -140,14 +140,14 @@
   
             @php 
             $i++;
-            $subtotal = $details->product_price*$details->product_sales_quantity;
+            $subtotal = $details->giasanpham*$details->product_sales_quantity;
             $total+=$subtotal;
             @endphp
             <tr class="color_qty_{{$details->idsanpham}}">
              
               <td><i>{{$i}}</i></td>
               <td>{{$details->tensanpham}}</td>
-              <td>{{$details->product->slsanpham}}</td>
+              <td>{{$details->sanpham->slsanpham}}</td>
               <td>@if($details->product_coupon!='no')
                     {{$details->product_coupon}}
                   @else 
@@ -167,7 +167,7 @@
   
                @if($order_status!=2) 
   
-                <button class="btn btn-default update_quantity_order" data-product_id="{{$details->idsanpham}}" name="update_quantity_order">Cập nhật</button>
+                {{-- <button class="btn btn-default update_quantity_order" data-product_id="{{$details->idsanpham}}" name="update_quantity_order">Cập nhật</button> --}}
   
               @endif
   
@@ -181,7 +181,7 @@
               @php 
                   $total_coupon = 0;
                 @endphp
-                @if($coupon_condition==1)
+                {{-- @if($coupon_condition==1)
                     @php
                     $total_after_coupon = ($total*$coupon_number)/100;
                     echo 'Tổng giảm :'.number_format($total_after_coupon,0,',','.').'</br>';
@@ -193,10 +193,11 @@
                     $total_coupon = $total + $details->product_feeship - $coupon_number ;
   
                     @endphp
-                @endif
+                @endif --}}
   
-                Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ</br> 
-               Thanh toán: {{number_format($total_coupon,0,',','.')}}đ 
+                Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ </br>
+               <p>Thanh toán :<strong> {{number_format($subtotal,0,',','.')}}đ</strong> </p> 
+              
               </td>
             </tr>
             <tr>
@@ -242,7 +243,7 @@
             </tr>
           </tbody>
         </table>
-        <a target="_blank" href="{{url('/print-order/'.$details->order_id)}}">In đơn hàng</a>
+        <a target="_blank" href="{{url('/indonhang/'.$details->order_id)}}">In đơn hàng</a>
       </div>
      
     </div>

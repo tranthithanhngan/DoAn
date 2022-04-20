@@ -25,6 +25,7 @@
               <th>Thứ tự</th>
               <th>Mã đơn hàng</th>
               <th>Tên người đặt</th>
+              <th>Tên người nhận</th>
               <th>Ngày tháng đặt hàng</th>
               <th>Tình trạng đơn hàng</th>
   
@@ -43,6 +44,7 @@
               <td><i>{{$i}}</i></label></td>
               <td>{{ $dh->order_id }}</td>
               <td>{{ $dh->customer_name }}</td>
+              <td>{{ $dh->shipping_name }}</td>
               <td>{{ $dh->created_at }}</td>
               <td>@if($dh->order_status==1)
                       Đơn hàng mới
@@ -56,7 +58,7 @@
                 <a href="{{URL::to('/xemdonhang/'.$dh->order_id)}}" class="active styling-edit" ui-toggle-class="">
                   <i class="fa fa-eye text-success text-active"></i></a>
   
-                <a onclick="return confirm('Bạn có chắc là muốn xóa đơn hàng này ko?')" href="{{URL::to('/delete-order/'.$dh->order_id)}}" class="active styling-edit" ui-toggle-class="">
+                <a onclick="return confirm('Bạn có chắc là muốn xóa đơn hàng này ko?')" href="{{URL::to('/xoadonhang/'.$dh->order_id)}}" class="active styling-edit" ui-toggle-class="">
                   <i class="fa fa-times text-danger text"></i>
                 </a>
   

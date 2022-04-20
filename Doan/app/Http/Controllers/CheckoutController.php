@@ -96,7 +96,7 @@ public function dangkithongtin(Request $request){
     $data['shipping_notes'] = $request->shipping_notes;
     $data['shipping_address'] = $request->shipping_address;
 
-    $shipping_id = DB::table('ships')->insert($data);
+    $shipping_id = DB::table('ships')->insertGetId($data,'shipping_id');
 
     Session::put('shipping_id',$shipping_id);
     
@@ -111,6 +111,7 @@ public function payment(Request $request){
     //--seo 
     $danhmuc = DB::table('danhmucs')->orderby('id')->get();
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu','desc')->get(); 
+   
 return view('layout.payment')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
 
 }
@@ -126,7 +127,7 @@ public function dathang(Request $request){
     $data = array();
     $data['payment_method'] = $request->payment_option;
     $data['payment_status'] = 'Đang chờ xử lí';
-    $payment_id = DB::table('tinhtrangs')->insert($data);
+    $payment_id = DB::table('tinhtrangs')->insertGetId($data,'payment_id');
 // dd($payment_id);
     //insert order
     $order_data = array();
@@ -134,10 +135,10 @@ public function dathang(Request $request){
     $order_data['shipping_id'] = Session::get('shipping_id');
     $order_data['payment_id'] = $payment_id;
     $order_data['order_total'] = Cart::total();
-    $order_data['order_status'] = 'Đang chờ xử lí';
+    $order_data['order_status'] = 1;
     // dd($order_data);
-    $order_id = DB::table('donhangs')->insert($order_data);
-// dd($order_id);
+    $order_id = DB::table('donhangs')->insertGetId($order_data,'order_id');
+
     //insert order_details
     $content = Cart::content();
     foreach($content as $v_content){
@@ -146,6 +147,7 @@ public function dathang(Request $request){
         $order_d_data['tensanpham'] = $v_content->name;
         $order_d_data['giasanpham'] = $v_content->price;
         $order_d_data['product_sales_quantity'] = $v_content->qty;
+        // dd($order_d_data);
         DB::table('chitietdonhangs')->insert($order_d_data);
     }
     if($data['payment_method']==1){

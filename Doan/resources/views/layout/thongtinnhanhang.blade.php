@@ -295,7 +295,7 @@
                                                 <form action="{{url('/dangkithongtin')}}" method="POST">
                                                     @csrf
                                                     <input type="text" name="shipping_email" class="shipping_email" placeholder="Điền email">
-                                                    <input type="text" name="shipping_name" class="shipping_name" placeholder="Họ và tên người nhậni">
+                                                    <input type="text" name="shipping_name" class="shipping_name" placeholder="Họ và tên người nhận">
                                                     <input type="text" name="shipping_address" class="shipping_address" placeholder="Địa chỉ nhận hàng">
                                                     <input type="text" name="shipping_phone" class="shipping_phone" placeholder="Số điện thoại">
                                                     <textarea name="shipping_notes" class="shipping_notes" placeholder="Ghi chú đơn hàng của bạn" rows="5"></textarea>

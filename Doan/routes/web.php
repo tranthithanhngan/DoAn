@@ -24,6 +24,10 @@ Route::post('/tim-kiem','App\Http\Controllers\DoanController@timkiem');
 //Đơn hàng
 Route::get('/donhang','App\Http\Controllers\DonhangController@donhang');
 Route::get('/xemdonhang/{order_id}','App\Http\Controllers\DonhangController@xemdonhang');
+Route::get('/xoadonhang/{order_id}','App\Http\Controllers\DonhangController@xoadonhang');
+Route::get('/indonhang/{corder_id}','App\Http\Controllers\DonhangController@indonhang');
+
+
 // show thuong hiệu theo danhmuc
 Route::get('/danh-muc/{iddanhmuc}','App\Http\Controllers\DanhmucController@showthuonghieudanhmuc');
 Route::get('/thuong-hieu/{idthuonghieu}','App\Http\Controllers\ThuonghieuController@showsanphamthuonghieu');
