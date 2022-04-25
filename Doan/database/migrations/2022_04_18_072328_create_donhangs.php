@@ -15,11 +15,11 @@ class CreateDonhangs extends Migration
     {
         Schema::create('donhangs', function (Blueprint $table) {
             $table->bigIncrements('order_id');
-            $table->integer('customer_id');
-            $table->integer('shipping_id');
-            $table->integer('payment_id');
-            $table->string('order_total');
-            $table->string('order_status');
+            $table->integer('customer_id')->nullable();
+            $table->integer('shipping_id')->nullable();
+            $table->integer('payment_id')->nullable();
+            $table->string('order_total')->nullable();
+            $table->string('order_status')->nullable();
          
             $table->timestamps();
         });

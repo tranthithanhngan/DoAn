@@ -15,16 +15,16 @@ class CreateSanphams extends Migration
     {
         Schema::create('sanphams', function (Blueprint $table) {
             $table->Increments('idsanpham');
+            $table->string('motasanpham');
             $table->string('tensanpham');
             $table->integer('iddanhmuc');
             $table->integer('idthuonghieu');
-            $table->string('motasanpham');
             $table->string('giasanpham');
             $table->string('size');
             $table->string('dotuoi');
             $table->string('hinhsanpham');
             $table->integer('slsanpham');
-
+            $table->integer('sldaban')->nullable();
             $table->timestamps();
         });
     }

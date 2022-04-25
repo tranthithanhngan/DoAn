@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!---------Seo--------->
-    {{-- <meta name="description" content="{{$meta_desc}}">
+    <meta name="description" content="{{$meta_desc}}">
     <meta name="keywords" content="{{$meta_keywords}}"/>
     <meta name="robots" content="INDEX,FOLLOW"/>
     <link  rel="canonical" href="{{$url_canonical}}" />
-    <meta name="author" content=""> --}}
+    <meta name="author" content="">
     <link  rel="icon" type="image/x-icon" href="" />
     
     {{--   <meta property="og:image" content="{{$image_og}}" />  
@@ -18,7 +18,7 @@
       <meta property="og:url" content="{{$url_canonical}}" />
       <meta property="og:type" content="website" /> --}}
     <!--//-------Seo--------->
-    {{-- <title>{{$meta_title}}</title> --}}
+    <title>{{$meta_title}}</title>
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -206,21 +206,21 @@
                             }
                         </style>
                         <div class="carousel-inner">
-                        {{-- @php 
+                        @php 
                             $i = 0;
-                        @endphp --}}
-                        {{-- @foreach($slider as $key => $slide)
+                        @endphp
+                        @foreach($slider as $key => $slide)
                             @php 
                                 $i++;
                             @endphp
-                            {{-- <div class="item {{$i==1 ? 'active' : '' }}"> --}}
-{{--                                 
-                                <div class="col-sm-12"> --}}
-                                    {{-- <img alt="{{$slide->slider_desc}}" src="{{asset('public/uploads/slider/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider"> --}}
+                            <div class="item {{$i==1 ? 'active' : '' }}">
+                                
+                                <div class="col-sm-12">
+                                    <img alt="{{$slide->slider_desc}}" src="{{asset('image/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
                                    
-                                {{-- </div> --}}
-                            {{-- </div> --}}
-                        {{-- @endforeach   --}} 
+                                </div>
+                            </div>
+                        @endforeach  
                           
                             
                         </div>
@@ -607,7 +607,6 @@
 
 
     <script type="text/javascript">
-
           $(document).ready(function(){
             $('.send_order').click(function(){
                 swal({
@@ -617,7 +616,6 @@
                   showCancelButton: true,
                   confirmButtonClass: "btn-danger",
                   confirmButtonText: "Cảm ơn, Mua hàng",
-
                     cancelButtonText: "Đóng,chưa mua",
                     closeOnConfirm: false,
                     closeOnCancel: false
@@ -633,7 +631,6 @@
                         var order_fee = $('.order_fee').val();
                         var order_coupon = $('.order_coupon').val();
                         var _token = $('input[name="_token"]').val();
-
                         $.ajax({
                             url: '{{url('/confirm-order')}}',
                             method: 'POST',
@@ -642,28 +639,22 @@
                                swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
                             }
                         });
-
                         window.setTimeout(function(){ 
                             location.reload();
                         } ,3000);
-
                       } else {
                         swal("Đóng", "Đơn hàng chưa được gửi, làm ơn hoàn tất đơn hàng", "error");
-
                       }
               
                 });
-
                
             });
         });
     
-
     </script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.add-to-cart').click(function(){
-
                 var id = $(this).data('id_product');
                 // alert(id);
                 var cart_product_id = $('.cart_product_id_' + id).val();
@@ -676,13 +667,11 @@
                 if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
                     alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
                 }else{
-
                     $.ajax({
                         url: '{{url('/add-cart-ajax')}}',
                         method: 'POST',
                         data:{cart_product_id:cart_product_id,cart_product_name:cart_product_name,cart_product_image:cart_product_image,cart_product_price:cart_product_price,cart_product_qty:cart_product_qty,_token:_token,cart_product_quantity:cart_product_quantity},
                         success:function(){
-
                             swal({
                                     title: "Đã thêm sản phẩm vào giỏ hàng",
                                     text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
@@ -695,12 +684,9 @@
                                 function() {
                                     window.location.href = "{{url('/gio-hang')}}";
                                 });
-
                         }
-
                     });
                 }
-
                 
             });
         });

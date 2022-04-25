@@ -141,7 +141,8 @@
             @php 
             $i++;
             $subtotal = $details->giasanpham*$details->product_sales_quantity;
-            $total+=$subtotal;
+            $total= $total+ $subtotal;
+             
             @endphp
             <tr class="color_qty_{{$details->idsanpham}}">
              
@@ -167,7 +168,7 @@
   
                @if($order_status!=2) 
   
-                {{-- <button class="btn btn-default update_quantity_order" data-product_id="{{$details->idsanpham}}" name="update_quantity_order">Cập nhật</button> --}}
+                <button class="btn btn-default update_quantity_order" data-product_id="{{$details->idsanpham}}" name="update_quantity_order">Cập nhật</button>
   
               @endif
   
@@ -175,7 +176,7 @@
               <td>{{number_format($details->giasanpham ,0,',','.')}}đ</td>
               <td>{{number_format($subtotal ,0,',','.')}}đ</td>
             </tr>
-          @endforeach
+            @endforeach
             <tr>
               <td colspan="2">  
               @php 
@@ -194,9 +195,9 @@
   
                     @endphp
                 @endif --}}
-  
-                Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ </br>
-               <p>Thanh toán :<strong> {{number_format($subtotal,0,',','.')}}đ</strong> </p> 
+                
+               <p> Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ </br></p>
+               <p>Thanh toán :<strong> {{number_format($total_coupon = $total + $details->product_feeship,0,',','.')}}đ</strong> </p> 
               
               </td>
             </tr>
@@ -243,9 +244,9 @@
             </tr>
           </tbody>
         </table>
-        <a target="_blank" href="{{url('/indonhang/'.$details->order_id)}}">In đơn hàng</a>
+        <a target="_blank" href="{{url('/indonhang/'.$details->order_id)}}">In đơn hàng</a> 
       </div>
      
-    </div>
+    </div> 
   </div>
 @endsection

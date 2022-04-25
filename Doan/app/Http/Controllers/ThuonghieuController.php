@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use App\Models\thuonghieu;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 class ThuonghieuController extends Controller
@@ -83,7 +84,7 @@ public function xoathuonghieu($idthuonghieu){
 
 public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     //slide
-    // $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
     $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
     
@@ -97,7 +98,11 @@ public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     // dd($thuonghieu);
     $thuonghieu_name = DB::table('thuonghieus')->where('thuonghieus.idthuonghieu',$idthuonghieu)->limit(1)->get();
 
-    // foreach($brand_name as $key => $val){
+    $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
+    $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+    $meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
+    $url_canonical = $request->url();
+    // foreach($thuonghieu_name as $key => $val){
     //     //seo 
     //     $meta_desc = $val->brand_desc; 
     //     $meta_keywords = $val->brand_desc;
@@ -106,7 +111,7 @@ public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     //     //--seo
     // }
      
-    return view('layout.hiensanpham')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name);
+    return view('layout.hiensanpham')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
     /**
      * Show the form for creating a new resource.

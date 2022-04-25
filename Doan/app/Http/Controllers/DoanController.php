@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use DB;
 use Session;
+use Mail;
 use App\Models\Doan;
+use App\Models\Slider;
 use App\Models\danhmuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -14,20 +16,27 @@ class DoanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+        $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
+        $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+        $meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
+        $url_canonical = $request->url();
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+        $baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
         $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
         $sanpham = DB::table('sanphams')
         ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
         ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
         ->orderby('sanphams.idsanpham')->paginate(9);
         
-        return view('layout.trangchusp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham);
+        return view('layout.trangchusp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baiviet',$baiviet);
     }
     public function timkiem(Request $request){
         //slide
-    //    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+       $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
        //seo 
        $meta_desc = "Tìm kiếm sản phẩm"; 
@@ -43,7 +52,7 @@ class DoanController extends Controller
        $timkiem_sp = DB::table('sanphams')->where('tensanpham','like','%'.$keywords.'%')->get(); 
 
 
-       return view('layout.timkiem')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('timkiem_sp',$timkiem_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+       return view('layout.timkiem')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('timkiem_sp',$timkiem_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
    }
     /**
@@ -51,6 +60,19 @@ class DoanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function sendmail()    {
+        
+        $to_name = "Thanh Ngan";
+        $to_email = "tranthanhngan2000@gmail.com"; //mail khách hàng
+        $data = array("name"=>"Mail từ tài khoản khách hàng","body"=>"Mail gửi về vấn đề hàng hóa");
+        Mail::send('admin.sendmail',$data,function($message) use ($to_name,$to_email){
+
+            $message->to($to_email)->subject('Test thử gửi mail google');//send this mail with subject
+            $message->from($to_email,$to_name);//send from this mail
+        });
+    }
+
     public function create()
     {
         //

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShips extends Migration
+class CreateBaiviets extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateShips extends Migration
      */
     public function up()
     {
-        Schema::create('ships', function (Blueprint $table) {
-            $table->Increments('shipping_id');
+        Schema::create('baiviets', function (Blueprint $table) {
+            $table->Increments('baiviet_id');
+            $table->string('baiviet_name');
+            $table->integer('baiviet_status');
             
-            $table->string('shipping_name');
-            $table->string('shipping_notes');
-            $table->string('shipping_address');
-            $table->string('shipping_phone');
-            $table->string('shipping_email');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateShips extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ships');
+        Schema::dropIfExists('baiviets');
     }
 }

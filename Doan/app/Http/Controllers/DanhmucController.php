@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use App\Models\danhmuc;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 class DanhmucController extends Controller
@@ -93,10 +94,14 @@ class DanhmucController extends Controller
  
          return view('layout.trangchusp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('danhmuc_by_id',$danhmuc_by_id);
      }
-     public function showthuonghieudanhmuc($iddanhmuc){
+     public function showthuonghieudanhmuc(Request $request,$iddanhmuc){
         // //slide
-        //  $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+         $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
  
+        $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
+$meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+$meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
+$url_canonical = $request->url();
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
     $sanpham = DB::table('sanphams')->orderby('idsanpham')->get();
@@ -115,7 +120,7 @@ class DanhmucController extends Controller
     //     //--seo
     // }
      
-    return view('layout.hiendanhmuc')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('danhmuc_by_id',$danhmuc_by_id)->with('danhmuc_name',$danhmuc_name)->with('sanpham',$sanpham);
+    return view('layout.hiendanhmuc')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('danhmuc_by_id',$danhmuc_by_id)->with('danhmuc_name',$danhmuc_name)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
      }
      
 

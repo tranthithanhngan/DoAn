@@ -98,7 +98,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Tổng quan</span>
                     </a>
                 </li>
-                 
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Slider</span>
+                    </a>
+                    <ul class="sub">
+                       
+                        <li><a href="{{URL::to('/themslides')}}">Thêm slider</a></li>
+                        <li><a href="{{URL::to('/lietkeslides')}}">Liệt kê slider</a></li>
+                    </ul>
+                </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -140,6 +150,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <ul class="sub">
 						<li><a href="{{URL::to('/donhang')}}">Quản lý đơn hàng</a></li>
 						
+                      
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Bài viết </span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/thembaiviet')}}">Thêm bài viết</a></li>
+						<li><a href="{{URL::to('/showbaiviet')}}">Liệt kê bài viết</a></li>
+                      
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Bài viết chi tiết</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/thembaivietchitiet')}}">Thêm bài viết chi tiết</a></li>
+						<li><a href="{{URL::to('/showbaivietchitiet')}}">Liệt kê bài viết chi tiết</a></li>
                       
                     </ul>
                 </li>
@@ -218,9 +251,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         var order_qty = $('.order_qty_'+order_product_id).val();
         var order_code = $('.order_code').val();
         var _token = $('input[name="_token"]').val();
-        // alert(order_product_id);
-        // alert(order_qty);
-        // alert(order_code);
+        alert(order_product_id);
+        alert(order_qty);
+        alert(order_code);
         $.ajax({
                 url : '{{url('/update-qty')}}',
 
@@ -258,6 +291,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         $("input[name='order_product_id']").each(function(){
             order_product_id.push($(this).val());
         });
+       
         j = 0;
         for(i=0;i<order_product_id.length;i++){
             //so luong khach dat

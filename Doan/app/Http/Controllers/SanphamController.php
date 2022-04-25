@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use App\Models\sanpham;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 class SanphamController extends Controller
@@ -125,8 +126,13 @@ public function xoasanpham($idsanpham){
 
 public function chitietsanpham($idsp , Request $request){
     //slide
-//    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+   $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
+
+$meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
+$meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+$meta_title = "Chi tiết sản phẩm";
+$url_canonical = $request->url();
    $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 
@@ -151,7 +157,7 @@ public function chitietsanpham($idsp , Request $request){
    ->where('danhmucs.id', $category_id)->whereNotIn('sanphams.idsanpham',[$idsp])->paginate(3);
 
 
-   return view('layout.showchitietsp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('chitietsp',$chitietsp)->with('relate_sp',$related_sp);
+   return view('layout.showchitietsp')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('chitietsp',$chitietsp)->with('relate_sp',$related_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
 }
 

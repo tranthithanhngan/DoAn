@@ -7,6 +7,7 @@ use PDF;
 use App\Models\donhang;
 use App\Models\SP;
 use App\Models\ship;
+use App\Models\sanpham;
 use App\Models\nguoidung;
 use App\Models\Giamgia;
 use App\Models\donhangchitiet;
@@ -52,6 +53,7 @@ class DonhangController extends Controller
 			$shipping_id = $ord->shipping_id;
 			$order_status = $ord->order_status;
 		}
+		// dd($donhang_chitiet);
 		$nguoidung = nguoidung::where('customer_id',$customer_id)->first();
 		$ship = ship::where('shipping_id',$shipping_id)->first();
 
@@ -85,10 +87,55 @@ class DonhangController extends Controller
         return redirect()->back();
 
 	}
+	public function update_order_qty(Request $request){
+		//update order
+		$data = $request->all();
+		$order = donhang::find($data['order_id']);
+		$order->order_status = $data['order_status'];
+		$order->save();
+		if($order->order_status==2){
+			foreach($data['order_product_id'] as $key => $product_id){
+				
+				$product = sanpham::find($product_id);
+				$product_quantity = $product->slsanpham;
+				$product_sold = $product->sldaban;
+				foreach($data['quantity'] as $key2 => $qty){
+						if($key==$key2){
+								$pro_remain = $product_quantity - $qty;
+								$product->slsanpham = $pro_remain;
+								$product->sldaban = $product_sold + $qty;
+								$product->save();
+						}
+				}
+			}
+		}elseif($order->order_status!=2 && $order->order_status!=3){
+			foreach($data['order_product_id'] as $key => $product_id){
+				
+				$product = sanpham::find($product_id);
+				$product_quantity = $product->slsanpham;
+				$product_sold = $product->sldaban;
+				foreach($data['quantity'] as $key2 => $qty){
+						if($key==$key2){
+								$pro_remain = $product_quantity + $qty;
+								$product->slsanpham = $pro_remain;
+								$product->sldaban = $product_sold - $qty;
+								$product->save();
+						}
+				}
+			}
+		}
 
-    public function indonhang($corder_id){
+
+	}
+	public function update_qty(Request $request){
+		$data = $request->all();
+		$order_details = donhangchitiet::where('idsanpham',$data['order_product_id'])->first();
+		$order_details->product_sales_quantity = $data['order_qty'];
+		$order_details->save();
+	}
+    public function indonhang($order_id){
 		$pdf = \App::make('dompdf.wrapper');
-		$pdf->loadHTML($this->print_order_convert($corder_id));
+		$pdf->loadHTML($this->print_order_convert($order_id));
 		
 		return $pdf->stream();
 	}
@@ -245,7 +292,7 @@ class DonhangController extends Controller
 				<td colspan="2">
 					
 					<p>Phí ship: '.number_format($product->product_feeship,0,',','.').'đ'.'</p>
-					<p>Thanh toán : '.number_format($subtotal,0,',','.').'đ'.'</p>
+					<p>Thanh toán : '.number_format($total,0,',','.').'đ'.'</p>
 				</td>
 		</tr>';
 		$output.='				

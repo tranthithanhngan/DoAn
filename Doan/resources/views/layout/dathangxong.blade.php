@@ -4,21 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!---------Seo--------->
-    {{-- <meta name="description" content="{{$meta_desc}}">
+    <meta name="description" content="{{$meta_desc}}">
     <meta name="keywords" content="{{$meta_keywords}}"/>
     <meta name="robots" content="INDEX,FOLLOW"/>
     <link  rel="canonical" href="{{$url_canonical}}" />
-    <meta name="author" content=""> --}}
+    <meta name="author" content="">
     <link  rel="icon" type="image/x-icon" href="" />
     
-    {{--   <meta property="og:image" content="{{$image_og}}" />  
-      <meta property="og:site_name" content="http://localhost/tutorial_youtube/shopbanhanglaravel" />
+      {{-- <meta property="og:image" content="{{$image_og}}" />   --}}
+      <meta property="og:site_name" content="http://127.0.0.1:8000/" />
       <meta property="og:description" content="{{$meta_desc}}" />
       <meta property="og:title" content="{{$meta_title}}" />
       <meta property="og:url" content="{{$url_canonical}}" />
-      <meta property="og:type" content="website" /> --}}
+      <meta property="og:type" content="website" />
     <!--//-------Seo--------->
-    {{-- <title>{{$meta_title}}</title> --}}
+    <title>{{$meta_title}}</title>
+  
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -119,13 +120,13 @@
                               <?php 
                              }else{
                              ?>
-                              <li><a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                              <?php
                               }
                              ?>
                              
 
-                             <li><a href="{{URL::to('/giohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                             <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
                              <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
@@ -177,8 +178,8 @@
                         </div>
                     </div>
                     <div class="col-sm-5">
-                        {{-- <form action="{{URL::to('/tim-kiem')}}" method="POST">
-                            {{csrf_field()}} --}}
+                        <form action="{{URL::to('/tim-kiem')}}" method="POST">
+                            {{csrf_field()}}
                         <div class="search_box pull-right">
                             <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
                             <input type="submit" style="margin-top:0;color:#666" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm">
@@ -188,12 +189,11 @@
                 </div>
             </div>
         </div><!--/header-bottom-->
-    </header><!--/header-->
-    
+    </header><!--/slider-->
     <section id="slider"><!--slider-->
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 row">
+                <div class="col-sm-12">
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
@@ -205,12 +205,8 @@
                                 height: 350px;
                             }
                         </style>
-                        
-                        <div class="carousel-inner ">
-                            
-                               
-                          
-                            {{-- @php 
+                        <div class="carousel-inner">
+                        @php 
                             $i = 0;
                         @endphp
                         @foreach($slider as $key => $slide)
@@ -220,13 +216,11 @@
                             <div class="item {{$i==1 ? 'active' : '' }}">
                                 
                                 <div class="col-sm-12">
-                                    <img alt="{{$slide->slider_desc}}" src="{{asset('public/uploads/slider/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
+                                    <img alt="{{$slide->slider_desc}}" src="{{asset('image/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
                                    
                                 </div>
                             </div>
-                        @endforeach   --}}
-                          
-                            
+                        @endforeach  
                           
                             
                         </div>
@@ -243,7 +237,6 @@
             </div>
         </div>
     </section><!--/slider-->
-    
     <section>
         <div class="container">
             <div class="row">

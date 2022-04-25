@@ -16,6 +16,7 @@ class CreateDanhmucs extends Migration
         Schema::create('danhmucs', function (Blueprint $table) {
             $table->id();
             $table->string('tendanhmuc');
+            $table->string('meta_keywords')->nullable();
             $table->timestamps();
         });
     }

@@ -4,21 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!---------Seo--------->
-    {{-- <meta name="description" content="{{$meta_desc}}">
+    <meta name="description" content="{{$meta_desc}}">
     <meta name="keywords" content="{{$meta_keywords}}"/>
     <meta name="robots" content="INDEX,FOLLOW"/>
     <link  rel="canonical" href="{{$url_canonical}}" />
-    <meta name="author" content=""> --}}
+    <meta name="author" content="">
     <link  rel="icon" type="image/x-icon" href="" />
     
-    {{--   <meta property="og:image" content="{{$image_og}}" />  
-      <meta property="og:site_name" content="http://localhost/tutorial_youtube/shopbanhanglaravel" />
+      {{-- <meta property="og:image" content="{{$image_og}}" />   --}}
+      <meta property="og:site_name" content="http://127.0.0.1:8000/" />
       <meta property="og:description" content="{{$meta_desc}}" />
       <meta property="og:title" content="{{$meta_title}}" />
       <meta property="og:url" content="{{$url_canonical}}" />
-      <meta property="og:type" content="website" /> --}}
+      <meta property="og:type" content="website" />
     <!--//-------Seo--------->
-    {{-- <title>{{$meta_title}}</title> --}}
+    <title>{{$meta_title}}</title>
+  
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -169,7 +170,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baiviet as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>
@@ -193,7 +198,7 @@
     <section id="slider"><!--slider-->
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 row">
+                <div class="col-sm-12">
                     <div id="slider-carousel" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
@@ -205,12 +210,8 @@
                                 height: 350px;
                             }
                         </style>
-                        
-                        <div class="carousel-inner ">
-                            
-                               
-                          
-                            {{-- @php 
+                        <div class="carousel-inner">
+                        @php 
                             $i = 0;
                         @endphp
                         @foreach($slider as $key => $slide)
@@ -220,13 +221,11 @@
                             <div class="item {{$i==1 ? 'active' : '' }}">
                                 
                                 <div class="col-sm-12">
-                                    <img alt="{{$slide->slider_desc}}" src="{{asset('public/uploads/slider/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
+                                    <img alt="{{$slide->slider_desc}}" src="{{asset('image/'.$slide->slider_image)}}" height="200" width="100%" class="img img-responsive img-slider">
                                    
                                 </div>
                             </div>
-                        @endforeach   --}}
-                          
-                            
+                        @endforeach  
                           
                             
                         </div>
@@ -243,7 +242,6 @@
             </div>
         </div>
     </section><!--/slider-->
-    
     <section>
         <div class="container">
             <div class="row">
@@ -279,7 +277,13 @@
                 
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
-       
+                        <div style="display: flex; padding-right:15px">
+                            <div class="fb-share-button" data-href="{{$url_canonical}}" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{$url_canonical}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Chia sẻ</a></div>
+                     
+                        <div class="fb-like" data-href="{{$url_canonical}}" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="false"></div>
+                       
+                    </div>
+                        
                         <h2 class="title text-center">Sản phẩm mới nhất</h2>
                         
                         @foreach($sanpham as $key => $sp)
@@ -290,15 +294,18 @@
                                         <div class="productinfo text-center">
                                             <form>
                                                 @csrf
-                                                {{-- <input type="hidden" value="{{$sp->hinhsanpham}}" class="cart_product_image_{{$sp->hinhsanpham}}">
-                                           
-                                            <input type="hidden" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->tensanpham}}">
+                                                <input type="hidden" value="{{$sp->idsanpham}}" class="cart_product_id_{{$sp->idsanpham}}">
+                                            <input type="hidden" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->idsanpham}}">
                                           
-                                            <input type="hidden" value="{{$sp->slsanpham}}" class="cart_product_quantity_{{$sp->slsanpham}}">
+                                            <input type="hidden" value="{{$sp->slsanpham}}" class="cart_product_quantity_{{$sp->idsanpham}}">
                                             
-                                          
-                                            <input type="hidden" value="{{$sp->giasanpham}}" class="cart_product_price_{{$sp->giasanpham}}">
-                                             --}}
+                                            <input type="hidden" value="{{$sp->hinhsanpham}}" class="cart_product_image_{{$sp->idsanpham}}">
+                                            <input type="hidden" value="{{$sp->giasanpham}}" class="cart_product_price_{{$sp->idsanpham}}">
+                                            <input type="hidden" value="1" class="cart_product_qty_{{$sp->idsanpham}}">
+
+
+                                               
+                                            
 
                                             <a href="{{URL::to('/chi-tiet/'.$sp->idsanpham)}}">
                                                 <img src="{{URL::to('image/'.$sp->hinhsanpham)}}" alt="" />
@@ -307,7 +314,8 @@
 
                                              
                                              </a>
-                                            <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart">
+                                            
+                                            <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a>
                                             </form>
 
                                         </div>
@@ -323,6 +331,7 @@
                             </div>
                         </div>
                         @endforeach
+                        <div class="fb-comments" data-href="{{$url_canonical}}" data-width="" data-numposts="1"></div>
                     </div><!--features_items-->
                      
                       
@@ -506,7 +515,7 @@
     <script>paypal.Buttons().render('body');</script> --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v13.0" nonce="X1XOHBox"></script>
 
 
     <script type="text/javascript">
@@ -568,7 +577,7 @@
             $('.add-to-cart').click(function(){
 
                 var id = $(this).data('id_product');
-                // alert(id);
+            console.log($(this).data);
                 var cart_product_id = $('.cart_product_id_' + id).val();
                 var cart_product_name = $('.cart_product_name_' + id).val();
                 var cart_product_image = $('.cart_product_image_' + id).val();
@@ -576,6 +585,7 @@
                 var cart_product_price = $('.cart_product_price_' + id).val();
                 var cart_product_qty = $('.cart_product_qty_' + id).val();
                 var _token = $('input[name="_token"]').val();
+             
                 if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
                     alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
                 }else{

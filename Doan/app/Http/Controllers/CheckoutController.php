@@ -5,6 +5,10 @@ use DB;
 use Session;
 use Cart;
 use App\Models\Nguoidungs;
+use App\Models\ship;
+use App\Models\Slider;
+use App\Models\donhangchitiet;
+use App\Models\donhang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 class CheckoutController extends Controller
@@ -20,7 +24,7 @@ class CheckoutController extends Controller
     }
     public function login_checkout(Request $request){
         //slide
-    //    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+       $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
        //seo 
        $meta_desc = "Đăng nhập thanh toán"; 
@@ -32,7 +36,7 @@ class CheckoutController extends Controller
        $danhmuc = DB::table('danhmucs')->orderby('id')->get();
        $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 
-       return view('layout.login')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+       return view('layout.login')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
    }
    public function dangki(Request $request){
 
@@ -73,7 +77,7 @@ public function dangnhap(Request $request){
 public function checkout(Request $request){
     //seo 
     //slide
-//    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+   $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
    $meta_desc = "Đăng nhập thanh toán"; 
    $meta_keywords = "Đăng nhập thanh toán";
@@ -85,7 +89,7 @@ public function checkout(Request $request){
    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 // $city = City::orderby('matp','ASC')->get();
 
-   return view('layout.thongtinnhanhang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+   return view('layout.thongtinnhanhang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
 
 public function dangkithongtin(Request $request){
@@ -104,6 +108,7 @@ public function dangkithongtin(Request $request){
 }
 public function payment(Request $request){
     //seo 
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
     $meta_desc = "Đăng nhập thanh toán"; 
     $meta_keywords = "Đăng nhập thanh toán";
     $meta_title = "Đăng nhập thanh toán";
@@ -112,13 +117,15 @@ public function payment(Request $request){
     $danhmuc = DB::table('danhmucs')->orderby('id')->get();
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu','desc')->get(); 
    
-return view('layout.payment')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+return view('layout.payment')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
 }
 
 public function dathang(Request $request){
     //insert payment_method
     //seo 
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+
     $meta_desc = "Đăng nhập thanh toán"; 
     $meta_keywords = "Đăng nhập thanh toán";
     $meta_title = "Đăng nhập thanh toán";
@@ -126,7 +133,7 @@ public function dathang(Request $request){
     //--seo 
     $data = array();
     $data['payment_method'] = $request->payment_option;
-    $data['payment_status'] = 'Đang chờ xử lí';
+    $data['payment_status'] = 1;
     $payment_id = DB::table('tinhtrangs')->insertGetId($data,'payment_id');
 // dd($payment_id);
     //insert order
@@ -159,7 +166,7 @@ public function dathang(Request $request){
 
         $danhmuc = DB::table('danhmucs')->orderby('id')->get();
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu','desc')->get(); 
-        return view('layout.dathangxong')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical);
+        return view('layout.dathangxong')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
     }else{
         echo 'Thẻ ghi nợ';
@@ -178,6 +185,50 @@ public function logout_checkout(){
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function confirm_order(Request $request){
+        $data = $request->all();
+
+        $shipping = new ship();
+        $shipping->shipping_name = $data['shipping_name'];
+        $shipping->shipping_email = $data['shipping_email'];
+        $shipping->shipping_phone = $data['shipping_phone'];
+        $shipping->shipping_address = $data['shipping_address'];
+        $shipping->shipping_notes = $data['shipping_notes'];
+        $shipping->shipping_method = $data['shipping_method'];
+        $shipping->save();
+        $shipping_id = $shipping->shipping_id;
+
+        // $checkout_code = substr(md5(microtime()),rand(0,26),5);
+
+ 
+        $order = new donhang;
+        $order->customer_id = Session::get('customer_id');
+        $order->shipping_id = $shipping_id;
+        $order->order_status = 1;
+        // $order->order_id = $checkout_code;
+
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $order->created_at = now();
+        $order->save();
+
+        if(Session::get('cart')==true){
+           foreach(Session::get('cart') as $key => $cart){
+               $order_details = new donhangchitiet;
+            //    $order_details->order_code = $checkout_code;
+               $order_details->idsanpham = $cart['product_id'];
+               $order_details->tensanpham = $cart['product_name'];
+               $order_details->giasanpham = $cart['product_price'];
+               $order_details->product_sales_quantity = $cart['product_qty'];
+               $order_details->product_coupon =  $data['order_coupon'];
+               $order_details->product_feeship = $data['order_fee'];
+               $order_details->save();
+           }
+        }
+        Session::forget('coupon');
+        Session::forget('fee');
+        Session::forget('cart');
+   }
     public function create()
     {
         //
