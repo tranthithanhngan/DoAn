@@ -5,11 +5,11 @@
       <div class="panel-heading">
         Liệt kê đơn hàng
       </div>
-      <div class="row w3-res-tb">
+      {{-- <div class="row w3-res-tb">
        
        
       
-      </div>
+      </div> --}}
       <div class="table-responsive">
                         <?php
                               $message = Session::get('message');
@@ -18,7 +18,7 @@
                                   Session::put('message',null);
                               }
                               ?>
-        <table class="table table-striped b-t b-light">
+        <table class="table table-striped b-t b-light"id="myTable">
           <thead>
             <tr>
              
@@ -68,7 +68,7 @@
           </tbody>
         </table>
       </div>
-      <footer class="panel-footer">
+      {{-- <footer class="panel-footer">
         <div class="row">
           
           <div class="col-sm-5 text-center">
@@ -81,7 +81,7 @@
             </ul>
           </div>
         </div>
-      </footer>
+      </footer> --}}
       
     </div>
   </div>

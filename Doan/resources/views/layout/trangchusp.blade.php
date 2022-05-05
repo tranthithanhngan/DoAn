@@ -21,6 +21,10 @@
     <title>{{$meta_title}}</title>
   
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightgallery.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightslider.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/prettify.css')}}" rel="stylesheet">
+   
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/price-range.css')}}" rel="stylesheet">
@@ -292,7 +296,7 @@
                            
                                 <div class="single-products">
                                         <div class="productinfo text-center">
-                                            <form>
+                                            <form action="{{URL::to('/giohang')}}" method="POST">
                                                 @csrf
                                                 <input type="hidden" value="{{$sp->idsanpham}}" class="cart_product_id_{{$sp->idsanpham}}">
                                             <input type="hidden" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->idsanpham}}">
@@ -302,19 +306,12 @@
                                             <input type="hidden" value="{{$sp->hinhsanpham}}" class="cart_product_image_{{$sp->idsanpham}}">
                                             <input type="hidden" value="{{$sp->giasanpham}}" class="cart_product_price_{{$sp->idsanpham}}">
                                             <input type="hidden" value="1" class="cart_product_qty_{{$sp->idsanpham}}">
-
-
-                                               
-                                            
-
                                             <a href="{{URL::to('/chi-tiet/'.$sp->idsanpham)}}">
                                                 <img src="{{URL::to('image/'.$sp->hinhsanpham)}}" alt="" />
                                                 <h2>{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
                                                 <p>{{$sp->tensanpham}}</p>
-
-                                             
                                              </a>
-                                            
+                                           
                                             <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a>
                                             </form>
 
@@ -508,6 +505,9 @@
     <script src="{{asset('frontend/js/price-range.js')}}"></script>
     <script src="{{asset('frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('frontend/js/main.js')}}"></script>
+    <script src="{{asset('frontend/js/lightgallery-all.min.js')}}"></script>
+    <script src="{{asset('frontend/js/lightslider.js')}}"></script>
+    <script src="{{asset('frontend/js/prettify.js')}}"></script>
 
 
     <script src="{{asset('frontend/js/sweetalert.min.js')}}"></script>
@@ -519,65 +519,10 @@
 
 
     <script type="text/javascript">
-
-          $(document).ready(function(){
-            $('.send_order').click(function(){
-                swal({
-                  title: "Xác nhận đơn hàng",
-                  text: "Đơn hàng sẽ không được hoàn trả khi đặt,bạn có muốn đặt không?",
-                  type: "warning",
-                  showCancelButton: true,
-                  confirmButtonClass: "btn-danger",
-                  confirmButtonText: "Cảm ơn, Mua hàng",
-
-                    cancelButtonText: "Đóng,chưa mua",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function(isConfirm){
-                     if (isConfirm) {
-                        var shipping_email = $('.shipping_email').val();
-                        var shipping_name = $('.shipping_name').val();
-                        var shipping_address = $('.shipping_address').val();
-                        var shipping_phone = $('.shipping_phone').val();
-                        var shipping_notes = $('.shipping_notes').val();
-                        var shipping_method = $('.payment_select').val();
-                        var order_fee = $('.order_fee').val();
-                        var order_coupon = $('.order_coupon').val();
-                        var _token = $('input[name="_token"]').val();
-
-                        $.ajax({
-                            url: '{{url('/confirm-order')}}',
-                            method: 'POST',
-                            data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_address:shipping_address,shipping_phone:shipping_phone,shipping_notes:shipping_notes,_token:_token,order_fee:order_fee,order_coupon:order_coupon,shipping_method:shipping_method},
-                            success:function(){
-                               swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
-                            }
-                        });
-
-                        window.setTimeout(function(){ 
-                            location.reload();
-                        } ,3000);
-
-                      } else {
-                        swal("Đóng", "Đơn hàng chưa được gửi, làm ơn hoàn tất đơn hàng", "error");
-
-                      }
-              
-                });
-
-               
-            });
-        });
-    
-
-    </script>
-    <script type="text/javascript">
         $(document).ready(function(){
             $('.add-to-cart').click(function(){
 
-                var id = $(this).data('id_product');
-            console.log($(this).data);
+                let id = $(this).data('id_product');
                 var cart_product_id = $('.cart_product_id_' + id).val();
                 var cart_product_name = $('.cart_product_name_' + id).val();
                 var cart_product_image = $('.cart_product_image_' + id).val();
@@ -606,7 +551,7 @@
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    window.location.href = "{{url('/gio-hang')}}";
+                                    window.location.href = "{{url('/showgiohang')}}";
                                 });
 
                         }

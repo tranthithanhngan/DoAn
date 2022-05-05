@@ -170,7 +170,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>

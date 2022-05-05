@@ -53,7 +53,7 @@ class BaivietController extends Controller
        	
     }
     public function showbaiviet(){
-    	$all_baiviet = baiviet::orderBy('baiviet_id')->paginate(5);
+    	$all_baiviet = baiviet::orderBy('baiviet_id')->get();
     	return view('admin.lietkebaiviet')->with(compact('all_baiviet'));
     }
     public function suabaiviet($baiviet_id){
@@ -150,7 +150,7 @@ class BaivietController extends Controller
         $showbaivietchitiet = DB::table('baivietcons')
         ->join('baiviets','baiviets.baiviet_id','=','baivietcons.baiviet_id')
        
-        ->orderby('baivietcons.baivietcon_id')->paginate(5);
+        ->orderby('baivietcons.baivietcon_id')->get();
         $manager_product  = view('admin.lietkebaivietchitiet')->with('showbaivietchitiet',$showbaivietchitiet);
         return view('admin.danhmuc')->with('admin.lietkebaivietchitiet', $manager_product);
     

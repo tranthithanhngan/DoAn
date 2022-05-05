@@ -9,19 +9,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- bootstrap-css -->
 <script src="https://kit.fontawesome.com/1147679ae7.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" >
-
+<meta name ="csrf-token" content="{{csrf_token()}}">
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
 <link href="{{asset('css/style.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('css/style-responsive.css')}}" rel="stylesheet"/>
 <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet"/>
+
 <!-- font CSS -->
 <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- font-awesome icons -->
 <link rel="stylesheet" href="{{asset('css/font.css')}}" type="text/css"/>
 <link href="{{asset('css/font-awesome.css')}}" rel="stylesheet"> 
 <link rel="stylesheet" href="{{asset('css/morris.css')}}" type="text/css"/>
-
+{{-- <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" type="text/css"/> --}}
 <!-- calendar -->
 <link rel="stylesheet" href="{{asset('css/monthly.css')}}">
 <!-- //calendar -->
@@ -29,6 +30,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('js/jquery2.0.3.min.js')}}"></script>
 <script src="{{asset('js/raphael-min.js')}}"></script>
 <script src="{{asset('js/morris.js')}}"></script>
+{{-- <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
 
 </head>
 <body>
@@ -56,7 +58,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="{{('image/aososinh.jpg')}}">
+                <img alt="" src="{{asset('image/aososinh.jpg')}}">
                 <span class="username">
                   
                 	<?php
@@ -176,6 +178,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       
                     </ul>
                 </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Bình luận</span>
+                    </a>
+                    <ul class="sub">
+					
+						<li><a href="{{URL::to('/showbinhluan')}}">Liệt kê bình luận</a></li>
+                      
+                    </ul>
+                </li>
                 
             </ul>            </div>
         <!-- sidebar menu end-->
@@ -190,6 +204,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<section class="wrapper">
        
         @yield('admin_content')
+ 
     </section>
  <!-- footer -->
 		  {{-- <div class="footer">
@@ -198,7 +213,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <!-- / footer -->
 </section>
 <!--main content end-->
-</section>
+{{-- </section> --}}
 <script src="{{asset('js/bootstrap.js')}}"></script>
 <script src="{{asset('js/jquery.dcjqaccordion.2.7.js')}}"></script>
 <script src="{{asset('js/scripts.js')}}"></script>
@@ -207,6 +222,70 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('js/ckeditor.js')}}"></script>
 <script src="{{asset('js/jquery.form-validator.min.js')}}"></script>
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );</script>
+
+<script type="text/javascript"> 
+$('.comment_duyet_btn').click(function(){
+var binhluan_status= $(this).data('comment-status');
+var binhluan_id= $(this).data('comment-id');
+var idsanpham= $(this).attr('id');
+if(binhluan_status==0)
+{
+    var alert='Thay đổi thành Bỏ Duyệt thành công';
+}
+else{
+    var alert='Thay đổi thành Duyệt thành công';
+}
+
+$.ajax({
+                url : '{{url('/duyet-comment')}}',
+
+                method: 'POST',
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                },
+
+                data:{binhluan_status:binhluan_status, binhluan_id:binhluan_id ,idsanpham:idsanpham },
+                // dataType:"JSON",
+                success:function(data){
+                    
+                    $('#thongbao_binhluan').html('<span class="text text-alert">'+alert+'</span>')
+                    location.reload();
+
+                }
+        });
+
+});
+$('.btn-traloi-comment').click(function(){
+    var binhluan_id= $(this).data('binhluan_id');
+    var binhluan= $('.reply_comment_'+binhluan_id).val();
+
+var idsanpham= $(this).data('sanpham_id');
+
+    
+
+$.ajax({
+                url : '{{url('/traloi-comment')}}',
+
+                method: 'POST',
+                headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                },
+
+                data:{binhluan:binhluan, binhluan_id:binhluan_id ,idsanpham:idsanpham },
+                // dataType:"JSON",
+                success:function(data){
+                    $('._'+binhluan_id).val('');
+                    $('#thongbao_binhluan').html('<span class="text text-alert">Trả lời bình luận thành công</span>')
+                   
+
+                }
+        });
+});
+</script>
 <script type="text/javascript">
  
     function ChangeToSlug()
@@ -251,9 +330,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         var order_qty = $('.order_qty_'+order_product_id).val();
         var order_code = $('.order_code').val();
         var _token = $('input[name="_token"]').val();
-        alert(order_product_id);
-        alert(order_qty);
-        alert(order_code);
+        // alert(order_product_id);
+        // alert(order_qty);
+        // alert(order_code);
         $.ajax({
                 url : '{{url('/update-qty')}}',
 
@@ -323,7 +402,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     });
 </script>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $(document).ready(function(){
 
         fetch_delivery();
@@ -401,10 +480,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 }
             });
         }); 
-    })
+    }) --}}
 
 
-</script>
+{{-- </script> --}}
 <script type="text/javascript">
     $(document).ready( function () {
     $('#myTable').DataTable();
@@ -426,7 +505,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
-<script src="{{asset('public/backend/js/jquery.scrollTo.js')}}"></script>
+<script src="{{asset('js/jquery.scrollTo.js')}}"></script>
 <!-- morris JavaScript -->	
 <script>
 	$(document).ready(function() {
@@ -484,7 +563,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	});
 	</script>
 <!-- calendar -->
-	<script type="text/javascript" src="{{asset('public/backend/js/monthly.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/monthly.js')}}"></script>
 	<script type="text/javascript">
 		$(window).load( function() {
 

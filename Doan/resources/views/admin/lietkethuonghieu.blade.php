@@ -5,7 +5,7 @@
     <div class="panel-heading">
       Liệt kê thương hiệu
     </div>
-    <div class="row w3-res-tb">
+    {{-- <div class="row w3-res-tb">
       <div class="col-sm-5 m-b-xs">
         <select class="input-sm form-control w-sm inline v-middle">
           <option value="0">Bulk action</option>
@@ -25,7 +25,7 @@
           </span>
         </div>
       </div>
-    </div>
+    </div> --}}
     <div class="table-responsive">
                       <?php
                             $message = Session::get('message');
@@ -34,7 +34,7 @@
                                 Session::put('message',null);
                             }
                             ?>
-      <table class="table table-striped b-t b-light">
+      <table class="table table-striped b-t b-light" id="myTable">
         <thead>
           <tr>
             <th style="width:20px;">
@@ -70,7 +70,7 @@
         </tbody>
       </table>
     </div>
-    <footer class="panel-footer">
+    {{-- <footer class="panel-footer">
       <div class="row">
         
         <div class="col-sm-5 text-center">
@@ -82,7 +82,7 @@
           </ul>
         </div>
       </div>
-    </footer>
+    </footer> --}}
   </div>
 </div>
 @endsection

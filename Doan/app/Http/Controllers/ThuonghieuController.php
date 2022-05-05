@@ -48,7 +48,7 @@ class ThuonghieuController extends Controller
     $showthuonghieu = DB::table('thuonghieus')
     ->join('danhmucs','danhmucs.id','=','thuonghieus.iddanhmuc')
    
-    ->orderby('thuonghieus.idthuonghieu')->paginate(5);
+    ->orderby('thuonghieus.idthuonghieu')->get();
     $manager_product  = view('admin.lietkethuonghieu')->with('showthuonghieu',$showthuonghieu);
     return view('admin.danhmuc')->with('admin.lietkethuonghieu', $manager_product);
 
@@ -85,7 +85,7 @@ public function xoathuonghieu($idthuonghieu){
 public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     //slide
     $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
-
+    $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
     $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
     
     $thuonghieu_by_id = DB::table('sanphams')->join('thuonghieus','sanphams.idthuonghieu','=','thuonghieus.idthuonghieu')->where('thuonghieus.idthuonghieu',$idthuonghieu)->paginate(6);
@@ -111,7 +111,7 @@ public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     //     //--seo
     // }
      
-    return view('layout.hiensanpham')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+    return view('layout.hiensanpham')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
     /**
      * Show the form for creating a new resource.

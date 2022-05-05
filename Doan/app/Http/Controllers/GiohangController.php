@@ -22,7 +22,7 @@ class GiohangController extends Controller
     }
     public function luugiohang(Request $request){
         $idsanpham = $request->productid_hidden;
-
+        // dd($request);
         $slsp = $request->sl;
         $sp_info = DB::table('sanphams')->where('idsanpham',$idsanpham)->first(); 
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
@@ -37,8 +37,11 @@ class GiohangController extends Controller
         $data['price'] = $sp_info->giasanpham ;
         $data['weight'] = $sp_info->giasanpham;
         $data['options']['image'] = $sp_info->hinhsanpham;
+        // dd($data);
         Cart::add($data);
+        // dd(Cart::add($data));
         Cart::setGlobalTax(2);
+
         // Cart::destroy();
         return Redirect::to('/showgiohang');
         // return view('layout.giohang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu);
@@ -50,10 +53,11 @@ class GiohangController extends Controller
         $meta_keywords = "Giỏ hàng";
         $meta_title = "Giỏ hàng";
         $url_canonical = $request->url();
+        $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
         //--seo
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
         $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
-        return view('layout.giohang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('layout.giohang')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
     }
       public function xoagiohang($rowId){
         Cart::update($rowId,0);
@@ -104,47 +108,54 @@ class GiohangController extends Controller
         $data = $request->all();
         $session_id = substr(md5(microtime()),rand(0,26),5);
         $cart = Session::get('cart');
-     
+        // dd($cart);
         if($cart==true){
             $is_avaiable = 0;
             foreach($cart as $key => $val){
-            
-                if($val['idsanpham'] == $data['cart_product_id']){
+                $filtered = $val->contains('id', $data['cart_product_id']);
+                if($filtered){
                     $is_avaiable++;
-                   
                 }
-               
-            }
+          }
+            // dd($is_avaiable);
             if($is_avaiable == 0){
-                $cart[] = array(
-
-                'session_id' => $session_id,
-                'tensanpham' => $data['cart_product_name'],
-                'idsanpham' => $data['cart_product_id'],
-                'hinhsanpham' => $data['cart_product_image'],
-                'slsanpham' => $data['cart_product_quantity'],
-                'product_qty' => $data['cart_product_qty'],
-                'giasanpham' => $data['cart_product_price'],
+     
+                $cart = array(
+                    'id' => (int)$data['cart_product_id'],
+                    'name' => $data['cart_product_name'],
+                    'weight' => $data['cart_product_quantity'],
+                    'qty' => $data['cart_product_qty'],
+                    'price' => $data['cart_product_price'],
+                    'options' => array(
+                       "image"=> $data['cart_product_image'],
+                    ) 
                 );
-                Session::put('cart',$cart);
+                Cart::add($cart);
+                // dd($cart);
+                // Session::put('cart',$cart);
             }
         }else{
             
-            $cart[] = array(
+            $cart = array(
                
-                'session_id' => $session_id,
-                'tensanpham' => $data['cart_product_name'],
-                'idsanpham' => $data['cart_product_id'],
-                'hinhsanpham' => $data['cart_product_image'],
-                'slsanpham' => $data['cart_product_quantity'],
-                'product_qty' => $data['cart_product_qty'],
-                'giasanpham' => $data['cart_product_price'],
-
+                // 'session_id' => $session_id,
+                'id' => (int)$data['cart_product_id'],
+                'name' => $data['cart_product_name'],
+                'weight' => $data['cart_product_quantity'],
+                'qty' => $data['cart_product_qty'],
+                'price' => $data['cart_product_price'],
+                'options' => array(
+                   "image"=> $data['cart_product_image'],
+                ) 
             );
-            Session::put('cart',$cart);
+              Cart::add($cart);
+
+            // Session::put('cart',$cart);
+
         }
-       
-        Session::save();
+        // Session::save();
+        return response('Hello World', 200)
+                  ->header('Content-Type', 'text/plain');
 
     }   
     /**

@@ -21,6 +21,11 @@
     <title>{{$meta_title}}</title>
   
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightgallery.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightslider.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/prettify.css')}}" rel="stylesheet">
+    
+
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/price-range.css')}}" rel="stylesheet">
@@ -170,7 +175,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>
@@ -472,7 +481,9 @@
     <script src="{{asset('frontend/js/price-range.js')}}"></script>
     <script src="{{asset('frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('frontend/js/main.js')}}"></script>
-
+    <script src="{{asset('frontend/js/lightgallery-all.min.js')}}"></script>
+    <script src="{{asset('frontend/js/lightslider.js')}}"></script>
+    <script src="{{asset('frontend/js/prettify.js')}}"></script>
 
     <script src="{{asset('frontend/js/sweetalert.min.js')}}"></script>
    {{--  <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>

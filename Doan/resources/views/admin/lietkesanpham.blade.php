@@ -5,7 +5,7 @@
     <div class="panel-heading">
       Liệt kê sản phẩm
     </div>
-    <div class="row w3-res-tb">
+    {{-- <div class="row w3-res-tb">
       <div class="col-sm-5 m-b-xs">
         <select class="input-sm form-control w-sm inline v-middle">
           <option value="0">Bulk action</option>
@@ -25,7 +25,7 @@
           </span>
         </div>
       </div>
-    </div>
+    </div> --}}
     <div class="table-responsive">
                       <?php
                             $message = Session::get('message');
@@ -34,7 +34,7 @@
                                 Session::put('message',null);
                             }
                             ?>
-      <table class="table table-striped b-t b-light">
+      <table class="table table-striped b-t b-light" id="myTable">
         <thead>
           <tr>
             <th style="width:20px;">
@@ -43,6 +43,7 @@
               </label>
             </th>
             <th>Tên sản phẩm</th>
+            <th>Thư viện ảnh</th>
             <th>Số lượng</th>
             <th>Độ tuổi</th>
             <th>Size</th>
@@ -59,6 +60,8 @@
           <tr>
             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
             <td>{{ $pro->tensanpham }}</td>
+            <td><a href="{{URL::to('/themanh/'.$pro->idsanpham)}}">Thêm tư viện ảnh</a></td>
+           
             <td>{{ $pro->slsanpham }}</td>
             <td>{{ $pro->dotuoi }}</td>
             <td>{{ $pro->size }}</td>
@@ -78,19 +81,20 @@
         </tbody>
       </table>
     </div>
-    <footer class="panel-footer">
+    {{-- <footer class="panel-footer">
       <div class="row">
         
         <div class="col-sm-5 text-center">
           <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
         </div>
+        
         <div class="col-sm-7 text-right text-center-xs">                
           <ul class="pagination pagination-sm m-t-none m-b-none">
-            {!!$showsanpham->links()!!}
+             {!!$showsanpham->links()!!}
           </ul>
         </div>
       </div>
-    </footer>
+    </footer> --}}
   </div>
 </div>
 @endsection

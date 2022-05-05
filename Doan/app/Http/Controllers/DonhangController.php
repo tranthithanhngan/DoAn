@@ -39,7 +39,7 @@ class DonhangController extends Controller
         ->join('nguoidungs','donhangs.customer_id','=','nguoidungs.customer_id')
         ->join('ships','donhangs.shipping_id','=','ships.shipping_id')
         ->select('donhangs.*','nguoidungs.customer_name','ships.shipping_name')
-        ->orderby('donhangs.order_id')->paginate(5);
+        ->orderby('donhangs.order_id')->get();
        
         $donhang = view('admin.quanlidonhang')->with('tatca_donhang',$tatca_donhang);
     	return view('admin.danhmuc')->with('donhang',$donhang);

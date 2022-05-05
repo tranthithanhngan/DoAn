@@ -169,7 +169,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>
@@ -316,7 +320,7 @@
                                                   
                                                     <form action="{{URL::to('/capnhatgiohang')}}" method="POST">
                                                     {{ csrf_field() }}
-                                                    <input class="cart_quantity_input" type="text" name="cart_capnhat" value="{{$v_content->qty}}"  >
+                                                    <input class="cart_quantity_input" type="number" step="1" name="cart_capnhat" value="{{$v_content->qty}}"  >
                                                     
                                                     <input type="hidden" value="{{$v_content->rowId}}" name="rowId_giohang" class="form-control">
                                                     <input type="submit" value="Cập nhật" name="capnhatgiohang" class="btn btn-default btn-sm" style="background-color:#FE980F ">
@@ -353,8 +357,8 @@
                                         <ul>
                                            
                                             <li>Tổng <span>{{Cart::priceTotal(0).' '.'vnđ'}}</span></li>
-                                            <li>Thuế <span>{{Cart::tax(0).' '.'vnđ'}}</span></li>
-                                            <li>Phí vận chuyển <span>{{Cart::priceTotal(0).' '.'vnđ'}}</span></li>
+                                            {{-- <li>Thuế <span>{{Cart::tax(0).' '.'vnđ'}}</span></li> --}}
+                                            <li>Phí vận chuyển <span>free</span></li>
                                             <li>Thành tiền <span>{{Cart::priceTotal(0).' '.'vnđ'}}</span></li>
                                         </ul>
                                         {{-- {{number_format( $subtotal = $v_content->price * $v_content->qty,0,',','.')}}đ --}}

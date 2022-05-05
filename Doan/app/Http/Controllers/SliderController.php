@@ -57,7 +57,7 @@ class SliderController extends Controller
        	
     }
     public function lietkeslides(){
-    	$all_slide = Slider::orderBy('slider_id','DESC')->paginate(5);
+    	$all_slide = Slider::orderBy('slider_id','DESC')->get();
     	return view('admin.lietkeslides')->with(compact('all_slide'));
     }
     public function unactive_slide($slide_id){

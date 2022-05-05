@@ -170,7 +170,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>
@@ -272,7 +276,7 @@
                 
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
-
+                       
                         @foreach($thuonghieu_name as $key => $name)
                        
                         <h2 class="title text-center">{{$name->tenthuonghieu}}</h2>
@@ -297,9 +301,9 @@
                                                 <img src="{{URL::to('image/'.$sp->hinhsanpham )}}" alt="" />
                                                 <h2>{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
                                                 <p>{{$sp->tensanpham }}</p>
-
-                                             
-                                             </a>
+                                            </a>
+                                                <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a>
+                                           
                                              {{-- <form action="{{URL::to('/giohang')}}" method="POST">
                                                 @csrf
                                              <button type="submit" class="btn btn-fefault cart ">
@@ -592,7 +596,7 @@
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    window.location.href = "{{url('/gio-hang')}}";
+                                    window.location.href = "{{url('/showgiohang')}}";
                                 });
 
                         }

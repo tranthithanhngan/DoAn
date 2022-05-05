@@ -66,7 +66,12 @@
                                     <label for="exampleInputPassword1">Thương hiệu   </label>
                                       <select name="idthuonghieu" class="form-control input-sm m-bot15">
                                         @foreach($thuonghieu as $key => $cate)
-                                            <option value="{{$cate->idthuonghieu}}">{{$cate->tenthuonghieu}}</option>
+                                        @if($cate->idthuonghieu==$pro->idthuonghieu)
+                                        <option selected value="{{$cate->idthuonghieu}}">{{$cate->tenthuonghieu}}</option>
+                                        @else
+                                        <option value="{{$cate->idthuonghieu}}">{{$cate->tenthuonghieu}}</option>
+                                        @endif
+                                          
                                         @endforeach  
                                             
                                     </select>

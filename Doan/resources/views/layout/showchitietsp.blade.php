@@ -20,6 +20,10 @@
     <!--//-------Seo--------->
     <title>{{$meta_title}}</title>
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightgallery.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/lightslider.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/prettify.css')}}" rel="stylesheet">
+   
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/price-range.css')}}" rel="stylesheet">
@@ -169,7 +173,11 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
                                 <li><a href="">Giỏ hàng</a></li>
                                 <li><a href="">Liên hệ</a></li>
@@ -274,34 +282,27 @@
                 <div class="col-sm-9 padding-right">
                     @foreach($chitietsp as $key => $value)
                     <div class="product-details"><!--product-details-->
+                        <style type="text/css">
+                        li.active{
+                            border: 2px solid #FE980F;
+                        }
+                        </style>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                              <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                              <li class="breadcrumb-item"><a href="{{URL::to('/danh-muc/'. $iddanhmuc_cate)}}">{{$sp_cate}}</a></li>
+                              <li class="breadcrumb-item"><a href="{{URL::to('/thuong-hieu/'. $idthuonghieu_cate)}}">{{$th_cate}}</a></li>
+                              <li class="breadcrumb-item active" aria-current="page">{{$tensp_cate}}</li>
+                            </ol>
+                          </nav>
 						<div class="col-sm-5">
-							<div class="view-product">
-								<img src="{{URL::to('image/'.$value->hinhsanpham)}}" alt="" />
-								<h3>ZOOM</h3>
-							</div>
-							<div id="similar-product" class="carousel slide" data-ride="carousel">
-								
-								  <!-- Wrapper for slides -->
-								    <div class="carousel-inner">
-
-										<div class="item active " style="display: flex">
-										  <a href=""><img src="{{URL::to('image/suaenpha25.jpg')}}" alt=""></a>
-										  <a href=""><img src="{{URL::to('image/suaenpha33.jpg')}}" alt=""></a>
-										  <a href=""><img src="{{URL::to('image/suaenpha62.jpg')}}" alt=""></a>
-										</div>
-										
-										
-										
-									</div>
-
-								  <!-- Controls -->
-								  <a class="left item-control" href="#similar-product" data-slide="prev">
-									<i class="fa fa-angle-left"></i>
-								  </a>
-								  <a class="right item-control" href="#similar-product" data-slide="next">
-									<i class="fa fa-angle-right"></i>
-								  </a>
-							</div>
+							<ul id="imageGallery">
+                                @foreach($hinhanhpost as $key => $ha)
+                                <li data-thumb="{{asset('image/'.$ha->hinhanh)}}" data-src="{{asset('image/'.$ha->hinhanh)}}">
+                                  <img width="100%" alt="{{$ha->thuvienanh_name}}" src="{{asset('image/'.$ha->hinhanh)}}" />
+                                </li>
+                               @endforeach
+                              </ul>
 
 						</div>
 						<div class="col-sm-7">
@@ -350,46 +351,64 @@
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
-								<li class="active"><a href="#details" data-toggle="tab">Mô tả</a></li>
+								<li ><a href="#details" data-toggle="tab">Mô tả</a></li>
 								<li><a href="#companyprofile" data-toggle="tab">Chi tiết sản phẩm</a></li>
 							
-								<li ><a href="#reviews" data-toggle="tab">Đánh giá</a></li>
+								<li class="active"><a href="#reviews" data-toggle="tab">Đánh giá</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
-							{{-- <div class="tab-pane fade active in" id="details" >
-								<p>{!!$value->product_desc!!}</p>
+							<div class="tab-pane fade active in" id="details" >
+								{{-- <p>{!!$value->product_desc!!}</p> --}}
 								
-							</div> --}}
+							</div> 
 							
-							{{-- <div class="tab-pane fade" id="companyprofile" >
-								<p>{!!$value->product_content!!}</p>
+							<div class="tab-pane fade" id="companyprofile" >
+								{{-- <p>{!!$value->product_content!!}</p> --}}
 								
 						
-							</div> --}}
+							</div>
 							
 							<div class="tab-pane fade" id="reviews" >
 								<div class="col-sm-12">
 									<ul>
 										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
 										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2022</a></li>
 									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p><b>Write Your Review</b></p>
+                                    <style type="text/css">
+                                        row.style_comment{
+                                            border: 1px solid #dd;
+                                            border-radius:10px;
+                                            background:#f0f0e9;
+                                            color:#fff;
+                                        }
+                                    </style>
+                                    <form >
+                                        @csrf
+                        <input type="hidden" name="idsanpham" class="idsanpham" value="{{$value->idsanpham}}">
+
+                                        <div id="comment_show"> </div>
+
+								
+                                </form>
+									<p><b>Viết đánh giá của bạn</b></p>
 									
 									<form action="#">
 										<span>
-											<input type="text" placeholder="Your Name"/>
-											<input type="email" placeholder="Email Address"/>
+											<input style="width:100%;margin-left:0;" type="text" class="comment_name" placeholder="Tên bình luận"/>
+										
 										</span>
-										<textarea name="" ></textarea>
-										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit
+										<textarea name="comment" class="comment_content" placeholder="Nội dung bình luận"></textarea>
+                                        <div id="thongbao"> </div>
+										<b>Đánh giá sao: </b> <img src="" alt="" />
+										<button type="button" class="btn btn-default pull-right send-comment">
+											Bình luận
 										</button>
+                                       
 									</form>
-								</div>
+                                </div>
+								
 							</div>
 							
 						</div>
@@ -596,7 +615,9 @@
     <script src="{{asset('frontend/js/price-range.js')}}"></script>
     <script src="{{asset('frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('frontend/js/main.js')}}"></script>
-
+    <script src="{{asset('frontend/js/lightgallery-all.min.js')}}"></script>
+    <script src="{{asset('frontend/js/lightslider.js')}}"></script>
+    <script src="{{asset('frontend/js/prettify.js')}}"></script>
 
     <script src="{{asset('frontend/js/sweetalert.min.js')}}"></script>
    {{--  <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
@@ -604,7 +625,65 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+// alert(idsp);
+load_comment();
+    function load_comment(){
+        var idsp=$('.idsanpham').val();
+        var _token=$('input[name="_token"]').val();
 
+
+        $.ajax({
+                            url: '{{url('/load-commnet')}}',
+                            method: 'POST',
+                            data:{idsp:idsp, _token:_token},
+                            success:function(data){
+                               $('#comment_show').html(data);
+                            }
+                        });
+    }
+    $('.send-comment').click(function(){
+        var idsp=$('.idsanpham').val();
+        var comment_name=$('.comment_name').val();
+        var comment_content=$('.comment_content').val();
+        var _token=$('input[name="_token"]').val();
+        $.ajax({
+                            url: '{{url('/send-comment')}}',
+                            method: 'POST',
+                            data:{idsp:idsp, _token:_token,comment_name:comment_name,comment_content:comment_content},
+                            success:function(){
+                                
+                                $('#thongbao').html('<span class= "text text-success"> Thêm bình luận thành công,bình luận đang chờ duyệt</span>');
+                                load_comment();
+                                $('#thongbao').fadeOut(2000);
+                                $('.comment_name').val('');
+                                $('.comment_content').val('');
+                            }
+                        });
+    });
+});
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#imageGallery').lightSlider({
+
+        gallery:true,
+        item:1,
+        loop:true,
+        thumbItem:3,
+        slideMargin:0,
+        enableDrag: false,
+        currentPagerPosition:'left',
+        onSliderLoad: function(el) {
+            el.lightGallery({
+                selector: '#imageGallery .lslide'
+            });
+        }   
+    });  
+  });
+</script>
 
     <script type="text/javascript">
           $(document).ready(function(){

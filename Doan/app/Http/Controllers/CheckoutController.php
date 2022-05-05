@@ -25,7 +25,7 @@ class CheckoutController extends Controller
     public function login_checkout(Request $request){
         //slide
        $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
-
+       $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
        //seo 
        $meta_desc = "Đăng nhập thanh toán"; 
        $meta_keywords = "Đăng nhập thanh toán";
@@ -36,7 +36,7 @@ class CheckoutController extends Controller
        $danhmuc = DB::table('danhmucs')->orderby('id')->get();
        $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 
-       return view('layout.login')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+       return view('layout.login')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
    }
    public function dangki(Request $request){
 
@@ -78,7 +78,7 @@ public function checkout(Request $request){
     //seo 
     //slide
    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
-
+   $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
    $meta_desc = "Đăng nhập thanh toán"; 
    $meta_keywords = "Đăng nhập thanh toán";
    $meta_title = "Đăng nhập thanh toán";
@@ -89,7 +89,7 @@ public function checkout(Request $request){
    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 // $city = City::orderby('matp','ASC')->get();
 
-   return view('layout.thongtinnhanhang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+   return view('layout.thongtinnhanhang')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
 
 public function dangkithongtin(Request $request){
@@ -109,6 +109,7 @@ public function dangkithongtin(Request $request){
 public function payment(Request $request){
     //seo 
     $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+    $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
     $meta_desc = "Đăng nhập thanh toán"; 
     $meta_keywords = "Đăng nhập thanh toán";
     $meta_title = "Đăng nhập thanh toán";
@@ -117,7 +118,7 @@ public function payment(Request $request){
     $danhmuc = DB::table('danhmucs')->orderby('id')->get();
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu','desc')->get(); 
    
-return view('layout.payment')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+return view('layout.payment')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
 }
 
@@ -125,7 +126,7 @@ public function dathang(Request $request){
     //insert payment_method
     //seo 
     $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
-
+    $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
     $meta_desc = "Đăng nhập thanh toán"; 
     $meta_keywords = "Đăng nhập thanh toán";
     $meta_title = "Đăng nhập thanh toán";
@@ -166,7 +167,7 @@ public function dathang(Request $request){
 
         $danhmuc = DB::table('danhmucs')->orderby('id')->get();
     $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu','desc')->get(); 
-        return view('layout.dathangxong')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        return view('layout.dathangxong')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
     }else{
         echo 'Thẻ ghi nợ';
@@ -201,11 +202,14 @@ public function logout_checkout(){
 
         // $checkout_code = substr(md5(microtime()),rand(0,26),5);
 
- 
+//  dd($shipping
+//     );
         $order = new donhang;
         $order->customer_id = Session::get('customer_id');
         $order->shipping_id = $shipping_id;
         $order->order_status = 1;
+        $order->order_total = 1;
+        $order->payment_id = 1;
         // $order->order_id = $checkout_code;
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -214,15 +218,29 @@ public function logout_checkout(){
 
         if(Session::get('cart')==true){
            foreach(Session::get('cart') as $key => $cart){
-               $order_details = new donhangchitiet;
+             
+               $order_details = donhangchitiet::create([
+                'idsanpham'=>$cart['idsanpham'] , 
+                'tensanpham'=>$cart['tensanpham'],
+                'giasanpham'=> $cart['giasanpham'],
+                'product_sales_quantity'=> $cart['slsanpham'],
+                'order_id'=> 1,
+                'product_coupon'=>  $data['order_coupon']
+                ,'product_feeship' => $data['order_fee']
+
+               ]);
+
+ 
+            //    dd($cart['idsanpham']);
             //    $order_details->order_code = $checkout_code;
-               $order_details->idsanpham = $cart['product_id'];
-               $order_details->tensanpham = $cart['product_name'];
-               $order_details->giasanpham = $cart['product_price'];
-               $order_details->product_sales_quantity = $cart['product_qty'];
-               $order_details->product_coupon =  $data['order_coupon'];
-               $order_details->product_feeship = $data['order_fee'];
-               $order_details->save();
+            //    $order_details->idsanpham = $cart['idsanpham'];
+            //    $order_details->tensanpham = $cart['tensanpham'];
+            //    $order_details->giasanpham = $cart['giasanpham'];
+            //    $order_details->product_sales_quantity = $cart['slsanpham'];
+            //    $order_details->product_coupon =  $data['order_coupon'];
+            //    $order_details->product_feeship = $data['order_fee'];
+            //    $order_details->order_id = 1;
+            //    $order_details->save();
            }
         }
         Session::forget('coupon');
