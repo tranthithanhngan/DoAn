@@ -140,6 +140,7 @@
                               <?php 
                           }
                               ?>
+                                                  <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li>
                             </ul>
                         </div>
                     </div>
@@ -270,7 +271,15 @@
                             </div>
                         </div><!--/brands_products-->
                         
-                     
+                        <div class="Yeuthich_products row">
+                            <h2>Sản phẩm yêu thích</h2>
+                            <div class="yeuthich-name">
+                               <div id="row_wishlist" class="row">
+                                   
+                               </div>
+                            </div>
+                            
+                        </div>
                     
                     </div>
                 </div>
@@ -288,18 +297,17 @@
                                         <div class="productinfo text-center">
                                             <form>
                                                 @csrf
-                                                {{-- <input type="hidden" value="{{$sp->hinhsanpham}}" class="cart_product_image_{{$sp->hinhsanpham}}">
-                                           
-                                            <input type="hidden" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->tensanpham}}">
-                                          
-                                            <input type="hidden" value="{{$sp->slsanpham}}" class="cart_product_quantity_{{$sp->slsanpham}}">
-                                            
-                                          
-                                            <input type="hidden" value="{{$sp->giasanpham}}" class="cart_product_price_{{$sp->giasanpham}}">
-                                             --}}
+                                                <input type="hidden" value="{{$sp->idsanpham}}" class="cart_product_id_{{$sp->idsanpham}}">
+                                                <input type="hidden" id="wishlist_tensanpham{{$sp->idsanpham}}" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->idsanpham}}">
+                                              
+                                                <input type="hidden" value="{{$sp->slsanpham}}" class="cart_product_quantity_{{$sp->idsanpham}}">
+                                                
+                                                <input type="hidden"  value="{{$sp->hinhsanpham}}" class="cart_product_image_{{$sp->idsanpham}}">
+                                                <input type="hidden" value="{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}" id="wishlist_giasanpham{{$sp->idsanpham}}" class="cart_product_price_{{$sp->idsanpham}}">
+                                                <input type="hidden" value="1" class="cart_product_qty_{{$sp->idsanpham}}">
 
-                                            <a href="{{URL::to('/chi-tiet/'.$sp->idsanpham)}}">
-                                                <img src="{{URL::to('image/'.$sp->hinhsanpham)}}" alt="" />
+                                            <a id="wishlist_url{{$sp->idsanpham}}" href="{{URL::to('/chi-tiet/'.$sp->idsanpham)}}">
+                                                <img id="wishlist_hinhsanpham{{$sp->idsanpham}}" src="{{URL::to('image/'.$sp->hinhsanpham)}}" alt="" />
                                                 <h2>{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
                                                 <p>{{$sp->tensanpham}}</p>
 
@@ -314,7 +322,31 @@
                            
                                 <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
-                                        <li><a href="#"><i class="fa fa-plus-square"></i>Yêu thích</a></li>
+                                        <style type="text/css">
+                                            ul.nav.nav-pills.nav-justified li{
+                                                text-align: center;
+                                                font-size: 13px;
+
+                                            }
+                                            .button_wishlist{
+                                                border:none;
+                                                background: #ffff;
+                                                color: #03AFA8;
+                                            }
+                                            ul.nav.nav-pills.nav-justified i{
+                                                color: #03AFA8;
+                                            }
+                                            .button_wishlist span:hover{
+                                                color: #FE980F;
+                                            }
+                                            .button_wishlist:focus{
+                                                border: none;
+                                                outline: none;
+                                            }
+
+                                        </style>
+                                        <li><a href="#">
+                                            <i class="fa fa-plus-square"></i> <button class="button_wishlist" id="{{$sp->idsanpham}}" onclick="add_wishlist(this.id);"><span>Yêu thích</span> </button></a></li>
                                         <li><a href="#"><i class="fa fa-plus-square"></i>So sánh</a></li>
                                     </ul>
                                 </div>
@@ -502,7 +534,60 @@
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
 
-
+<script type="text/javascript">
+    function view(){
+        if(localStorage.getItem('data')!=null){
+            var data= JSON.parse(localStorage.getItem('data'));
+            data.reverse();
+            document.getElementById('row_wishlist').style.overflow='scroll';
+            document.getElementById('row_wishlist').style.height='400px';
+    
+            for(i=0; i<data.length;i++){
+                var ten= data[i].ten;
+                var gia= data[i].gia;
+                var hinh= data[i].hinhsanpham;
+                var url= data[i].url;
+                $("#row_wishlist").append('<div class="row" style="margin:10px 0;"><div class="col-md-4"><img src="'+hinh+'" width="100%"></div><div class="col-md-8 info_wishlist"><p>'+ten+'</p><p style="color:#FE980F">'+gia+'</p><a href="'+url+'">Đặt hàng</a></div></div>');
+    
+    
+            }
+        }
+    }
+    view();
+    function add_wishlist(click_id)
+    {
+        var id=click_id;
+    
+        var ten= document.getElementById('wishlist_tensanpham'+id).value;
+        var gia= document.getElementById('wishlist_giasanpham'+id).value;
+        var hinhsanpham= document.getElementById('wishlist_hinhsanpham'+id).src;
+        var url= document.getElementById('wishlist_url'+id).href;
+       
+        var newItem={
+            'url':url,
+            'id':id,
+            'ten':ten,
+            'gia':gia,
+            'hinhsanpham':hinhsanpham
+        }
+         if(localStorage.getItem('data')==null){
+            localStorage.setItem('data','[]');
+        }
+        var old_data=JSON.parse(localStorage.getItem('data'));
+       
+        var matches= $.grep(old_data,function(obj){
+            return obj.id==id;
+        })
+        if(matches.length){
+            alert('Sản phẩm bạn đã yêu thích nên không thể thêm');
+    
+        }else{
+            old_data.push(newItem);
+            $("#row_wishlist").append('<div class="row" style="margin:10px 0;"><div class="col-md-4"><img src="'+newItem.hinhsanpham+'" width="100%"></div><div class="col-md-8 info_wishlist"><p>'+newItem.ten+'</p><p style="color:#FE980F">'+newItem.gia+'</p><a href="'+newItem.url+'">Đặt hàng</a></div></div>');
+        }
+        localStorage.setItem('data',JSON.stringify(old_data));
+    }
+    </script>
     <script type="text/javascript">
 
           $(document).ready(function(){

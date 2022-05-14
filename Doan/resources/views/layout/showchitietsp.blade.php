@@ -394,6 +394,28 @@
                                 </form>
 									<p><b>Viết đánh giá của bạn</b></p>
 									
+                                    <ul class="list-inline" title="Đánh giá sao">
+                                        @for($count= 1;$count <=5;$count++)
+                                        @php
+                                        if($count <=$sao){
+                                            $color='color:#ffcc00;';
+                                        }
+                                        else{
+                                            $color='color:#ccc;';
+                                        }
+                                        @endphp
+                                        <li title="star_sao" 
+                                        id="{{$value->idsanpham}}-{{$count}}"
+                                        data-index="{{$count}}"
+                                        data-idsanpham="{{$value->idsanpham}}"
+                                        data-sao="{{$sao}}"
+                                        class="sao"
+                                        style="cursor: pointer;{{$color}} font-size:30px">
+                                        &#9733;
+                                        </li>
+                                        @endfor
+                                    </ul>
+
 									<form action="#">
 										<span>
 											<input style="width:100%;margin-left:0;" type="text" class="comment_name" placeholder="Tên bình luận"/>
@@ -665,6 +687,59 @@ load_comment();
 });
 
 </script>
+<script type="text/javascript">
+function remove_background(idsanpham)
+{
+    for(var count =1; count<=5; count++)
+    {
+        $('#'+idsanpham+'-'+count).css('color','#ccc');
+    }
+}
+//hover chuột 
+$(document).on('mouseenter','.sao',function(){
+var index=$(this).data("index");
+var idsanpham=$(this).data('idsanpham');
+remove_background(idsanpham);
+for(var count =1; count<=index; count++)
+    {
+        $('#'+idsanpham+'-'+count).css('color','#ffcc00');
+    }
+});
+//nhã chuột không đánh giá
+$(document).on('mouseleave','.sao',function(){
+var index=$(this).data("index");
+var idsanpham=$(this).data('idsanpham');
+var sao=$(this).data("sao");
+remove_background(idsanpham);
+for(var count =1; count<=sao; count++)
+    {
+        $('#'+idsanpham+'-'+count).css('color','#ffcc00');
+    }
+});
+
+//click đánh giá
+$(document).on('click','.sao',function(){
+var index=$(this).data("index");
+var idsanpham=$(this).data('idsanpham');
+var _token=$('input[name="_token"]').val();
+
+ $.ajax({
+                            url: '{{url('/themsao')}}',
+                            method: 'POST',
+                            data:{index:index, _token:_token,idsanpham:idsanpham},
+                            success:function(data){
+                              if(data='done')
+                              {
+                                  alert("Bạn đã đánh giá "+index+" trên 5")
+                              }
+                              else{
+                                  alert("Lỗi đánh giá")
+                              }
+                            }
+                        });
+});
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
     $('#imageGallery').lightSlider({

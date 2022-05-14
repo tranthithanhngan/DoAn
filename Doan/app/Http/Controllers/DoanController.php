@@ -6,9 +6,11 @@ use Session;
 use Mail;
 use App\Models\Doan;
 use App\Models\Slider;
+use App\Models\doanhthu;
 use App\Models\danhmuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 class DoanController extends Controller
 {
     /**
@@ -18,14 +20,14 @@ class DoanController extends Controller
      */
     public function index(Request $request)
     {
-
+        $baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
         $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
         $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
         $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
         $meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
         $url_canonical = $request->url();
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
-        $baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
+       
         $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
         $sanpham = DB::table('sanphams')
         ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
@@ -66,12 +68,86 @@ class DoanController extends Controller
         $to_name = "Thanh Ngan";
         $to_email = "tranthanhngan2000@gmail.com"; //mail khách hàng
         $data = array("name"=>"Mail từ tài khoản khách hàng","body"=>"Mail gửi về vấn đề hàng hóa");
-        Mail::send('admin.sendmail',$data,function($message) use ($to_name,$to_email){
+        Mail::send('layout.sendmail',$data,function($message) use ($to_name,$to_email){
 
             $message->to($to_email)->subject('Test thử gửi mail google');//send this mail with subject
             $message->from($to_email,$to_name);//send from this mail
         });
+       return  redirect('/')->with('message',' '); 
     }
+public function locketqua(Request $request){
+    $data= $request->all();
+    $from_date= $data['from_date'];
+    $to_date=$data['to_date'];
+  
+   $get=doanhthu::whereBetween('ngaydat',[ $from_date,$to_date ])->orderBy('ngaydat','DESC')->get();
+// dd($get);
+   foreach($get as $key=>$val){
+       $chart_data[]=array(
+           'ngaydat'=>$val->ngaydat,
+           'doanhso'=>$val->doanhso,
+           'loinhuan'=>$val->loinhuan,
+           'sldaban'=>$val->sldaban,
+           'sodonhang'=>$val->sodonhang,
+       );
+       
+   }
+   echo $data=json_encode($chart_data);
+  
+}
+public function dashboard_filter(Request $request){
+    $data= $request->all();
+    //  $today=Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+     $dauthangnay=Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+     $dau_thangtruoc=Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->startOfMonth()->toDateString();
+     $cuoi_thangtruoc=Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->endOfMonth()->toDateString();
+     $sub7days=Carbon::now('Asia/Ho_Chi_Minh')->subdays(7)->toDateString();
+     $sub365days=Carbon::now('Asia/Ho_Chi_Minh')->subdays(365)->toDateString();
+     $now=Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+     if($data['dashboard_value']=='7ngay'){
+        $get=doanhthu::whereBetween('ngaydat',[$sub7days,$now])->orderBy('ngaydat','ASC')->get();
+     }
+     elseif($data['dashboard_value']=='7ngay'){
+        $get=doanhthu::whereBetween('ngaydat',[$sub7days,$now])->orderBy('ngaydat','ASC')->get();
+     }
+     elseif($data['dashboard_value']=='thangtruoc'){
+        $get=doanhthu::whereBetween('ngaydat',[$dau_thangtruoc,$cuoi_thangtruoc])->orderBy('ngaydat','ASC')->get();
+     }
+     elseif($data['dashboard_value']=='thangnay'){
+        $get=doanhthu::whereBetween('ngaydat',[$dauthangnay,$now])->orderBy('ngaydat','ASC')->get();
+     }
+     else{
+        $get=doanhthu::whereBetween('ngaydat',[$sub365days,$now])->orderBy('ngaydat','ASC')->get();
+     }
+     foreach($get as $key => $val){
+        $chart_data[]=array(
+            'ngaydat'=>$val->ngaydat,
+            'doanhso'=>$val->doanhso,
+            'loinhuan'=>$val->loinhuan,
+            'sldaban'=>$val->sldaban,
+            'sodonhang'=>$val->sodonhang,
+        );
+     }
+  
+     echo $data=json_encode($chart_data);
+  
+}
+public function thangngay (Request $request){
+    $sub30days=Carbon::now('Asia/Ho_Chi_Minh')->subdays(30)->toDateString();
+    $now=Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+    $get=doanhthu::whereBetween('ngaydat',[ $sub30days,$now])->orderBy('ngaydat','ASC')->get();
+    foreach($get as $key => $val){
+        $chart_data[]=array(
+            'ngaydat'=>$val->ngaydat,
+            'doanhso'=>$val->doanhso,
+            'loinhuan'=>$val->loinhuan,
+            'sldaban'=>$val->sldaban,
+            'sodonhang'=>$val->sodonhang,
+        );
+     }
+  
+     echo $data=json_encode($chart_data);
+}
 
     public function create()
     {

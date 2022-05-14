@@ -135,6 +135,7 @@
                               <?php 
                           }
                               ?>
+                                                  <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li>
                             </ul>
                         </div>
                     </div>
@@ -280,7 +281,7 @@
                         <div class="product-image-wrapper">
                             @foreach($baivietchitiet as $key => $bv)
                             <div class="single-products" style="margin: :10px 0;padding:2px">
-                             <p>{{$bv->baivietcon_content}}</p> 
+                             <p>{!!$bv->baivietcon_content!!}</p> 
                              <div class="text-center">
                                 <img style="text-align:center" src="{{URL::to('image/'.$bv->hinhbaivietcon)}}" alt="{{$bv->hinhbaivietcon}}" />
                             </div>                          

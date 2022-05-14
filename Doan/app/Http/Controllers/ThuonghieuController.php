@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use App\Models\thuonghieu;
+use App\Models\SP;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -110,7 +111,22 @@ public function showsanphamthuonghieu(Request $request, $idthuonghieu){
     //     $url_canonical = $request->url();
     //     //--seo
     // }
-     
+if (isset($_GET['sort_by'])){
+    $sort_by=$_GET['sort_by'];
+    if($sort_by=='giam_dan'){
+        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','DESC')->paginate(6)->appends(request()->query());
+    }elseif($sort_by=='tang_dan'){
+        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','ASC')->paginate(6)->appends(request()->query());
+    }elseif($sort_by=='kytuza'){
+        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','DESC')->paginate(6)->appends(request()->query());
+    }elseif($sort_by=='kytuaz'){
+        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','ASC')->paginate(6)->appends(request()->query());
+    }
+
+} 
+else{
+    $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('idsanpham','ASC')->paginate(6);
+}   
     return view('layout.hiensanpham')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
     /**

@@ -12,5 +12,10 @@ class danhmuc extends Model
     protected $fillable = [
         'tendanhmuc'
     ];
+    protected $primarykey='id';
+    protected $table='danhmucs';
+    public function sanpham(){
+        return $this ->hasMany('App\Models\SP');
+    }
 
 }

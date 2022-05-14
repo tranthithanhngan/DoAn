@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 use DB;
 use Session;
+// use Illuminate\Support\Facades\Auth;
 use Socialite;
 use App\Models\Admin;
 use App\Models\danhmuc;
 use App\Models\mangxahoi;
+use Auth;
 use App\Models\login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -28,26 +30,41 @@ class AdminController extends Controller
         return view('admin.danhmuc', compact('name'));
     }
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        
+        $admin_id =  Session::get('admin_id');
+    
         if($admin_id){
+          
             return Redirect::to('dashboard');
         }else{
+          
             return Redirect::to('login')->send();
         }
     }
-    public function login()
+    public function login(Request $request)
     {
-        
             return view('admin.loginadmin');
     }
     public function dashboard(Request $request){
-       
+      
+        // $this->validate($request,[
+        //     'admin_email'=>'required|email|max:255',
+        //      'admin_password'=>'required|max:255',
+        // ]);
+
+        // dd(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password]));
+        // if(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password])){
+        //     return Redirect::to('/trangadmin');
+        // }
+        // else {
+        //     return Redirect::to('/login')->with('message','Lỗi đăng nhập');
+        // }
 
         $admin_email = $request->admin_email;
         $admin_password = $request->admin_password;
-        $admin_status  ='1';
+        // $admin_status  ='1';
        
-        $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->where('admin_status',$admin_status)->first();
+        $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->first();
      
         if($request)
         {
@@ -63,6 +80,8 @@ class AdminController extends Controller
        
 
     }
+    
+    
     public function show_dashboard(){
         $this->AuthLogin();
     	return view('admin.dashboard');

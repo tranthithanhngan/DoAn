@@ -39,6 +39,10 @@
                                     <label for="exampleInputEmail1">Giá sản phẩm</label>
                                     <input type="text" data-validation="number"  data-validation-error-msg="Làm ơn điền số tiền" name="giasanpham" class="form-control" id="" placeholder="Tên danh mục">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Giá gốc sản phẩm</label>
+                                    <input type="text" data-validation="number"  data-validation-error-msg="Làm ơn điền số tiền" name="giasanpham" class="form-control" id="" placeholder="Tên danh mục">
+                                </div>
                                   <div class="form-group">
                                     <label for="exampleInputEmail1">Hình ảnh sản phẩm</label>
                                     <input type="file" name="hinhsanpham" class="form-control" id="exampleInputEmail1">

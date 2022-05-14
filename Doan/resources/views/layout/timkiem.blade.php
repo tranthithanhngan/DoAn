@@ -145,6 +145,7 @@
                               <?php 
                           }
                               ?>
+ <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li>
                             </ul>
                         </div>
                     </div>

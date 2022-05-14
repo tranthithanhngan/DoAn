@@ -15,13 +15,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="{{asset('css/style.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('css/style-responsive.css')}}" rel="stylesheet"/>
 <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet"/>
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <!-- font CSS -->
 <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- font-awesome icons -->
+ <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <link rel="stylesheet" href="{{asset('css/font.css')}}" type="text/css"/>
 <link href="{{asset('css/font-awesome.css')}}" rel="stylesheet"> 
-<link rel="stylesheet" href="{{asset('css/morris.css')}}" type="text/css"/>
+{{-- <link rel="stylesheet" href="{{asset('css/morris.css')}}" type="text/css"/> --}}
 {{-- <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" type="text/css"/> --}}
 <!-- calendar -->
 <link rel="stylesheet" href="{{asset('css/monthly.css')}}">
@@ -30,7 +31,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('js/jquery2.0.3.min.js')}}"></script>
 <script src="{{asset('js/raphael-min.js')}}"></script>
 <script src="{{asset('js/morris.js')}}"></script>
-{{-- <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> --}}
+<script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 </head>
 <body>
@@ -98,6 +99,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <a class="active" href="{{URL::to('/trangadmin')}}">
                         <i class="fa fa-dashboard"></i>
                         <span>Tổng quan</span>
+                    </a>
+                </li>
+                <li>
+                    <a  href="{{URL::to('/tranglienhe')}}">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Liên hệ</span>
                     </a>
                 </li>
                 <li class="sub-menu">
@@ -178,7 +185,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       
                     </ul>
                 </li>
-
+              
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -191,13 +198,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </ul>
                 </li>
                 
+              
+               
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Users</span>
+                    </a>
+                    <ul class="sub">
+                         <li><a href="{{URL::to('/themusers')}}">Thêm user</a></li>
+                        <li><a href="{{URL::to('/users')}}">Liệt kê user</a></li>
+                      
+                    </ul>
+                </li>
+                @hasrole('admin')
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Users</span>
+                    </a>
+                    <ul class="sub">
+                         <li><a href="{{URL::to('/themusers')}}">Thêm user</a></li>
+                        <li><a href="{{URL::to('/users')}}">Liệt kê user</a></li>
+                      
+                    </ul>
+                </li>
+                @endhasrole
+                
             </ul>            </div>
-        <!-- sidebar menu end-->
+       
     </div>
 </aside>
 
-<!--sidebar end-->
-<!--main content start-->
+
 
 <section id="main-content">
   
@@ -222,10 +256,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('js/ckeditor.js')}}"></script>
 <script src="{{asset('js/jquery.form-validator.min.js')}}"></script>
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script type="text/javascript">
 $(document).ready( function () {
+   
     $('#myTable').DataTable();
-} );</script>
+} );
+</script>
 
 <script type="text/javascript"> 
 $('.comment_duyet_btn').click(function(){
@@ -264,7 +304,7 @@ $('.btn-traloi-comment').click(function(){
     var binhluan= $('.reply_comment_'+binhluan_id).val();
 
 var idsanpham= $(this).data('sanpham_id');
-
+var alert='Trả lời bình luận thành công';
     
 
 $.ajax({
@@ -278,9 +318,9 @@ $.ajax({
                 data:{binhluan:binhluan, binhluan_id:binhluan_id ,idsanpham:idsanpham },
                 // dataType:"JSON",
                 success:function(data){
-                    $('._'+binhluan_id).val('');
-                    $('#thongbao_binhluan').html('<span class="text text-alert">Trả lời bình luận thành công</span>')
-                   
+                    $('.reply_comment_'+binhluan_id).val('');
+                    $('#thongbao_binhluan').html('<span class="text text-alert">'+alert+'</span>')
+                    location.reload();
 
                 }
         });
@@ -330,9 +370,7 @@ $.ajax({
         var order_qty = $('.order_qty_'+order_product_id).val();
         var order_code = $('.order_code').val();
         var _token = $('input[name="_token"]').val();
-        // alert(order_product_id);
-        // alert(order_qty);
-        // alert(order_code);
+       
         $.ajax({
                 url : '{{url('/update-qty')}}',
 
@@ -354,6 +392,92 @@ $.ajax({
 
     });
 </script>
+<script type="text/javascript"> 
+$(document).ready(function(){
+    chart30day();
+
+var myfirstchart=new Morris.Bar({
+  // ID of the element in which to draw the chart.
+  element: 'myfirstchart',
+  parseTime:false,
+  hideHover:'auto',
+  lineColors:['#819C79','#fc8710','#FF6541','#A4AD03','#766B56'],
+  data: [
+   
+    {ngaydat: '2020', value: 5 },
+    { ngaydat: '2021', value: 5 },
+    { ngaydat: '2022', value: 20 }
+  ],
+  
+  xkey: 'ngaydat',
+ 
+  ykeys: ['doanhso','loinhuan','sldaban','sodonhang'],
+  labels: ['Doanh số','Lợi nhuận','SL đã bán','Số đơn hàng']
+});
+
+
+
+    function chart30day(){
+        var _token= $('input[name="_token"]').val();
+        $.ajax({
+            url:'{{url('/thangngay')}}',
+            method: 'POST',
+            dataType:"JSON",
+            data:{_token:_token},
+            success:function(data){
+                myfirstchart.setData(data);
+            }
+        });
+    }
+$('.dashboard-filter').change(function(){
+var dashboard_value=$(this).val();
+var _token= $('input[name="_token"]').val();
+
+$.ajax({
+url:'{{url('/dashboard-filter')}}',
+method: 'POST',
+dataType:"JSON",
+data:{dashboard_value:dashboard_value,_token:_token},
+success:function(data){
+    myfirstchart.setData(data);
+}
+});
+});
+$('#btn-dashboard-filter').click(function(){
+ 
+var _token= $('input[name="_token"]').val();
+var from_date=$('#datepicker').val();
+var to_date=$('#datepicker').val();
+$.ajax({
+url:'{{url('/locketqua')}}',
+method: 'POST',
+dataType:"JSON",
+data:{from_date:from_date,to_date:to_date,_token:_token},
+success:function(data){
+    myfirstchart.setData(data);
+}
+});
+});
+});
+</script>
+<script  type="text/javascript">
+$(function(){
+$("#datepicker").datepicker({
+prevText:"Tháng trước",
+nextText:"Tháng sau",
+dateFormat:"yy-mm-dd",
+dayNamesMin:["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","  Chủ nhật",],
+duration:"slow"
+});
+$("#datepicker2").datepicker({
+prevText:"Tháng trước",
+nextText:"Tháng sau",
+dateFormat:"yy-mm-dd",
+dayNamesMin:["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","  Chủ nhật",],
+duration:"slow"
+});
+});
+</script>
 <script type="text/javascript">
     $('.order_details').change(function(){
         var order_status = $(this).val();
@@ -371,15 +495,16 @@ $.ajax({
             order_product_id.push($(this).val());
         });
        
-        j = 0;
-        for(i=0;i<order_product_id.length;i++){
+        j= 0;
+        for(i=0;i < order_product_id.length;i++){
             //so luong khach dat
             var order_qty = $('.order_qty_' + order_product_id[i]).val();
+       
             //so luong ton kho
             var order_qty_storage = $('.order_qty_storage_' + order_product_id[i]).val();
-
-            if(parseInt(order_qty)>parseInt(order_qty_storage)){
-                j = j + 1;
+          
+            if(parseInt(order_qty) > parseInt(order_qty_storage)){
+               j = j + 1;
                 if(j==1){
                     alert('Số lượng bán trong kho không đủ');
                 }
@@ -484,11 +609,7 @@ $.ajax({
 
 
 {{-- </script> --}}
-<script type="text/javascript">
-    $(document).ready( function () {
-    $('#myTable').DataTable();
-    } );
-</script>
+
 <script type="text/javascript">
         $.validate({
             

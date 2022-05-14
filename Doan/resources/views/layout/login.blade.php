@@ -280,6 +280,15 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-sm-4 col-sm-offset-1">
+                                    @if(session()->has('message'))
+                                    <div class="alert alert-success">
+                                        {!!session()->get('message')!!}
+                                    </div>
+                                    @elseif(session()->has('error'))
+                                    <div class="alert alert-danger">
+                                        {!!session()->get('error')!!}
+                                    </div>
+                                    @endif
                                     <div class="login-form"><!--login form-->
                                         <h2>Đăng nhập tài khoản</h2>
                                         <form action="{{URL::to('/dangnhap')}}" method="POST">
@@ -290,8 +299,26 @@
                                                 <input type="checkbox" class="checkbox"> 
                                                 Ghi nhớ đăng nhập
                                             </span>
+                                            <span>
+                                                <a href="{{URL::to('/quenmatkhau')}}">
+                                               Quên mật khẩu</a>
+                                            </span>
                                             <button type="submit" class="btn btn-default">Đăng nhập</button>
                                         </form>
+                                        <style type="text/css">
+                                        ul.list-login{
+                                            margin: 10px;
+                                            padding: 0;
+                                        }
+                                        ul.list-login li{
+                                            display: inline;
+                                            margin: 5px;
+                                        }
+                                        </style>
+                                        <ul class="list-login">
+                                            <li> <a href="{{URL::to('/logingg')}}"><img width="10%" src="{{asset('image/gg.png')}}" alt="Đăng nhập bằng tài khoản google"></a></li>
+                                            <li> <a href="{{URL::to('/loginfb')}}"><img width="10%" src="{{asset('image/fb.png')}}" alt="Đăng nhập bằng tài khoản facebook"></a></li>
+                                        </ul>
                                     </div><!--/login form-->
                                 </div>
                                 <div class="col-sm-1">

@@ -37,6 +37,7 @@ class GiohangController extends Controller
         $data['price'] = $sp_info->giasanpham ;
         $data['weight'] = $sp_info->giasanpham;
         $data['options']['image'] = $sp_info->hinhsanpham;
+       
         // dd($data);
         Cart::add($data);
         // dd(Cart::add($data));
@@ -112,7 +113,7 @@ class GiohangController extends Controller
         if($cart==true){
             $is_avaiable = 0;
             foreach($cart as $key => $val){
-                $filtered = $val->contains('id', $data['cart_product_id']);
+                $filtered = $val->contains('id', (int)$data['cart_product_id']);
                 if($filtered){
                     $is_avaiable++;
                 }
@@ -157,7 +158,7 @@ class GiohangController extends Controller
         return response('Hello World', 200)
                   ->header('Content-Type', 'text/plain');
 
-    }   
+    }     
     /**
      * Show the form for creating a new resource.
      *

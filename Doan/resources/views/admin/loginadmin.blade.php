@@ -56,8 +56,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		</form>
 		<a href="{{url('/login-facebook')}}">Login Facebook</a> |
-		<a href="{{url('/login-google')}}">Login Google</a>
-		{{-- <p>Don't Have an Account ?<a href="registration.html">Create an account</a></p> --}}
+		<a href="{{url('/login-google')}}">Login Google</a>|
+		<a href="{{url('/logindangki')}}">Đăng kí</a>
 </div>
 </div>
 <script src="{{asset('js/bootstrap.js')}}"></script>

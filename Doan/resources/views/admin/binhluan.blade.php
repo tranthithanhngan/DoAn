@@ -44,11 +44,21 @@
             @endif</td>
            
             <td>{{ $com->binhluan_name}}
-            
-            
             </td>
 
             <td>{{ $com->binhluan }}<br>
+              <ul class="list_comment">
+                Trả lời:
+                @foreach($binhluan_traloi as $key => $comm)
+                @if($comm->binhluan_traloi==$com->binhluan_id)
+                <li style="color: red;margin:3px 40px;list-style-type:decimal ;">
+                 {{ $comm->binhluan}}
+                </li>
+                @endif
+              
+                @endforeach
+               
+              </ul>
               @if( $com->binhluan_status==0)
               <textarea  rows="5" class="
              form-control reply_comment_{{$com->binhluan_id }}" style="margin-left: 0;"></textarea><br>

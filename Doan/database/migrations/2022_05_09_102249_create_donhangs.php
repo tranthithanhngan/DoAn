@@ -20,7 +20,7 @@ class CreateDonhangs extends Migration
             $table->integer('payment_id')->nullable();
             $table->string('order_total')->nullable();
             $table->string('order_status')->nullable();
-         
+            $table->string('ngaydat')->nullable();
             $table->timestamps();
         });
     }

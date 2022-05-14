@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use Cart;
+use Mail;
+use Carbon\Carbon;
 use App\Models\Nguoidungs;
 use App\Models\ship;
 use App\Models\Slider;
 use App\Models\donhangchitiet;
 use App\Models\donhang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
 class CheckoutController extends Controller
 {
@@ -38,6 +41,103 @@ class CheckoutController extends Controller
 
        return view('layout.login')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
    }
+
+   public function quenmatkhau(Request $request){
+    $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
+    
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+    $meta_desc = "Quên mật khẩu"; 
+    $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+    $meta_title = "Quên mật khẩu";
+    $url_canonical = $request->url();
+    $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+   
+    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+    $sanpham = DB::table('sanphams')
+    ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
+    ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
+    ->orderby('sanphams.idsanpham')->paginate(9);
+    
+    return view('layout.quenmatkhau')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baivietpost',$baivietpost);
+}
+
+public function laylaimk(Request $request){
+   $data=$request->all();
+   $now= Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+   $title_mail="Lấy lại mật khẩu".' '.$now;
+  $token= Str::random();
+
+  $customer =Nguoidungs::where('customer_email','=',$data['email_account'])->get();
+  foreach($customer as $key=>$value){
+      $customer_id=$value->customer_id;
+  }
+ if($customer){
+     $count_customer=$customer->count();
+    if($count_customer ==0){
+        return redirect()->back()->with('error','Email chưa được đăng ký để khôi phục mật khẩu');
+    }
+    else{
+        $token_random= Str::random();
+        $customer =Nguoidungs::find($customer_id);
+        $customer->customer_token=$token_random;
+        $customer->save();
+
+        $to_email=$data['email_account'];
+        $link=url('/updatemkmail?email='.$to_email.'&token='.$token_random);
+
+        $data=array("name"=>$title_mail,"body"=>$link,"email"=>$data['email_account']);
+        Mail::send('mail.laylaimk',['data'=>$data],function($message) use($title_mail,$data){
+            $message->to($data['email'])->subject($title_mail);
+            $message->from($data['email'],$title_mail);
+        } );
+        return redirect()->back()->with('message','Gửi Email thành công,vui lòng vào email để reset password');
+    }
+ }
+
+}
+
+public function update_new_password(Request $request){
+    $data=$request->all();
+    
+   $token= Str::random();
+ 
+   $customer =Nguoidungs::where('customer_email','=',$data['email'])->where('customer_token','=',$data['token'])->get();
+  $count=$customer->count();
+  if($count>0){
+    foreach($customer as $key=>$value){
+        $customer_id=$value->customer_id;
+    }
+
+    $reset =Nguoidungs::find($customer_id);
+    $reset->customer_password=$data['password_account'];
+    $reset->customer_token=$token;
+    $reset->save();
+    return redirect('login-checkout')->with('message','Mật khẩu đã được cập nhật');
+     }
+     else{
+        return redirect('quenmatkhau')->with('error','Vui lòng nhập lại email vì link quá hạn');
+  }
+}
+
+public function updatemkmail(Request $request){
+    $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
+    
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+    $meta_desc = "Quên mật khẩu"; 
+    $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+    $meta_title = "Quên mật khẩu";
+    $url_canonical = $request->url();
+    $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+   
+    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+    $sanpham = DB::table('sanphams')
+    ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
+    ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
+    ->orderby('sanphams.idsanpham')->paginate(9);
+    
+    return view('mail.new_pass')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baivietpost',$baivietpost);
+    
+}
    public function dangki(Request $request){
 
     $data = array();
@@ -45,6 +145,7 @@ class CheckoutController extends Controller
     $data['customer_phone'] = $request->customer_phone;
     $data['customer_email'] = $request->customer_email;
     $data['customer_password'] = $request->customer_password;
+    $data['customer_token'] = Str::random();
     $a = DB::table('nguoidungs')->get();
     // dd($a);
     $customer_id = DB::table('nguoidungs')->insertGetId($data,'customer_id'
@@ -136,7 +237,8 @@ public function dathang(Request $request){
     $data['payment_method'] = $request->payment_option;
     $data['payment_status'] = 1;
     $payment_id = DB::table('tinhtrangs')->insertGetId($data,'payment_id');
-// dd($payment_id);
+
+     $today=Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
     //insert order
     $order_data = array();
     $order_data['customer_id'] = Session::get('customer_id');
@@ -144,6 +246,7 @@ public function dathang(Request $request){
     $order_data['payment_id'] = $payment_id;
     $order_data['order_total'] = Cart::total();
     $order_data['order_status'] = 1;
+    $order_data['ngaydat'] =  $today;
     // dd($order_data);
     $order_id = DB::table('donhangs')->insertGetId($order_data,'order_id');
 
@@ -197,50 +300,43 @@ public function logout_checkout(){
         $shipping->shipping_address = $data['shipping_address'];
         $shipping->shipping_notes = $data['shipping_notes'];
         $shipping->shipping_method = $data['shipping_method'];
-        $shipping->save();
+        // $shipping->save();
         $shipping_id = $shipping->shipping_id;
 
-        // $checkout_code = substr(md5(microtime()),rand(0,26),5);
+        $checkout_code = substr(md5(microtime()),rand(0,26),5);
 
-//  dd($shipping
-//     );
         $order = new donhang;
+      
         $order->customer_id = Session::get('customer_id');
         $order->shipping_id = $shipping_id;
         $order->order_status = 1;
-        $order->order_total = 1;
-        $order->payment_id = 1;
+        // $order->order_id = 1;
+       
         // $order->order_id = $checkout_code;
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $order->created_at = now();
-        $order->save();
+$today=Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
+$ngaydat=Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d ');
 
+        $order->created_at = $today;
+        $order->ngaydat = $ngaydat;
+        $order->save();
+       
+        
         if(Session::get('cart')==true){
            foreach(Session::get('cart') as $key => $cart){
-             
-               $order_details = donhangchitiet::create([
-                'idsanpham'=>$cart['idsanpham'] , 
-                'tensanpham'=>$cart['tensanpham'],
-                'giasanpham'=> $cart['giasanpham'],
-                'product_sales_quantity'=> $cart['slsanpham'],
-                'order_id'=> 1,
-                'product_coupon'=>  $data['order_coupon']
-                ,'product_feeship' => $data['order_fee']
-
-               ]);
-
- 
-            //    dd($cart['idsanpham']);
-            //    $order_details->order_code = $checkout_code;
-            //    $order_details->idsanpham = $cart['idsanpham'];
-            //    $order_details->tensanpham = $cart['tensanpham'];
-            //    $order_details->giasanpham = $cart['giasanpham'];
-            //    $order_details->product_sales_quantity = $cart['slsanpham'];
+          
+        $order_details= new donhangchitiet;  
+               $order_details->order_id = $order->order_id;
+              dd((int)$cart['id']);
+               $order_details->idsanpham = (int)$cart['id'];
+               $order_details->tensanpham = $cart['name'];
+               $order_details->giasanpham = $cart['price'];
+               $order_details->product_sales_quantity = $cart['qty'];
             //    $order_details->product_coupon =  $data['order_coupon'];
             //    $order_details->product_feeship = $data['order_fee'];
-            //    $order_details->order_id = 1;
-            //    $order_details->save();
+            
+               $order_details->save();
            }
         }
         Session::forget('coupon');

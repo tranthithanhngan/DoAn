@@ -14,4 +14,7 @@ class SP extends Model
     ];
     protected $primaryKey = 'idsanpham';
  	protected $table = 'sanphams';
+     public function danhmuc(){
+         return $this->belongTo('App\Models\danhmuc','id');
+     }
 }

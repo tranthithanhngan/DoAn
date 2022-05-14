@@ -6,6 +6,7 @@ use Session;
 use App\Models\sanpham;
 use App\Models\Slider;
 use App\Models\binhluan;
+use App\Models\sao;
 use App\Models\thuvienanh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -43,6 +44,7 @@ class SanphamController extends Controller
        $data['slsanpham'] = $request->slsanpham;
     
        $data['giasanpham'] = $request->giasanpham;
+       $data['giagoc'] = $request->giagoc;
        $data['motasanpham'] = $request->motasanpham;
        $data['dotuoi'] = $request->dotuoi;
        $data['size'] = $request->size;
@@ -98,6 +100,7 @@ public function capnhatsanpham(Request $request,$idsanpham){
     $data['dotuoi'] = $request->dotuoi;
     $data['size'] = $request->size;
     $data['giasanpham'] = $request->giasanpham;
+    $data['giagoc'] = $request->giagoc;
     $data['motasanpham'] = $request->motasanpham;
     $data['idthuonghieu'] = $request->idthuonghieu;
     $data['iddanhmuc'] = $request->iddanhmuc;
@@ -153,32 +156,34 @@ $url_canonical = $request->url();
        $idthuonghieu_cate=$value->idthuonghieu;
        $th_cate=$value->tenthuonghieu;
        $tensp_cate=$value->tensanpham;
-           //seo 
+           
         //    $meta_desc = $value->product_desc;
         //    $meta_keywords = $value->product_slug;
         //    $meta_title = $value->product_name;
         //    $url_canonical = $request->url();
-           //--seo
+        
        }
        $hinhanhpost = thuvienanh::where('idsanpham',$idsanpham)->get(); 
 
+       $sao=sao::where('idsanpham',$idsanpham)->avg('sao');
+       $sao=round($sao);
    $related_sp = DB::table('sanphams')
    ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
    ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
    ->where('danhmucs.id', $category_id)->whereNotIn('sanphams.idsanpham',[$idsp])->paginate(3);
 
 
-   return view('layout.showchitietsp')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('chitietsp',$chitietsp)->with('relate_sp',$related_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('hinhanhpost',$hinhanhpost)->with('sp_cate',$sp_cate)->with('th_cate',$th_cate)->with('tensp_cate',$tensp_cate)->with('iddanhmuc_cate',$iddanhmuc_cate)->with('idthuonghieu_cate', $idthuonghieu_cate);
+   return view('layout.showchitietsp')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('chitietsp',$chitietsp)->with('relate_sp',$related_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('hinhanhpost',$hinhanhpost)->with('sp_cate',$sp_cate)->with('th_cate',$th_cate)->with('tensp_cate',$tensp_cate)->with('iddanhmuc_cate',$iddanhmuc_cate)->with('idthuonghieu_cate', $idthuonghieu_cate)->with('sao', $sao);
 
 }
 public function showbinhluan(Request $request){
-$binhluan=binhluan::with('sanpham')->orderBy('binhluan_status','DESC')->get();
-
-return view('admin.binhluan')->with(compact('binhluan'));
+$binhluan=binhluan::with('sanpham')->where('binhluan_traloi','=',0)->orderBy('binhluan_status','DESC')->get();
+$binhluan_traloi=binhluan::with('sanpham')->where('binhluan_traloi','>',0)->orderBy('binhluan_id','DESC')->get();
+return view('admin.binhluan')->with(compact('binhluan','binhluan_traloi'));
 }  
 public function traloi_comment(Request $request){
     $data=$request->all();
-   $binhluan=new binhluan();
+   $binhluan= new binhluan();
    $binhluan->binhluan=$data['binhluan'];
    $binhluan->idsanpham=$data['idsanpham'];
    $binhluan->binhluan_traloi=$data['binhluan_id'];
@@ -198,6 +203,15 @@ public function duyet_comment(Request $request){
     
    
     } 
+    public function themsao(Request $request){
+        $data=$request->all();
+        $sao=new sao();
+        $sao->idsanpham=$data['idsanpham'];
+        $sao->sao=$data['index'];
+        $sao->save();
+        echo 'done';          
+        
+         } 
 public function send_comment(Request $request){
     $idsanpham= $request->idsp;
     $comment_name= $request->comment_name;
@@ -207,28 +221,50 @@ public function send_comment(Request $request){
     $binhluan->binhluan_name=$comment_name;
     $binhluan->idsanpham=$idsanpham;
     $binhluan->binhluan_status=1;
+    $binhluan->binhluan_traloi=0;
     $binhluan->save();
 
 }
 public function load_commnet(Request $request){
   $idsanpham= $request->idsp;
-  $binhluan= binhluan::where('idsanpham',$idsanpham)->where('binhluan_status',0)->get();
+  $binhluan= binhluan::where('idsanpham',$idsanpham)->where('binhluan_status',0)->where('binhluan_traloi','=',0)->get();
+  $binhluan_traloi=binhluan::with('sanpham')->where('binhluan_traloi','>',0)->get();
+  
   $output ='';
 
     foreach($binhluan as $key=>$comm){
+        
        $output.= '
        	<div class="row style_comment">
-        <div class="col-md-2">
-        <img width="100%" class="img img-responsive img-thumbnail">
-        </div>
+       
         <div class="col-md-10">
         <p style="color: green;">@'.$comm->binhluan_name.'</p>
         <p>'.$comm->binhluan.'</p>
 
         </div>
 
-    </div><p></p>
-    ';
+    </div><p></p>';
+
+foreach($binhluan_traloi as $key => $traloi_comm){
+  
+if($traloi_comm->binhluan_traloi==$comm->binhluan_id){
+    
+    $output.=' <div class="row style_comment" style="margin:5px 40px;color:red;">
+    <div class="col-md-2">
+    <img width="80%" src="" class="img img-responsive img-thumbnail">
+    </div>
+    <div class="col-md-10">
+    <p style="color: green;">@Admin</p>
+    <p style="color: #000;">'.$traloi_comm->binhluan.'</p>
+    <p></p>
+
+    </div>
+
+</div><p></p>';
+}
+}
+
+
     }
     
     return $output;

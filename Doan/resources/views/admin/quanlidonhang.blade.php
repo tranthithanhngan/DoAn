@@ -45,7 +45,8 @@
               <td>{{ $dh->order_id }}</td>
               <td>{{ $dh->customer_name }}</td>
               <td>{{ $dh->shipping_name }}</td>
-              <td>{{ $dh->created_at }}</td>
+              
+              <td>{{ $dh->ngaydat }}</td>
               <td>@if($dh->order_status==1)
                       Đơn hàng mới
                   @else 

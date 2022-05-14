@@ -6,9 +6,13 @@ use Session;
 use PDF;
 use App\Models\donhang;
 use App\Models\SP;
+use Carbon\Carbon;
 use App\Models\ship;
+use App\Models\Slider;
 use App\Models\sanpham;
 use App\Models\nguoidung;
+use App\Models\doanhthu;
+use App\Models\thuonghieu;
 use App\Models\Giamgia;
 use App\Models\donhangchitiet;
 use Illuminate\Http\Request;
@@ -93,36 +97,62 @@ class DonhangController extends Controller
 		$order = donhang::find($data['order_id']);
 		$order->order_status = $data['order_status'];
 		$order->save();
+		$ngaydat=$order->ngaydat;
+		
+		$doanhthu= doanhthu::where('ngaydat',$ngaydat)->get();
+		if($doanhthu){
+			$doanhthu_tong=$doanhthu->count();
+		}else{
+			$doanhthu_tong=0;
+		}
 		if($order->order_status==2){
+			$doanhso=0;
+			$loinhuan=0;
+			$sldaban=0;
+			$sodonhang=0;
+
 			foreach($data['order_product_id'] as $key => $product_id){
 				
 				$product = sanpham::find($product_id);
 				$product_quantity = $product->slsanpham;
 				$product_sold = $product->sldaban;
+
+				$product_price = $product->giasanpham;
+				$product_giagoc = $product->giagoc;
+				$now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
 				foreach($data['quantity'] as $key2 => $qty){
-						if($key==$key2){
+					if($key==$key2){
+						
 								$pro_remain = $product_quantity - $qty;
 								$product->slsanpham = $pro_remain;
 								$product->sldaban = $product_sold + $qty;
 								$product->save();
+								$sldaban +=$qty;
+								$sodonhang +=1;
+								$doanhso +=$product_price*$qty;
+								$loinhuan=$doanhso-($product_giagoc*$qty);
 						}
 				}
 			}
-		}elseif($order->order_status!=2 && $order->order_status!=3){
-			foreach($data['order_product_id'] as $key => $product_id){
+			
+			if($doanhthu_tong>0){
+				$doanhthu_update=doanhthu::where('ngaydat',$ngaydat)->first();
+				$doanhthu_update->doanhso=$doanhthu_update->doanhso+$doanhso;
+				$doanhthu_update->loinhuan=$doanhthu_update->loinhuan+$loinhuan;
+				$doanhthu_update->sldaban=$doanhthu_update->sldaban+$sldaban;
+				$doanhthu_update->sodonhang=$doanhthu_update->sodonhang+$sodonhang;
+				$doanhthu_update->save();
+			}else{
+				$doanhthu_new= new doanhthu();
+				$doanhthu_new->ngaydat=$ngaydat;
+				$doanhthu_new->doanhso=$doanhso;
+				$doanhthu_new->loinhuan=$loinhuan;	
+				$doanhthu_new->sldaban=$sldaban;
+				$doanhthu_new->sodonhang=$sodonhang;
+				$doanhthu_new->save();
 				
-				$product = sanpham::find($product_id);
-				$product_quantity = $product->slsanpham;
-				$product_sold = $product->sldaban;
-				foreach($data['quantity'] as $key2 => $qty){
-						if($key==$key2){
-								$pro_remain = $product_quantity + $qty;
-								$product->slsanpham = $pro_remain;
-								$product->sldaban = $product_sold - $qty;
-								$product->save();
-						}
-				}
 			}
+		
 		}
 
 
@@ -321,6 +351,70 @@ class DonhangController extends Controller
 
 		return $output;
 
+	}
+	public function lichsu(Request $request){
+		if(!Session::get('customer_id')){
+			return redirect('login-checkout')->with('error','Vui lòng đăng nhập để xem lịch sử đơn hàng');
+		}
+		else{
+
+			$tatca_donhang=donhang::where('customer_id',Session::get('customer_id'))->orderby('order_id','desc')->paginate(5);
+
+			$baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
+		
+			$slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+			$meta_desc = "Lịch sử đơn hàng"; 
+			$meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+			$meta_title = "Lịch sử đơn hàng";
+			$url_canonical = $request->url();
+			$danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+			$sanpham = DB::table('sanphams')
+			->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
+			->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
+			->orderby('sanphams.idsanpham')->paginate(9);
+			$thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+			return view('layout.lichsu')->with(compact('tatca_donhang'))->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baiviet',$baiviet);
+			
+		}
+	}
+	public function view_lichsudonhang(Request $request,$order_id){
+		if(!Session::get('customer_id')){
+			return redirect('login-checkout')->with('error','Vui lòng đăng nhập để xem lịch sử đơn hàng');
+		}
+		else{
+			$baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
+    
+    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+    $meta_desc = "Lịch sử đơn hàng"; 
+    $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+    $meta_title = "Lịch sử đơn hàng";
+    $url_canonical = $request->url();
+    $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+	$sanpham = DB::table('sanphams')
+    ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
+    ->join('thuonghieus','thuonghieus.idthuonghieu','=','sanphams.idthuonghieu')
+    ->orderby('sanphams.idsanpham')->paginate(9);
+    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+   //xem lịch sử
+   $donhang_chitiet = donhangchitiet::with('sanpham')->where('order_id',$order_id)->get();
+   $donhang = donhang::where('order_id',$order_id)->first();
+
+	$customer_id = $donhang->customer_id;
+	$shipping_id = $donhang->shipping_id;
+	$order_status = $donhang->order_status;
+ 
+	 
+  
+  
+   $nguoidung = nguoidung::where('customer_id',$customer_id)->first();
+   $ship = ship::where('shipping_id',$shipping_id)->first();
+
+   $donhang_chitiet_sanpham = donhangchitiet::with('sanpham')->where('order_id', $order_id)->get();
+ 
+  
+
+	return view('layout.lichsudonhang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baiviet',$baiviet)->with('donhang_chitiet',$donhang_chitiet)->with('nguoidung',$nguoidung)->with('ship',$ship)->with('donhang',$donhang)->with('order_status',$order_status)->with('order_id',$order_id);
+		}
 	}
     /**
      * Show the form for creating a new resource.
