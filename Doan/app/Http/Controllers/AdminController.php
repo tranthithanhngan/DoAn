@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 use DB;
 use Session;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 use Socialite;
 use App\Models\Admin;
 use App\Models\danhmuc;
 use App\Models\mangxahoi;
-use Auth;
+// use Auth;
 use App\Models\login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -31,8 +31,8 @@ class AdminController extends Controller
     }
     public function AuthLogin(){
         
-        $admin_id =  Session::get('admin_id');
-    
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
         if($admin_id){
           
             return Redirect::to('dashboard');
@@ -47,36 +47,39 @@ class AdminController extends Controller
     }
     public function dashboard(Request $request){
       
-        // $this->validate($request,[
-        //     'admin_email'=>'required|email|max:255',
-        //      'admin_password'=>'required|max:255',
-        // ]);
+        $this->validate($request,[
+            'admin_email'=>'required|email|max:255',
+             'admin_password'=>'required|max:255',
+        ]);
 
-        // dd(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password]));
-        // if(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password])){
-        //     return Redirect::to('/trangadmin');
-        // }
-        // else {
-        //     return Redirect::to('/login')->with('message','Lỗi đăng nhập');
-        // }
-
-        $admin_email = $request->admin_email;
-        $admin_password = $request->admin_password;
-        // $admin_status  ='1';
-       
-        $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->first();
-     
-        if($request)
-        {
-           
-                Session::put('admin_name', $request->admin_name);
-                Session::put('admin_id',$request->admin_id);
-                return Redirect::to('/trangadmin');
-            
-        }else{
-                Session::put('message','Mật khẩu hoặc tài khoản bị sai.Vui lòng nhập lại');
-                return Redirect::to('/login');
+      
+        if(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password])){
+          
+            return Redirect::to('/trangadmin');
         }
+        else {
+            return Redirect::to('/login')->with('message','Lỗi đăng nhập');
+        }
+
+       
+
+        // $admin_email = $request->admin_email;
+        // $admin_password = $request->admin_password;
+        // // $admin_status  ='1';
+       
+        // $request = DB::table('admins')->where('admin_email',$admin_email)->where('admin_password',$admin_password)->first();
+     
+        // if($request)
+        // {
+           
+        //         Session::put('admin_name', $request->admin_name);
+        //         Session::put('admin_id',$request->admin_id);
+        //         return Redirect::to('/trangadmin');
+            
+        // }else{
+        //         Session::put('message','Mật khẩu hoặc tài khoản bị sai.Vui lòng nhập lại');
+        //         return Redirect::to('/login');
+        // }
        
 
     }

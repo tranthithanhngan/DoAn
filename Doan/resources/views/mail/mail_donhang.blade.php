@@ -18,56 +18,56 @@
 <h4 style="margin: 0">CÔNG TY TNHH MẸ VÀ BÉ</h4>
 </div>
 <div class="col-md-6 logo" style="color: #fff">
-<p>Chào bạn <strong style="color: #000;text-decoration:underline;">.....</strong></p>
+<p>Chào bạn <strong style="color: #000;text-decoration:underline;">{{$shipping_array['customer_name']}}</strong></p>
 </div>
 <div class="col-md-12">
     <p style="color: #fff;font-size:17px;">Bạn đã đăng kí dịch vụ tại shop với thông tin như sau:</p>
     <h4 style="text-transform:uppercase;color:#000">Thông tin đơn hàng  </h4>
-    <p >Mã đơn hàng: <strong style="text-transform:uppercase;color:#fff">....</strong></p>
+    <p >Mã đơn hàng: <strong style="text-transform:uppercase;color:#fff">{{$code['order_id']}}</strong></p>
     {{-- <p >Mã khuyến mãi áp dụng: <strong style="text-transform:uppercase;color:#fff">....</strong></p> --}}
     <p >Dịch vụ: <strong style="text-transform:uppercase;color:#fff">Đặt hàng trực tuyến</strong></p>
     <h4 style="text-transform:uppercase;color:#000">Thông tin người nhận  </h4>
     <p>Email:
-        @if()
+        @if($shipping_array['shipping_email']=='')
         Không có
         @else
-        <span style="color: #fff">...</span>
+        <span style="color: #fff">{{$shipping_array['shipping_email']}}</span>
         @endif
     </p>
     <p>Họ và tên người gửi:
-        @if()
+        @if($shipping_array['shipping_name']=='')
         Không có
         @else
-        <span style="color: #fff">...</span>
+        <span style="color: #fff">{{$shipping_array['shipping_name']}}</span>
         @endif
     </p>
     <p>Địa chỉ nhận hàng:
-        @if()
+        @if($shipping_array['shipping_address']=='')
         Không có
         @else
-        <span style="color: #fff">...</span>
+        <span style="color: #fff">{{$shipping_array['shipping_address']}}</span>
         @endif
     </p>
     <p>Số điện thoại:
-        @if()
+        @if($shipping_array['shipping_phone']=='')
         Không có
         @else
-        <span style="color: #fff">...</span>
+        <span style="color: #fff">{{$shipping_array['shipping_phone']}}</span>
         @endif
     </p>
     <p>Ghi chú đơn hàng:
-        @if()
+        @if($shipping_array['shipping_notes']=='')
         Không có
         @else
-        <span style="color: #fff">...</span>
+        <span style="color: #fff">{{$shipping_array['shipping_notes']}}</span>
         @endif
     </p>
     <p>Hình thức thanh toán: <strong style="text-transform:uppercase;color:#fff">
-        @if()
+        @if($shipping_array['shipping_method']==0)
         Chuyển khoản ATM
         @else
         TIỀN MẶT
-        <span style="color: #fff">...</span>
+        {{-- <span style="color: #fff">...</span> --}}
         @endif
     </strong> </p>
     <p style="color: #fff">Nếu thông tin người nhận hàng không có chúng tôi sẽ liên hệ với người đặt hàng để trao đổi thông tin về đơn hàng đã đặt.</p>
@@ -86,20 +86,20 @@
         $sub_total=0;
         $total=0;
         @endphp
-        @foreach()
+        @foreach($cart_array as $cart)
         @php
-        $sub_total=...;
-        $total=...;
+        $sub_total=$cart['slsanpham']*$cart['giasanpham'];
+        $total+=$sub_total;
         @endphp
     <tr>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
+        <td>{{$cart['tensanpham']}} </td>
+        <td>{{number_format($cart['giasanpham'],0,',','.')}}vnđ </td>
+        <td> {{$cart['slsanpham']}}</td>
+        <td>{{number_format($sub_total,0,',','.')}}vnđ </td>
         </tr> 
         @endforeach
         <tr>
-            <td colspan="4" align="right">Tổng tiền thanh toán:</td>
+            <td colspan="4" align="right">Tổng tiền thanh toán:{{number_format($total,0,',','.')}}vnđ </td>
         </tr>   
     </tbody>
     </table>

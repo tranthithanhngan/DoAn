@@ -6,6 +6,7 @@ use Session;
 use App\Models\sanpham;
 use App\Models\Slider;
 use App\Models\binhluan;
+use Illuminate\Support\Facades\Auth;
 use App\Models\sao;
 use App\Models\thuvienanh;
 use Illuminate\Http\Request;
@@ -22,10 +23,14 @@ class SanphamController extends Controller
         //
     }
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
         if($admin_id){
+          
             return Redirect::to('dashboard');
         }else{
+          
             return Redirect::to('login')->send();
         }
     }

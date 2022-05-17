@@ -9,6 +9,7 @@ use App\Models\SP;
 use Carbon\Carbon;
 use App\Models\ship;
 use App\Models\Slider;
+use Illuminate\Support\Facades\Auth;
 use App\Models\sanpham;
 use App\Models\nguoidung;
 use App\Models\doanhthu;
@@ -24,11 +25,15 @@ class DonhangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+	public function AuthLogin(){
+        
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
         if($admin_id){
+          
             return Redirect::to('dashboard');
         }else{
+          
             return Redirect::to('login')->send();
         }
     }

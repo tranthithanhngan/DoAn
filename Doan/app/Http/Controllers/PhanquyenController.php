@@ -9,8 +9,8 @@ class PhanquyenController extends Controller
 {
     //
     public function lietkeusers()
-    { 
-      
+    {
+        
         $admin = DB::table('adminroles')
    ->join('admins','admins.admin_id','=','adminroles.name_id')
    ->join('phanquyens','phanquyens.id_roles','=','adminroles.roles_id')

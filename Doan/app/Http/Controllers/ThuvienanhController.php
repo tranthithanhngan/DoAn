@@ -5,18 +5,23 @@ use DB;
 use Session;
 use Illuminate\Http\Request;
 use App\Models\thuvienanh;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 class ThuvienanhController extends Controller
 {
     //
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
-        if($admin_id){
-            return Redirect::to('dashboard');
-        }else{
-            return Redirect::to('login')->send();
-        }
-    }
+        
+      // $admin_id =  Session::get('admin_id');
+      $admin_id =  Auth::id();
+      if($admin_id){
+        
+          return Redirect::to('dashboard');
+      }else{
+        
+          return Redirect::to('login')->send();
+      }
+  }
     public function themanh($idsanpham){
         $idsp =$idsanpham;
   

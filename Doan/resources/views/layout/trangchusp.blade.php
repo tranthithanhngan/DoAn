@@ -178,7 +178,7 @@ if($customer_id!=NULL){
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="#" class="active">Trang chủ</a></li>
+                                <li><a href="/" class="active">Trang chủ</a></li>
                                 <li class="dropdown"><a href="#">Danh mục <i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($danhmuc as $key => $cate)
@@ -279,11 +279,7 @@ if($customer_id!=NULL){
                         <div class="brands_products row"><!--brands_products-->
                             <h2>Thương hiệu sản phẩm</h2>
                             <div class="brands-name">
-                                {{-- <ul class="nav nav-pills nav-stacked">
-                                    @foreach($thuonghieu as $key => $brand)
-                                    <li><a href="{{URL::to('/thuong-hieu/'.$brand->idthuonghieu)}}"> <span class="pull-right"></span>{{$brand->tenthuonghieu}}</a></li>
-                                    @endforeach
-                                </ul> --}}
+                                
                             </div>
 
                         </div>
@@ -370,8 +366,7 @@ if($customer_id!=NULL){
                                         </style>
                                         <li><a href="#">
                                             <i class="fa fa-plus-square"></i> <button class="button_wishlist" id="{{$sp->idsanpham}}" onclick="add_wishlist(this.id);"><span>Yêu thích</span> </button></a></li>
-                                          
-                                        <li><a href="#"><i class="fa fa-plus-square"></i>So sánh</a></li>
+                                      
                                     </ul>
                                 </div>
                             </div>

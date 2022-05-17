@@ -54,18 +54,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <ul class="nav pull-right top-menu">
         <li>
             
-            <input type="text" class="form-control search "  placeholder=" Search">
+            <input type="text" class="form-control search "  placeholder="Search">
         </li>
         <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="{{asset('image/aososinh.jpg')}}">
+                <img alt="" src="{{asset('image/ngan.jpg')}}">
                 <span class="username">
                   
                 	<?php
-					$name = Session::get('admin_name');
+					$name = Auth::user()->admin_name;
                   
-                    // $name= $name->admin_name;
+                   
 					if($name){
 						echo $name;
 						
@@ -200,17 +200,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 
               
                
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class="fa fa-book"></i>
-                        <span>Users</span>
-                    </a>
-                    <ul class="sub">
-                         <li><a href="{{URL::to('/themusers')}}">Thêm user</a></li>
-                        <li><a href="{{URL::to('/users')}}">Liệt kê user</a></li>
-                      
-                    </ul>
-                </li>
+              
                 @hasrole('admin')
 
                 <li class="sub-menu">

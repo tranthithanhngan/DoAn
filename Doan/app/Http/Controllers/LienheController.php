@@ -5,6 +5,7 @@ use Session;
 use DB;
 use App\Models\lienhe;
 use App\Models\Slider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -12,10 +13,14 @@ class LienheController extends Controller
 {
     //
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
         if($admin_id){
+          
             return Redirect::to('dashboard');
         }else{
+          
             return Redirect::to('login')->send();
         }
     }

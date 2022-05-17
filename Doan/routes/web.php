@@ -97,10 +97,10 @@ Route::post('/capnhatthuonghieu/{idthuonghieu}','App\Http\Controllers\Thuonghieu
 Route::get('/xoathuonghieu/{idthuonghieu}','App\Http\Controllers\ThuonghieuController@xoathuonghieu');
 
 //thêm sản phẩm
-Route::group(['middleware' => 'auth.roles', 'auth.roles'=>['admin','author']], function () {
+// Route::group(['middleware' => 'auth.roles', 'auth.roles'=>['admin','author']], function () {
 Route::get('/themsanpham','App\Http\Controllers\SanphamController@themsanpham');
 Route::get('/suasanpham/{idsanpham}','App\Http\Controllers\SanphamController@suasanpham');
-});
+// });
 Route::post('/luusanpham','App\Http\Controllers\SanphamController@luusanpham');
 
 //liệt kê sản phẩm
@@ -179,7 +179,7 @@ Route::post('/update-new-password','App\Http\Controllers\CheckoutController@upda
 
 //phân quyền
 
-Route::get('/users','App\Http\Controllers\PhanquyenController@lietkeusers')->middleware('auth.roles');
+Route::get('/users','App\Http\Controllers\PhanquyenController@lietkeusers');
 Route::get('/logindangki','App\Http\Controllers\PhanquyenController@logindangki');
 Route::post('/dangki','App\Http\Controllers\PhanquyenController@dangki');
 Route::get('/assign-roles','App\Http\Controllers\PhanquyenController@assign_roles');

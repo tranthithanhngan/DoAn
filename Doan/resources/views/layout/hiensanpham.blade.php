@@ -132,7 +132,7 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="#" class="active">Trang chủ</a></li>
+                                <li><a href="/" class="active">Trang chủ</a></li>
                                 <li class="dropdown"><a href="#">Danh mục <i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($danhmuc as $key => $cate)
@@ -280,7 +280,7 @@
                             </div>
                         </div>
                         @foreach($thuonghieu_by_id as $key => $sp)
-                        {{-- <a href="{{URL::to('/chi-tiet/'.$product->product_slug)}}"> --}}
+                        
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                            

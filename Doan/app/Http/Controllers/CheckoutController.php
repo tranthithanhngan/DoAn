@@ -235,7 +235,7 @@ public function dathang(Request $request){
     //--seo 
     $data = array();
     $data['payment_method'] = $request->payment_option;
-    $data['payment_status'] = 1;
+    $data['payment_status'] = "Đang chờ xử lí";
     $payment_id = DB::table('tinhtrangs')->insertGetId($data,'payment_id');
 
      $today=Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
@@ -243,11 +243,12 @@ public function dathang(Request $request){
     $order_data = array();
     $order_data['customer_id'] = Session::get('customer_id');
     $order_data['shipping_id'] = Session::get('shipping_id');
-    $order_data['payment_id'] = $payment_id;
-    $order_data['order_total'] = Cart::total();
+    // $order_data['payment_id'] = $payment_id;
+    // $order_data['order_total'] = Cart::total();
     $order_data['order_status'] = 1;
     $order_data['ngaydat'] =  $today;
-    // dd($order_data);
+  
+    
     $order_id = DB::table('donhangs')->insertGetId($order_data,'order_id');
 
     //insert order_details
@@ -261,6 +262,8 @@ public function dathang(Request $request){
         // dd($order_d_data);
         DB::table('chitietdonhangs')->insert($order_d_data);
     }
+
+   
     if($data['payment_method']==1){
 
         echo 'Thanh toán thẻ ATM';
@@ -310,9 +313,7 @@ public function logout_checkout(){
         $order->customer_id = Session::get('customer_id');
         $order->shipping_id = $shipping_id;
         $order->order_status = 1;
-        // $order->order_id = 1;
-       
-        // $order->order_id = $checkout_code;
+        
 
         date_default_timezone_set('Asia/Ho_Chi_Minh');
 $today=Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
@@ -321,27 +322,66 @@ $ngaydat=Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d ');
         $order->created_at = $today;
         $order->ngaydat = $ngaydat;
         $order->save();
-       
-        
+
+
+        $now=Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+    $title_mail="Đơn hàng xác nhận ngày".' '.$now;
+    $customer= Nguoidungs::find(Session::get('customer_id'));
+    $data['email'][]=$customer->customer_email;
+    if(Session::get('cart')==true){
+        $CartShop=Session::get('cart');
+
+       foreach($CartShop['default'] as $cart_mail){
+//    dd($cart_mail->qty);
+         $cart_array[]=array(
+             'tensanpham'=>$cart_mail->name,
+            'giasanpham'=>$cart_mail->price,
+            'slsanpham'=>$cart_mail->qty,
+           
+         );
+         
+       }
+    }
+
+            $shipping_array= array(
+            'customer_name'=> $customer->customer_name,
+            'shipping_name'=>$data['shipping_name'],
+            'shipping_email'=>$data['shipping_email'],
+            'shipping_phone'=>$data['shipping_phone'],
+            'shipping_address'=>$data['shipping_address'],
+            'shipping_notes'=>$data['shipping_notes'],
+            'shipping_method'=>$data['shipping_method'],
+            );
+       $order_mail=array(
+        'order_id'=>$order->order_id,
+       );
         if(Session::get('cart')==true){
-           foreach(Session::get('cart') as $key => $cart){
+            $CartShop=Session::get('cart');
           
+
+           foreach($CartShop['default'] as $cart){
+      
         $order_details= new donhangchitiet;  
                $order_details->order_id = $order->order_id;
-              dd((int)$cart['id']);
-               $order_details->idsanpham = (int)$cart['id'];
-               $order_details->tensanpham = $cart['name'];
-               $order_details->giasanpham = $cart['price'];
-               $order_details->product_sales_quantity = $cart['qty'];
-            //    $order_details->product_coupon =  $data['order_coupon'];
-            //    $order_details->product_feeship = $data['order_fee'];
+             
+               $order_details->idsanpham = (int)$cart->id;
+               $order_details->tensanpham = $cart->name;
+               $order_details->giasanpham = $cart->price;
+               $order_details->product_sales_quantity = $cart->qty;
+            
             
                $order_details->save();
            }
         }
-        Session::forget('coupon');
-        Session::forget('fee');
-        Session::forget('cart');
+
+        Mail::send('mail.mail_donhang',['cart_array'=>$cart_array,'shipping_array'=>$shipping_array,'code'=>$order_mail],
+        function($message)use ($title_mail,$data){
+            $message->to($data['email'])->subject($title_mail);
+            $message->from($data['email'],$title_mail);
+        });
+        // Session::forget('coupon');
+        // Session::forget('fee');
+        // Session::forget('cart');
    }
     public function create()
     {

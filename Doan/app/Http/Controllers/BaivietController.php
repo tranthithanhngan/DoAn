@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DB;
 use Session;
 use Socialite;
+use Illuminate\Support\Facades\Auth;
 use App\Models\baiviet;
 use App\Models\baivietchitiet;
 use App\Models\Slider;
@@ -21,10 +22,14 @@ class BaivietController extends Controller
         //
     }
     public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
+        
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
         if($admin_id){
+          
             return Redirect::to('dashboard');
         }else{
+          
             return Redirect::to('login')->send();
         }
     }
