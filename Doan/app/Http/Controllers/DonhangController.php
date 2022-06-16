@@ -41,6 +41,14 @@ class DonhangController extends Controller
     {
         //
     }
+	public function huydonhang(Request $request){
+		$data = $request->all();
+		$order = donhang::where('order_id',$data['id'])->first();
+		$order->lidohuy = $data['lido'];
+		$order->order_status = 3;
+		$order->save();
+	}
+
     public function donhang(){
 
     	
@@ -48,8 +56,8 @@ class DonhangController extends Controller
         ->join('nguoidungs','donhangs.customer_id','=','nguoidungs.customer_id')
         ->join('ships','donhangs.shipping_id','=','ships.shipping_id')
         ->select('donhangs.*','nguoidungs.customer_name','ships.shipping_name')
-        ->orderby('donhangs.order_id')->get();
-       
+        ->orderby('donhangs.order_id','desc')->get();
+     
         $donhang = view('admin.quanlidonhang')->with('tatca_donhang',$tatca_donhang);
     	return view('admin.danhmuc')->with('donhang',$donhang);
     }
@@ -62,15 +70,12 @@ class DonhangController extends Controller
 			$shipping_id = $ord->shipping_id;
 			$order_status = $ord->order_status;
 		}
-		// dd($donhang_chitiet);
 		$nguoidung = nguoidung::where('customer_id',$customer_id)->first();
 		$ship = ship::where('shipping_id',$shipping_id)->first();
 
 		$donhang_chitiet_sanpham = donhangchitiet::with('sanpham')->where('order_id', $order_id)->get();
         // dd($donhang_chitiet);
 		// foreach($donhang_chitiet_sanpham as $key => $order_d){
-            
-
 		// 	$product_coupon = $order_d->product_coupon;
         // }
         
@@ -295,7 +300,7 @@ class DonhangController extends Controller
 
 				foreach($donhang_chitiet_sanpham as $key => $product){
 
-					$subtotal = $product->giasanpham*$product->product_sales_quantity;
+					$subtotal = (int)$product->giasanpham*(int)$product->product_sales_quantity;
 					$total+=$subtotal;
 
 					if($product->product_coupon!='no'){
@@ -310,8 +315,8 @@ class DonhangController extends Controller
 						<td>'.$product_coupon.'</td>
 						<td>'.number_format($product->product_feeship,0,',','.').'đ'.'</td>
 						<td>'.$product->product_sales_quantity.'</td>
-						<td>'.number_format($product->giasanpham,0,',','.').'đ'.'</td>
-						<td>'.number_format($subtotal,0,',','.').'đ'.'</td>
+						<td>'.(int)number_format((int)$product->giasanpham,0,',','.').'.000VNĐ'.'</td>
+						<td>'.(int)number_format($subtotal,0,',','.').'.000VNĐ'.'</td>
 						
 					</tr>';
 				}
@@ -327,7 +332,7 @@ class DonhangController extends Controller
 				<td colspan="2">
 					
 					<p>Phí ship: '.number_format($product->product_feeship,0,',','.').'đ'.'</p>
-					<p>Thanh toán : '.number_format($total,0,',','.').'đ'.'</p>
+					<p>Thanh toán : '.number_format($total,0,',','.').'.000VNĐ'.'</p>
 				</td>
 		</tr>';
 		$output.='				
@@ -363,7 +368,7 @@ class DonhangController extends Controller
 		}
 		else{
 
-			$tatca_donhang=donhang::where('customer_id',Session::get('customer_id'))->orderby('order_id','desc')->paginate(5);
+			$tatca_donhang=donhang::where('customer_id',Session::get('customer_id'))->orderby('order_id','desc')->get();
 
 			$baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
 		
@@ -407,7 +412,7 @@ class DonhangController extends Controller
 	$customer_id = $donhang->customer_id;
 	$shipping_id = $donhang->shipping_id;
 	$order_status = $donhang->order_status;
- 
+	
 	 
   
   

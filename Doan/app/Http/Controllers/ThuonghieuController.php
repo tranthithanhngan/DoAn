@@ -106,33 +106,26 @@ public function showsanphamthuonghieu(Request $request, $idthuonghieu){
 
     $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
     $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
-    $meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
+    $meta_title = "Thương hiệu";
     $url_canonical = $request->url();
-    // foreach($thuonghieu_name as $key => $val){
-    //     //seo 
-    //     $meta_desc = $val->brand_desc; 
-    //     $meta_keywords = $val->brand_desc;
-    //     $meta_title = $val->brand_name;
-    //     $url_canonical = $request->url();
-    //     //--seo
-    // }
-if (isset($_GET['sort_by'])){
-    $sort_by=$_GET['sort_by'];
-    if($sort_by=='giam_dan'){
-        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','DESC')->paginate(6)->appends(request()->query());
-    }elseif($sort_by=='tang_dan'){
-        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','ASC')->paginate(6)->appends(request()->query());
-    }elseif($sort_by=='kytuza'){
-        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','DESC')->paginate(6)->appends(request()->query());
-    }elseif($sort_by=='kytuaz'){
-        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','ASC')->paginate(6)->appends(request()->query());
-    }
+    
+    if (isset($_GET['sort_by'])){
+        $sort_by=$_GET['sort_by'];
+        if($sort_by=='giam_dan'){
+            $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','DESC')->paginate(6)->appends(request()->query());
+        }elseif($sort_by=='tang_dan'){
+            $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('giasanpham','ASC')->paginate(6)->appends(request()->query());
+        }elseif($sort_by=='kytuza'){
+            $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','DESC')->paginate(6)->appends(request()->query());
+        }elseif($sort_by=='kytuaz'){
+            $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('tensanpham','ASC')->paginate(6)->appends(request()->query());
+        }
 
-} 
-else{
-    $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('idsanpham','ASC')->paginate(6);
-}   
-    return view('layout.hiensanpham')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+    } 
+    else{
+        $thuonghieu_by_id= SP::where('idthuonghieu',$idthuonghieu)->orderBy('idsanpham','ASC')->paginate(6);
+    }   
+        return view('layout.hiensanpham')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('thuonghieu_by_id',$thuonghieu_by_id)->with('thuonghieu_name',$thuonghieu_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
     /**
      * Show the form for creating a new resource.

@@ -31,6 +31,7 @@ Route::post('/update-qty','App\Http\Controllers\DonhangController@update_qty');
 
 
 Route::post('/add-cart-ajax','App\Http\Controllers\GiohangController@add_cart_ajax');
+Route::get('/del-all-product','App\Http\Controllers\GiohangController@delete_all_product');
 //send mail
 Route::get('/sendmail','App\Http\Controllers\DoanController@sendmail');
 
@@ -44,8 +45,10 @@ Route::get('/chi-tiet/{idsp}','App\Http\Controllers\SanphamController@chitietsan
 Route::post('/giohang','App\Http\Controllers\GiohangController@luugiohang');
 Route::get('/showgiohang','App\Http\Controllers\GiohangController@showgiohang');
 Route::get('/xoagiohang/{rowId}','App\Http\Controllers\GiohangController@xoagiohang');
-// Route::post('/capnhatgiohang2','App\Http\Controllers\GiohangController@capnhatgiohang2');
+Route::get('/showgiohangmenu','App\Http\Controllers\GiohangController@showgiohangmenu');
 Route::post('/capnhatgiohang','App\Http\Controllers\GiohangController@capnhatgiohang');
+Route::post('/update-cart','App\Http\Controllers\GiohangController@update_cart');
+Route::get('/gio-hang','App\Http\Controllers\GiohangController@gio_hang');
 
 
 //checkout
@@ -105,6 +108,8 @@ Route::post('/luusanpham','App\Http\Controllers\SanphamController@luusanpham');
 
 //liệt kê sản phẩm
 Route::get('/showsanpham','App\Http\Controllers\SanphamController@showsanpham');
+Route::get('/showkhohang','App\Http\Controllers\SanphamController@showkhohang');
+
 //sửa sản phẩm
 Route::get('/suasanpham/{idsanpham}','App\Http\Controllers\SanphamController@suasanpham');
 Route::post('/capnhatsanpham/{idsanpham}','App\Http\Controllers\SanphamController@capnhatsanpham');
@@ -190,5 +195,34 @@ Route::get('/lichsu','App\Http\Controllers\DonhangController@lichsu');
 Route::get('/view-lichsudonhang/{order_id}','App\Http\Controllers\DonhangController@view_lichsudonhang');
 
 
+//Ngôn ngữ
+Route::get('lang/{locale}',function($locate){
+    if(! in_array($locate, ['en','vi'])){
+        abort(404);
+    }
+    session()->put('locale',$locate);
+    return redirect()->back();
+});
 
+//khohang
+Route::get('/suakhohang/{idsanpham}','App\Http\Controllers\SanphamController@suakhohang');
+Route::post('/capnhatkhohang/{idsanpham}','App\Http\Controllers\SanphamController@capnhatkhohang');
+Route::get('/xoakhohang/{idsanpham}','App\Http\Controllers\SanphamController@xoakhohang');
 
+//load sản phẩm
+Route::post('/loadsanpham','App\Http\Controllers\DoanController@loadsanpham');
+
+//HUỷ đơn hàng
+Route::post('/huy-don-hang','App\Http\Controllers\DonhangController@huydonhang');
+
+//thanh toán vnpay
+Route::post('/vnpay','App\Http\Controllers\CheckoutController@vnpay');
+Route::post('/momo','App\Http\Controllers\CheckoutController@momo');
+Route::post('/onepay','App\Http\Controllers\CheckoutController@onepay');
+
+Route::get('/loginfb','App\Http\Controllers\DoanController@loadfb');
+Route::get('/customer/facebook/callback','App\Http\Controllers\DoanController@customer_facebook_callback');
+
+Route::get('/show_quick_cart','App\Http\Controllers\DoanController@show_quick_cart');
+Route::get('/del-product/{session_id}','App\Http\Controllers\GiohangController@delete_product');
+Route::post('/update-cart1','App\Http\Controllers\GiohangController@update_cart1');

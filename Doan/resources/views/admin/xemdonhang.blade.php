@@ -140,7 +140,7 @@
   
             @php 
             $i++;
-            $subtotal = $details->giasanpham*$details->product_sales_quantity;
+            $subtotal = (int)$details->giasanpham*(int)$details->product_sales_quantity;
             $total= $total+ $subtotal;
              
             @endphp
@@ -155,7 +155,7 @@
                     Không mã
                   @endif
               </td>
-              <td>{{number_format($details->product_feeship ,0,',','.')}}đ</td>
+              <td>{{(int)number_format((int)$details->product_feeship ,0,',','.')}}đ</td>
               <td>
   
                 <input type="number" min="1" {{$order_status==2 ? 'disabled' : ''}} class="order_qty_{{$details->idsanpham}}" value="{{$details->product_sales_quantity}}" name="product_sales_quantity">
@@ -173,8 +173,8 @@
               @endif
   
               </td>
-              <td>{{number_format($details->giasanpham ,0,',','.')}}đ</td>
-              <td>{{number_format($subtotal ,0,',','.')}}đ</td>
+              <td>{{(int)number_format((int)$details->giasanpham ,0,',','.')}}.000VNĐ</td>
+              <td>{{(int)number_format((int)$subtotal ,0,',','.')}}.000VNĐ</td>
             </tr>
             @endforeach
             <tr>
@@ -196,8 +196,8 @@
                     @endphp
                 @endif --}}
                 
-               <p> Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ </br></p>
-               <p>Thanh toán :<strong> {{number_format($total_coupon = $total + $details->product_feeship,0,',','.')}}đ</strong> </p> 
+               <p> Phí ship : {{(int)number_format($details->product_feeship,0,',','.')}}đ </br></p>
+               <p>Thanh toán :<strong> {{(int)number_format($total_coupon = $total + $details->product_feeship,0,',','.')}}.000VNĐ</strong> </p> 
               
               </td>
             </tr>

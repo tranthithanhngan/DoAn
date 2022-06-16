@@ -10,7 +10,7 @@
     <link  rel="canonical" href="{{$url_canonical}}" />
     <meta name="author" content="">
     <link  rel="icon" type="image/x-icon" href="" />
-    
+    <meta name ="csrf-token" content="{{csrf_token()}}">
       {{-- <meta property="og:image" content="{{$image_og}}" />   --}}
       <meta property="og:site_name" content="http://127.0.0.1:8000/" />
       <meta property="og:description" content="{{$meta_desc}}" />
@@ -34,15 +34,7 @@
      <link href="{{asset('frontend/css/sweetalert.css')}}" rel="stylesheet">
    
      <script src="https://kit.fontawesome.com/1147679ae7.js" crossorigin="anonymous"></script>
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->       
-    {{-- <link rel="shortcut icon" href="{{('public/frontend/images/favicon.ico')}}">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png"> --}}
+   
 </head><!--/head-->
 
 <body>
@@ -55,7 +47,7 @@
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
                                 <li><a href="#"><i class="fa fa-phone"></i> 0932023992</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> webextrasite.com</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> webmevabe.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -79,31 +71,22 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="index.html"><img src="{{('image/ngan.jpg')}}" alt="" /></a>
+                            <a href="/"><img src="{{('image/ngan.jpg')}}" alt="" /></a>
                         </div>
-                        {{-- <div class="btn-group pull-right">
+                        <div class="btn-group pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    USA
+                                 @lang('lang.languge')
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="{{URL::to('lang/en')}}">Tiếng Anh</a></li>
+                                    <li><a href="{{URL::to('lang/vi')}}">Tiếng Việt</a></li>
                                 </ul>
                             </div>
                             
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    DOLLAR
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Canadian Dollar</a></li>
-                                    <li><a href="#">Pound</a></li>
-                                </ul>
-                            </div>
-                        </div> --}}
+                           
+                        </div>
                     </div>
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
@@ -128,36 +111,43 @@
                              <?php
                               }
                              ?>
-                             
+                             <style type="text/css">
+                            span#show-cart li{
+                                margin-top: 9px;
+                            }
+                            </style>
+                           <span id="show-cart"></span>
 
-                             <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                             {{-- <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li> --}}
                              <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
                               ?>
-                               <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-lock"></i> Lịch sử đơn hàng</a></li>
+                               <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử đơn hàng</a></li>
                           
                              <?php
                          }
                               ?>
 
 
-<?php
-$customer_id = Session::get('customer_id');
-if($customer_id!=NULL){ 
-?>
-<li><a href="{{URL::to('/checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
+                            <?php
+                            $customer_id = Session::get('customer_id');
+                            if($customer_id!=NULL){ 
+                            ?>
+                            <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
 
-<?php
-}else{
-?>
-<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
-<?php 
-}
-?>
+                            <?php
+                            }else{
+                            ?>
+                            <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                            <?php 
+                            }
+                            ?>
 
-                    <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li>
+                    {{-- <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li> --}}
                             </ul>
+                        </div>
+                         
                         </div>
                     </div>
                 </div>
@@ -178,23 +168,24 @@ if($customer_id!=NULL){
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="/" class="active">Trang chủ</a></li>
-                                <li class="dropdown"><a href="#">Danh mục <i class="fa fa-angle-down"></i></a>
+                              
+                                <li><a href="/" class="{{Request::segment(1) == '/' || Request::segment(1)=='' ? 'active' : ''}}">@lang('lang.home')</a></li>
+                                <li class="dropdown"><a href="/">{{__('lang.product')}} <i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($danhmuc as $key => $cate)
                                         <li><a href="{{URL::to('/danh-muc/'.$cate->id)}}">{{$cate->tendanhmuc}}</a></li>
                                         @endforeach
                                     </ul>
                                 </li> 
-                                <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
+                                <li class="dropdown"><a href="#">{{__('lang.blogs')}}<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($baiviet as $key => $cate)
                                         <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
                                         @endforeach
                                     </ul>
                                 </li> 
-                                <li><a href="">Giỏ hàng</a></li>
-                                <li><a href="/lienhe">Liên hệ</a></li>
+                                <li><a href="/gio-hang">{{__('lang.cart')}}</a></li>
+                                <li><a href="/lienhe">{{__('lang.contact')}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -205,7 +196,7 @@ if($customer_id!=NULL){
                             <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
                             <input type="submit" style="margin-top:0;color:#666" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm">
                         </div>
-                        {{-- </form> --}}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -264,7 +255,7 @@ if($customer_id!=NULL){
             <div class="row">
                 <div class="col-sm-3">
                     <div class="left-sidebar">
-                        <h2>Danh mục sản phẩm</h2>
+                        <h2>{{__('lang.product')}}</h2>
                         <div class="panel-group category-products" id="accordian"><!--category-productsr-->
                           @foreach($danhmuc as $key => $cate)
                            
@@ -307,16 +298,18 @@ if($customer_id!=NULL){
                     </div>
                         
                         <h2 class="title text-center">Sản phẩm mới nhất</h2>
-                        
-                        @foreach($sanpham as $key => $sp)
+                        <div id="all_product">
+                            
+                        </div>
+                         {{-- @foreach($sanpham as $key => $sp)
                         <div class="col-sm-4">
-                            <div class="product-image-wrapper">
+                            <div class="product-image-wrapper"> 
                            
                                 <div class="single-products">
                                         <div class="productinfo text-center">
                                             <form action="{{URL::to('/giohang')}}" method="POST">
                                                 @csrf
-                                                <input type="hidden" value="{{$sp->idsanpham}}" class="cart_product_id_{{$sp->idsanpham}}">
+                                            <input type="hidden" value="{{$sp->idsanpham}}" class="cart_product_id_{{$sp->idsanpham}}">
                                             <input type="hidden" id="wishlist_tensanpham{{$sp->idsanpham}}" value="{{$sp->tensanpham}}" class="cart_product_name_{{$sp->idsanpham}}">
                                           
                                             <input type="hidden" value="{{$sp->slsanpham}}" class="cart_product_quantity_{{$sp->idsanpham}}">
@@ -331,21 +324,21 @@ if($customer_id!=NULL){
                                                 <h2>{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
                                                 <p>{{$sp->tensanpham}}</p>
                                              </a>
-                                           
-                                            <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a>
-                                            </form>
+                                             <input type="button" value="Thêm giỏ hàng" class="btn btn-default " data-id_product="{{$sp->idsanpham}}" id="{{$sp->idsanpham}}" onclick="Addtocart(this.id)"></a>
+                                             {{-- <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a> --}}
+                                          
+                                        {{-- </form>
 
                                         </div>
                                       
-                                </div>
-                           
-                                <div class="choose">
+                                </div>   --}}
+                            
+                                {{-- <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
                                         <style type="text/css">
                                             ul.nav.nav-pills.nav-justified li{
                                                 text-align: center;
                                                 font-size: 13px;
-
                                             }
                                             .button_wishlist{
                                                 border:none;
@@ -362,16 +355,43 @@ if($customer_id!=NULL){
                                                 border: none;
                                                 outline: none;
                                             }
-
                                         </style>
                                         <li><a href="#">
                                             <i class="fa fa-plus-square"></i> <button class="button_wishlist" id="{{$sp->idsanpham}}" onclick="add_wishlist(this.id);"><span>Yêu thích</span> </button></a></li>
                                       
                                     </ul>
                                 </div>
+                            </div> 
+                         </div>
+                        @endforeach   --}}
+                      <style type="text/css">
+                        div#quick-cart{
+                            margin-top: 40px;
+                        }
+                    </style>
+                    <!-- Modal giỏ hàng -->
+                    <div class="modal fade" id="quick-cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Giỏ hàng của bạn</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                              
+                              <div id="show_quick_cart">
+                                  
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                           
                             </div>
                         </div>
-                        @endforeach
+                        </div>
+                    </div>
                         <div class="fb-comments" data-href="{{$url_canonical}}" data-width="" data-numposts="1"></div>
                     </div><!--features_items-->
                      
@@ -389,8 +409,8 @@ if($customer_id!=NULL){
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="companyinfo">
-                            <h2><span>e</span>-shopper</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                            <h2><span>MẸ</span>-BÉ</h2>
+                            <p>Chuyên cung cấp đồ dùng chính hãng cho mẹ và trẻ nhỏ</p>
                         </div>
                     </div>
                     <div class="col-sm-7">
@@ -398,7 +418,7 @@ if($customer_id!=NULL){
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                        {{-- <img src="{{('public/frontend/images/iframe1.png')}}" alt="" /> --}}
+                                        <img src="image/mebeg.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -413,7 +433,7 @@ if($customer_id!=NULL){
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe2.png')}}" alt="" />
+                                         <img src="image/mevabe.png" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -428,7 +448,7 @@ if($customer_id!=NULL){
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe3.png')}}" alt="" />
+                                         <img src="image/mebe1.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -443,7 +463,7 @@ if($customer_id!=NULL){
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe4.png')}}" alt="" />
+                                         <img src="image/mebe2.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -467,61 +487,15 @@ if($customer_id!=NULL){
         <div class="footer-widget">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Service</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Online Help</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Order Status</a></li>
-                                <li><a href="#">Change Location</a></li>
-                                <li><a href="#">FAQ’s</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Quock Shop</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">T-Shirt</a></li>
-                                <li><a href="#">Mens</a></li>
-                                <li><a href="#">Womens</a></li>
-                                <li><a href="#">Gift Cards</a></li>
-                                <li><a href="#">Shoes</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Policies</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Privecy Policy</a></li>
-                                <li><a href="#">Refund Policy</a></li>
-                                <li><a href="#">Billing System</a></li>
-                                <li><a href="#">Ticket System</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>About Shopper</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Company Information</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Store Location</a></li>
-                                <li><a href="#">Affillate Program</a></li>
-                                <li><a href="#">Copyright</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
+                   
                     <div class="col-sm-3 col-sm-offset-1">
                         <div class="single-widget">
-                            <h2>About Shopper</h2>
+                            <h2>Ý kiến cho shop</h2>
                             <form action="#" class="searchform">
                                 <input type="text" placeholder="Your email address" />
                                 <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-                                <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                                <p>Đóng góp ý kiến của bạn cho chúng tôi...</p>
                             </form>
                         </div>
                     </div>
@@ -530,17 +504,16 @@ if($customer_id!=NULL){
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-                    <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+        <div class="footer-bottom"style="text-align: center">
+            <div class="container"style="text-align: center">
+                <div  style="text-align: center">
+                    <p class="pull-left"style="text-align: center">Copyright © mevabe. All rights reserved.</p>
+                   
                 </div>
             </div>
         </div>
         
     </footer><!--/Footer-->
-    
 
   
     <script src="{{asset('frontend/js/jquery.js')}}"></script>
@@ -552,7 +525,7 @@ if($customer_id!=NULL){
     <script src="{{asset('frontend/js/lightgallery-all.min.js')}}"></script>
     <script src="{{asset('frontend/js/lightslider.js')}}"></script>
     <script src="{{asset('frontend/js/prettify.js')}}"></script>
-
+   
 
     <script src="{{asset('frontend/js/sweetalert.min.js')}}"></script>
    {{--  <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
@@ -560,6 +533,33 @@ if($customer_id!=NULL){
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v13.0" nonce="X1XOHBox"></script>
+
+<script type="text/javascript">
+load_more();
+function load_more(id=''){
+    
+    $.ajax({
+                        url: '{{url('/loadsanpham')}}',
+                        method: "POST",
+                        headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                },
+                data:{id:id},
+                        success:function(data){
+                            $('#load_more_button').remove();
+                         $('#all_product').append(data);
+
+                        }
+
+                    });
+}
+
+            $(document).on('click','#load_more_button',function(){
+            var id = $(this).data('id');
+            load_more(id);
+            });
+</script>
+
 <script type="text/javascript">
 function view(){
     if(localStorage.getItem('data')!=null){
@@ -616,7 +616,22 @@ function add_wishlist(click_id)
 </script>
 
     <script type="text/javascript">
+      show_cart();
+            function show_cart(){
+                $.ajax({
+                        url: '{{url('/showgiohangmenu')}}',
+                        method:"GET",
+                       
+                        success:function(data){
+
+                         $('#show-cart').html(data);
+
+                        }
+
+                    });
+            }
         $(document).ready(function(){
+           
             $('.add-to-cart').click(function(){
 
                 let id = $(this).data('id_product');
@@ -627,7 +642,7 @@ function add_wishlist(click_id)
                 var cart_product_price = $('.cart_product_price_' + id).val();
                 var cart_product_qty = $('.cart_product_qty_' + id).val();
                 var _token = $('input[name="_token"]').val();
-             
+        
                 if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
                     alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
                 }else{
@@ -648,9 +663,9 @@ function add_wishlist(click_id)
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    window.location.href = "{{url('/showgiohang')}}";
+                                    window.location.href = "{{url('/gio-hang')}}";
                                 });
-
+                            show_cart();
                         }
 
                     });
@@ -660,6 +675,76 @@ function add_wishlist(click_id)
             });
         });
     </script>
+      <script type="text/javascript">
+      
+    function show_quick_cart(){
+        $.ajax({
+                        url: '{{url('/show_quick_cart')}}',
+                        method: 'GET',
+                       
+                        success:function(data){
+                            $('#show_quick_cart').html(data);
+                            $('#quick-cart').modal();
+                        }
+
+                    });
+    }
+    function DeleteItemCart($session_id){
+        var session_id=$session_id;
+        var _token = $('input[name="_token"]').val();
+        $.ajax({
+                        url: '{{url('/del-product')}}' + '/' + session_id,
+                        method: 'GET',
+                        data:{_token:_token},
+                        success:function(){
+                            show_quick_cart();
+                        }
+                       
+                     
+                    });
+    }
+      function Addtocart($product_id){
+       var id = $product_id;
+                var cart_product_id = $('.cart_product_id_' + id).val();
+                var cart_product_name = $('.cart_product_name_' + id).val();
+                var cart_product_image = $('.cart_product_image_' + id).val();
+                var cart_product_quantity = $('.cart_product_quantity_' + id).val();
+                var cart_product_price = $('.cart_product_price_' + id).val();
+                var cart_product_qty = $('.cart_product_qty_' + id).val();
+                var _token = $('input[name="_token"]').val();
+                if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
+                    alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
+                }else{
+
+                    $.ajax({
+                        url: '{{url('/add-cart-ajax')}}',
+                        method: 'POST',
+                        data:{cart_product_id:cart_product_id,cart_product_name:cart_product_name,cart_product_image:cart_product_image,cart_product_price:cart_product_price,cart_product_qty:cart_product_qty,_token:_token,cart_product_quantity:cart_product_quantity},
+                        success:function(){
+                            show_quick_cart();
+                        }
+                       
+                        // success:function(){
+
+                        //     swal({
+                        //             title: "Đã thêm sản phẩm vào giỏ hàng",
+                        //             text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                        //             showCancelButton: true,
+                        //             cancelButtonText: "Xem tiếp",
+                        //             confirmButtonClass: "btn-success",
+                        //             confirmButtonText: "Đi đến giỏ hàng",
+                        //             closeOnConfirm: false
+                        //         },
+                        //         function() {
+                        //             window.location.href = "{{url('/showgiohang')}}";
+                        //         });
+                        //     show_cart();
+                        // }
+
+                    });
+                }
+      }
+      </script>
     <script type="text/javascript">
         $(document).ready(function(){
             $('.choose').on('change',function(){

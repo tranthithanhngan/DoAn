@@ -17,6 +17,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet"/>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <!-- font CSS -->
+<link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- font-awesome icons -->
  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -96,104 +97,115 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="active" href="{{URL::to('/trangadmin')}}">
+                    <a class="{{Request::segment(1) == 'trangadmin'  ? 'active' : ''}}" href="{{URL::to('/trangadmin')}}">
                         <i class="fa fa-dashboard"></i>
-                        <span>Tổng quan</span>
+                        <span >Tổng quan</span>
                     </a>
                 </li>
                 <li>
-                    <a  href="{{URL::to('/tranglienhe')}}">
+                    <a class="{{Request::segment(1) == 'tranglienhe'  ? 'active' : ''}}" href="{{URL::to('/tranglienhe')}}">
                         <i class="fa fa-dashboard"></i>
                         <span>Liên hệ</span>
                     </a>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'themslides' ||Request::segment(1) == 'lietkeslides'   ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Slider</span>
                     </a>
                     <ul class="sub">
                        
-                        <li><a href="{{URL::to('/themslides')}}">Thêm slider</a></li>
-                        <li><a href="{{URL::to('/lietkeslides')}}">Liệt kê slider</a></li>
+                        <li><a class="{{Request::segment(1) == 'themslides' ? 'active' : ''}}" href="{{URL::to('/themslides')}}">Thêm slider</a></li>
+                        <li><a class="{{Request::segment(1) == 'lietkeslides'   ? 'active' : ''}}" href="{{URL::to('/lietkeslides')}}">Liệt kê slider</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'themdanhmuc' ||Request::segment(1) == 'showdanhmuc'   ? 'active' : ''}}"href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Danh mục sản phẩm</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/themdanhmuc')}}">Thêm danh mục sản phẩm</a></li>
-						<li><a href="{{URL::to('/showdanhmuc')}}">Liệt kê danh mục sản phẩm</a></li>
+						<li><a class="{{Request::segment(1) == 'themdanhmuc' ? 'active' : ''}}"  href="{{URL::to('/themdanhmuc')}}">Thêm danh mục sản phẩm</a></li>
+						<li><a class="{{Request::segment(1) == 'showdanhmuc'   ? 'active' : ''}}" href="{{URL::to('/showdanhmuc')}}">Liệt kê danh mục sản phẩm</a></li>
                       
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'themthuonghieu' ||Request::segment(1) == 'showthuonghieu'   ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Thương hiệu </span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/themthuonghieu')}}">Thêm thương hiệu</a></li>
-						<li><a href="{{URL::to('/showthuonghieu')}}">Liệt kê thương hiệu</a></li>
+						<li><a class="{{Request::segment(1) == 'themthuonghieu' ? 'active' : ''}}" href="{{URL::to('/themthuonghieu')}}">Thêm thương hiệu</a></li>
+						<li><a class="{{Request::segment(1) == 'showthuonghieu'   ? 'active' : ''}}" href="{{URL::to('/showthuonghieu')}}">Liệt kê thương hiệu</a></li>
                       
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'themsanpham' ||Request::segment(1) == 'showsanpham'   ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Sản phẩm</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/themsanpham')}}">Thêm sản phẩm</a></li>
-						<li><a href="{{URL::to('/showsanpham')}}">Liệt kê sản phẩm</a></li>
+						<li><a class="{{Request::segment(1) == 'themsanpham' ? 'active' : ''}}" href="{{URL::to('/themsanpham')}}">Thêm sản phẩm</a></li>
+						<li><a  class="{{Request::segment(1) == 'showsanpham'   ? 'active' : ''}}"href="{{URL::to('/showsanpham')}}">Liệt kê sản phẩm</a></li>
                       
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'showkhohang' ? 'active' : ''}}"href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Kho hàng</span>
+                    </a>
+                    <ul class="sub">
+						
+						<li><a class="{{Request::segment(1) == 'showkhohang' ? 'active' : ''}}" href="{{URL::to('/showkhohang')}}">Liệt kê kho hàng</a></li>
+                      
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a class="{{Request::segment(1) == 'donhang' ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Đơn hàng</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/donhang')}}">Quản lý đơn hàng</a></li>
+						<li><a class="{{Request::segment(1) == 'donhang' ? 'active' : ''}}" href="{{URL::to('/donhang')}}">Quản lý đơn hàng</a></li>
 						
                       
                     </ul>
                 </li>
 
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'thembaiviet'||Request::segment(1) == 'showbaiviet' ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Bài viết </span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/thembaiviet')}}">Thêm bài viết</a></li>
-						<li><a href="{{URL::to('/showbaiviet')}}">Liệt kê bài viết</a></li>
+						<li><a class="{{Request::segment(1) == 'thembaiviet' ? 'active' : ''}}"href="{{URL::to('/thembaiviet')}}">Thêm bài viết</a></li>
+						<li><a class="{{Request::segment(1) == 'showbaiviet' ? 'active' : ''}}" href="{{URL::to('/showbaiviet')}}">Liệt kê bài viết</a></li>
                       
                     </ul>
                 </li>
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'thembaivietchitiet'||Request::segment(1) == 'showbaivietchitiet' ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Bài viết chi tiết</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/thembaivietchitiet')}}">Thêm bài viết chi tiết</a></li>
-						<li><a href="{{URL::to('/showbaivietchitiet')}}">Liệt kê bài viết chi tiết</a></li>
+						<li><a class="{{Request::segment(1) == 'thembaivietchitiet' ? 'active' : ''}}" href="{{URL::to('/thembaivietchitiet')}}">Thêm bài viết chi tiết</a></li>
+						<li><a class="{{Request::segment(1) == 'showbaivietchitiet' ? 'active' : ''}}" href="{{URL::to('/showbaivietchitiet')}}">Liệt kê bài viết chi tiết</a></li>
                       
                     </ul>
                 </li>
               
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'showbinhluan'? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Bình luận</span>
                     </a>
                     <ul class="sub">
 					
-						<li><a href="{{URL::to('/showbinhluan')}}">Liệt kê bình luận</a></li>
+						<li><a class="{{Request::segment(1) == 'showbinhluan'? 'active' : ''}}"href="{{URL::to('/showbinhluan')}}">Liệt kê bình luận</a></li>
                       
                     </ul>
                 </li>
@@ -201,20 +213,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
               
                
               
-                @hasrole('admin')
+                {{-- @hasrole('admin') --}}
 
                 <li class="sub-menu">
-                    <a href="javascript:;">
+                    <a class="{{Request::segment(1) == 'themusers' ||Request::segment(1) == 'users' ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
                         <span>Users</span>
                     </a>
                     <ul class="sub">
-                         <li><a href="{{URL::to('/themusers')}}">Thêm user</a></li>
-                        <li><a href="{{URL::to('/users')}}">Liệt kê user</a></li>
+                         <li><a class="{{Request::segment(1) == 'themusers'  ? 'active' : ''}}" href="{{URL::to('/themusers')}}">Thêm user</a></li>
+                        <li><a  class="{{Request::segment(1) == 'users' ? 'active' : ''}}"href="{{URL::to('/users')}}">Liệt kê user</a></li>
                       
                     </ul>
                 </li>
-                @endhasrole
+                {{-- @endhasrole --}}
                 
             </ul>            </div>
        
@@ -246,6 +258,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('js/ckeditor.js')}}"></script>
 <script src="{{asset('js/jquery.form-validator.min.js')}}"></script>
 <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -408,12 +422,15 @@ var myfirstchart=new Morris.Bar({
 
 
     function chart30day(){
-        var _token= $('input[name="_token"]').val();
+        // var _token= $('input[name="_token"]').val();
         $.ajax({
             url:'{{url('/thangngay')}}',
             method: 'POST',
             dataType:"JSON",
-            data:{_token:_token},
+            headers:{
+                    'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                },
+            // data:{_token:_token},
             success:function(data){
                 myfirstchart.setData(data);
             }
@@ -437,7 +454,7 @@ $('#btn-dashboard-filter').click(function(){
  
 var _token= $('input[name="_token"]').val();
 var from_date=$('#datepicker').val();
-var to_date=$('#datepicker').val();
+var to_date=$('#datepicker2').val();
 $.ajax({
 url:'{{url('/locketqua')}}',
 method: 'POST',

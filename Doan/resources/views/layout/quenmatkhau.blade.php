@@ -50,7 +50,7 @@
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
                                 <li><a href="#"><i class="fa fa-phone"></i> 0932023992</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> webextrasite.com</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> webmevabe.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -74,30 +74,21 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="index.html"><img src="{{('image/ngan.jpg')}}" alt="" /></a>
+                            <a href="/"><img src="{{('http://127.0.0.1:8000/image/ngan.jpg')}}" alt="" /></a>
                         </div>
                         <div class="btn-group pull-right">
-                            {{-- <div class="btn-group">
+                            <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    USA
+                                 @lang('lang.languge')
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="{{URL::to('lang/en')}}">Tiếng Anh</a></li>
+                                    <li><a href="{{URL::to('lang/vi')}}">Tiếng Việt</a></li>
                                 </ul>
-                            </div> --}}
+                            </div>
                             
-                            {{-- <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    DOLLAR
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Canadian Dollar</a></li>
-                                    <li><a href="#">Pound</a></li>
-                                </ul>
-                            </div> --}}
+                           
                         </div>
                     </div>
                     <div class="col-sm-8">
@@ -119,26 +110,45 @@
                               <?php 
                              }else{
                              ?>
-                              <li><a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                              <?php
                               }
                              ?>
                              
+                             <style type="text/css">
+                                span#show-cart li{
+                                    margin-top: 9px;
+                                }
+                                </style>
+                               <span id="show-cart"></span>
 
-                             <li><a href="{{URL::to('/gio-hang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                             {{-- <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li> --}}
                              <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
                               ?>
-                               <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
-                             
+                               <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-lock"></i> Lịch sử đơn hàng</a></li>
+                          
                              <?php
-                         }else{
+                         }
                               ?>
-                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
-                              <?php 
-                          }
-                              ?>
+
+
+                            <?php
+                            $customer_id = Session::get('customer_id');
+                            if($customer_id!=NULL){ 
+                            ?>
+                            <li><a href="{{URL::to('logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
+
+                            <?php
+                            }else{
+                            ?>
+                            <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                            <?php 
+                            }
+                            ?>
+
+                    {{-- <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li> --}}
                             </ul>
                         </div>
                     </div>
@@ -175,19 +185,19 @@
                                         @endforeach
                                     </ul>
                                 </li> 
-                                <li><a href="">Giỏ hàng</a></li>
-                                <li><a href="">Liên hệ</a></li>
+                                <li><a href="/gio-hang">Giỏ hàng</a></li>
+                                <li><a href="/lienhe">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-5">
-                        {{-- <form action="{{URL::to('/tim-kiem')}}" method="POST">
-                            {{csrf_field()}} --}}
+                        <form action="{{URL::to('/tim-kiem')}}" method="POST">
+                            {{csrf_field()}}
                         <div class="search_box pull-right">
                             <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
                             <input type="submit" style="margin-top:0;color:#666" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm">
                         </div>
-                        {{-- </form> --}}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -315,8 +325,8 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="companyinfo">
-                            <h2><span>e</span>-shopper</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                            <h2><span>MẸ</span>-BÉ</h2>
+                            <p>Chuyên cung cấp đồ dùng chính hãng cho mẹ và trẻ nhỏ</p>
                         </div>
                     </div>
                     <div class="col-sm-7">
@@ -324,7 +334,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                        {{-- <img src="{{('public/frontend/images/iframe1.png')}}" alt="" /> --}}
+                                        <img src="image/mebeg.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -339,7 +349,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe2.png')}}" alt="" />
+                                         <img src="image/mevabe.png" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -354,7 +364,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe3.png')}}" alt="" />
+                                         <img src="image/mebe1.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -369,7 +379,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe4.png')}}" alt="" />
+                                         <img src="image/mebe2.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -393,61 +403,15 @@
         <div class="footer-widget">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Service</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Online Help</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Order Status</a></li>
-                                <li><a href="#">Change Location</a></li>
-                                <li><a href="#">FAQ’s</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Quock Shop</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">T-Shirt</a></li>
-                                <li><a href="#">Mens</a></li>
-                                <li><a href="#">Womens</a></li>
-                                <li><a href="#">Gift Cards</a></li>
-                                <li><a href="#">Shoes</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Policies</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Privecy Policy</a></li>
-                                <li><a href="#">Refund Policy</a></li>
-                                <li><a href="#">Billing System</a></li>
-                                <li><a href="#">Ticket System</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>About Shopper</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Company Information</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Store Location</a></li>
-                                <li><a href="#">Affillate Program</a></li>
-                                <li><a href="#">Copyright</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
+                   
                     <div class="col-sm-3 col-sm-offset-1">
                         <div class="single-widget">
-                            <h2>About Shopper</h2>
+                            <h2>Ý kiến cho shop</h2>
                             <form action="#" class="searchform">
                                 <input type="text" placeholder="Your email address" />
                                 <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-                                <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                                <p>Đóng góp ý kiến của bạn cho chúng tôi...</p>
                             </form>
                         </div>
                     </div>
@@ -456,11 +420,11 @@
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-                    <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+        <div class="footer-bottom"style="text-align: center">
+            <div class="container"style="text-align: center">
+                <div  style="text-align: center">
+                    <p class="pull-left"style="text-align: center">Copyright © mevabe. All rights reserved.</p>
+                   
                 </div>
             </div>
         </div>
@@ -532,6 +496,21 @@
     
     </script>
     <script type="text/javascript">
+    
+show_cart();
+              function show_cart(){
+                  $.ajax({
+                          url: '{{url('/showgiohangmenu')}}',
+                          method:"GET",
+                         
+                          success:function(data){
+  
+                           $('#show-cart').html(data);
+  
+                          }
+  
+                      });
+              }
         $(document).ready(function(){
             $('.add-to-cart').click(function(){
                 var id = $(this).data('id_product');

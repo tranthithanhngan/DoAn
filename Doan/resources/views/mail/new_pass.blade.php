@@ -50,7 +50,7 @@
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
                                 <li><a href="#"><i class="fa fa-phone"></i> 0932023992</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> webextrasite.com</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> webmevabe.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -74,30 +74,21 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="index.html"><img src="{{('image/ngan.jpg')}}" alt="" /></a>
+                            <a href="/"><img src="{{('http://127.0.0.1:8000/image/ngan.jpg')}}" alt="" /></a>
                         </div>
                         <div class="btn-group pull-right">
-                            {{-- <div class="btn-group">
+                            <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    USA
+                                 @lang('lang.languge')
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="{{URL::to('lang/en')}}">Tiếng Anh</a></li>
+                                    <li><a href="{{URL::to('lang/vi')}}">Tiếng Việt</a></li>
                                 </ul>
-                            </div> --}}
+                            </div>
                             
-                            {{-- <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    DOLLAR
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Canadian Dollar</a></li>
-                                    <li><a href="#">Pound</a></li>
-                                </ul>
-                            </div> --}}
+                           
                         </div>
                     </div>
                     <div class="col-sm-8">

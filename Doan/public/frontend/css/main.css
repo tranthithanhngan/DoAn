@@ -8,7 +8,7 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background:;
+  /* background:; */
   position: relative;
   font-weight:400px;
 }
@@ -223,8 +223,11 @@ a#scrollUp i{
 
 
 .header-bottom {
-  padding-bottom: 30px;
-  padding-top: 30px;
+  padding-bottom: 11px;
+  padding-top: 20px;
+  z-index: 9999;
+  background: #F0F0E9;
+
 }
 
 .navbar-collapse.collapse{
@@ -251,7 +254,7 @@ a#scrollUp i{
 
 .mainmenu ul li a:hover, .mainmenu ul li a.active,  .shop-menu ul li a.active{
 	background:none;
-	color:#fdb45e;
+	color:#f3212140;
 }
 
 .search_box input {
@@ -520,7 +523,7 @@ ul.sub-menu {
 
 
 .searchform button {
-  background: #FE980F;
+  background: #f3212140;
   border: medium none;
   border-radius: 0;
   margin-left: -5px;
@@ -662,7 +665,7 @@ ul.sub-menu {
   padding-top: 15px;
 }
 .left-sidebar h2, .brands_products h2 {
-  color: #FE980F;
+  color: #f3212140;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -837,7 +840,7 @@ h2.title:before{
 
 
 h2.title {
-  color: #FE980F;
+  color: #f3212140;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -902,7 +905,7 @@ h2.title {
   transition: height 500ms ease 0s;
   width: 100%;
   display: block;
-  opacity:;
+  /* opacity:; */
 }
 
 .single-products:hover .product-overlay {
@@ -1540,7 +1543,7 @@ h2.title {
 }
 
 .breadcrumbs .breadcrumb li a {
-  background:#FE980F;
+  background:#f3212140;
   color: #FFFFFF;
   padding: 3px 7px;
 }
@@ -1551,7 +1554,7 @@ h2.title {
   width: auto;
   border-width: 8px;
   border-style: solid;
-  border-color:transparent transparent transparent #FE980F;
+  border-color:transparent transparent transparent #f3212140;
   position: absolute;
   top: 11px;
   left:48px;
@@ -1569,7 +1572,7 @@ h2.title {
 
 
 #cart_items .cart_info .cart_menu {
-  background: #FE980F;
+  background: #f3212140;
   color: #fff;
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
@@ -1776,7 +1779,7 @@ h2.title {
 }
 
 .update, .check_out {
-  background: #FE980F;
+  background: #f3212140;
   border-radius: 0;
   color: #FFFFFF;
   margin-top: 18px;
@@ -2395,7 +2398,7 @@ h2.title {
 }
 
 .btn.btn-primary {
-  background:#FE980F;
+  background:#f3212140;
   border: 0 none;
   border-radius: 0;
   margin-top: 16px;

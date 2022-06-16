@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use DB;
 use Session;
+use Toastr;
 use App\Models\danhmuc;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Slider;
@@ -74,7 +75,8 @@ class DanhmucController extends Controller
         $data['tendanhmuc'] = $request->tendanhmuc;
        
         DB::table('danhmucs')->where('id',$id)->update($data);
-        Session::put('message','Cập nhật danh mục sản phẩm thành công');
+        // Session::put('message','Cập nhật danh mục sản phẩm thành công');
+        Toastr::success('Cập nhật danh mục sản phẩm thành công','Thành công');
         return Redirect::to('showdanhmuc');
     }
     public function xoadanhmuc($id){
@@ -104,16 +106,16 @@ class DanhmucController extends Controller
          $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
          $baivietpost = DB::table('baiviets')->orderby('baiviet_id')->get(); 
         $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
-$meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
-$meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
-$url_canonical = $request->url();
+        $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+        $meta_title = "sữa chính hãng, đảm bảo chất lượng tốt cho mẹ và bé";
+        $url_canonical = $request->url();
         $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
-    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
-    $sanpham = DB::table('sanphams')->orderby('idsanpham')->get();
-    
-    $danhmuc_by_id = DB::table('thuonghieus')->join('danhmucs','thuonghieus.iddanhmuc','=','danhmucs.id')->where('danhmucs.id',$iddanhmuc)->paginate(6);
+        $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+        $sanpham = DB::table('sanphams')->where('iddanhmuc',$iddanhmuc)->orderby('idsanpham','desc')->get();
+      
+        $danhmuc_by_id = DB::table('thuonghieus')->join('danhmucs','thuonghieus.iddanhmuc','=','danhmucs.id')->where('danhmucs.id',$iddanhmuc)->paginate(6);
 
-    $danhmuc_name = DB::table('danhmucs')->where('danhmucs.id',$iddanhmuc)->limit(1)->get();
+        $danhmuc_name = DB::table('danhmucs')->where('danhmucs.id',$iddanhmuc)->limit(1)->get();
 
     // dd($thuonghieu_name);
     // foreach($brand_name as $key => $val){

@@ -6,6 +6,6 @@
     <title>Lấy lại mật khẩu</title>
     </head>
     <body>
-        <p>Click vào {{$data['body']}} để reset lại mật khẩu</p>
+        <p>Click vào <a target="_blank" href="{{$data['body']}}"> reset lại mật khẩu</a> để đặt lại mật khẩu</p>
     </body>
 </html>

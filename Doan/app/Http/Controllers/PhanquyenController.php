@@ -4,19 +4,35 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Models\roles;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use DB;
 class PhanquyenController extends Controller
 {
     //
+    public function AuthLogin(){
+        
+        // $admin_id =  Session::get('admin_id');
+        $admin_id =  Auth::id();
+        if($admin_id){
+          
+            return Redirect::to('dashboard');
+        }else{
+          
+            return Redirect::to('login')->send();
+        }
+    }
     public function lietkeusers()
     {
-        
+        $this->AuthLogin();
+   
         $admin = DB::table('adminroles')
    ->join('admins','admins.admin_id','=','adminroles.name_id')
    ->join('phanquyens','phanquyens.id_roles','=','adminroles.roles_id')
    ->select('adminroles.*','admins.*','phanquyens.*')->orderby('adminroles.name_id','desc')->get();
+   $manager_product  = view('admin.lietkeusers')->with('admin',$admin);
+   return view('admin.danhmuc')->with('admin.lietkeusers', $manager_product);
        
-        return view('admin.lietkeusers')->with(compact('admin'));
     }
     public function logindangki(Request $request){
         return view('admin.dangki');

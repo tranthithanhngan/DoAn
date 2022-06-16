@@ -82,7 +82,7 @@ return [
             ],
         ],
     ],
-
+    
 'stream'=>[
     'ssl'=>[
 'allow_self_signed'=>true,

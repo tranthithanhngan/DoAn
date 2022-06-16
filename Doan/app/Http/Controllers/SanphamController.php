@@ -86,6 +86,16 @@ class SanphamController extends Controller
     return view('admin.danhmuc')->with('admin.lietkesanpham', $manager_product);
 
 }
+public function showkhohang(){
+    $this->AuthLogin();
+    $showkhohang = DB::table('sanphams')
+    ->join('danhmucs','danhmucs.id','=','sanphams.iddanhmuc')
+   
+    ->orderby('sanphams.idsanpham','ASC')->get();
+    $manager_product  = view('admin.lietkekhohang')->with('showkhohang',$showkhohang);
+    return view('admin.danhmuc')->with('admin.lietkekhohang', $manager_product);
+
+}
 public function suasanpham($idsanpham){
     $this->AuthLogin();
    $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
@@ -96,6 +106,17 @@ public function suasanpham($idsanpham){
    $manager_product  = view('admin.suasanpham')->with('suasanpham',$suasanpham)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu);
 
    return view('admin.danhmuc')->with('admin.suasanpham', $manager_product);
+}
+public function suakhohang($idsanpham){
+    $this->AuthLogin();
+   $danhmuc = DB::table('danhmucs')->orderby('id')->get(); 
+   $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
+
+   $suakhohang = DB::table('sanphams')->where('idsanpham',$idsanpham)->get();
+
+   $manager_product  = view('admin.suakhohang')->with('suakhohang',$suakhohang)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu);
+
+   return view('admin.danhmuc')->with('admin.suakhohang', $manager_product);
 }
 public function capnhatsanpham(Request $request,$idsanpham){
     $this->AuthLogin();
@@ -128,23 +149,38 @@ public function capnhatsanpham(Request $request,$idsanpham){
    Session::put('message','Cập nhật sản phẩm thành công');
    return Redirect::to('showsanpham');
 }
+public function capnhatkhohang(Request $request,$idsanpham){
+    $this->AuthLogin();
+    $data = array();
+    $data['tensanpham'] = $request->tensanpham;
+    $data['slsanpham'] = $request->slsanpham;
+   
+   DB::table('sanphams')->where('idsanpham',$idsanpham)->update($data);
+   Session::put('message','Cập nhật kho hàng thành công');
+   return Redirect::to('showkhohang');
+}
 public function xoasanpham($idsanpham){
     $this->AuthLogin();
     DB::table('sanphams')->where('idsanpham',$idsanpham)->delete();
     Session::put('message','Xóa sản phẩm thành công');
     return Redirect::to('showsanpham');
 }
-
+public function xoakhohang($idsanpham){
+    $this->AuthLogin();
+    DB::table('sanphams')->where('idsanpham',$idsanpham)->delete();
+    Session::put('message','Xóa kho hang thành công');
+    return Redirect::to('showkhohang');
+}
 public function chitietsanpham($idsp , Request $request){
     //slide
    $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
    $baivietpost = DB::table('baiviets')->orderBy('baiviet_id')->get(); 
 
-  
-$meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
-$meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
-$meta_title = "Chi tiết sản phẩm";
-$url_canonical = $request->url();
+    
+    $meta_desc = "Chuyên bán những đồ dùng cho mẹ và trẻ em"; 
+    $meta_keywords = "sua cho be,do cho me,khan $ ta,do bau cho me";
+    $meta_title = "Chi tiết sản phẩm";
+    $url_canonical = $request->url();
    $danhmuc = DB::table('danhmucs')->orderBy('id')->get(); 
    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 
@@ -161,12 +197,6 @@ $url_canonical = $request->url();
        $idthuonghieu_cate=$value->idthuonghieu;
        $th_cate=$value->tenthuonghieu;
        $tensp_cate=$value->tensanpham;
-           
-        //    $meta_desc = $value->product_desc;
-        //    $meta_keywords = $value->product_slug;
-        //    $meta_title = $value->product_name;
-        //    $url_canonical = $request->url();
-        
        }
        $hinhanhpost = thuvienanh::where('idsanpham',$idsanpham)->get(); 
 
@@ -182,9 +212,14 @@ $url_canonical = $request->url();
 
 }
 public function showbinhluan(Request $request){
-$binhluan=binhluan::with('sanpham')->where('binhluan_traloi','=',0)->orderBy('binhluan_status','DESC')->get();
+    $this->AuthLogin();
+   
+$binhluan=binhluan::with('sanpham')->where('binhluan_traloi','=',0)->orderBy('binhluan_id','DESC')->get();
 $binhluan_traloi=binhluan::with('sanpham')->where('binhluan_traloi','>',0)->orderBy('binhluan_id','DESC')->get();
-return view('admin.binhluan')->with(compact('binhluan','binhluan_traloi'));
+
+$manager_product  = view('admin.binhluan')->with('binhluan',$binhluan)->with('binhluan_traloi',$binhluan_traloi);
+return view('admin.danhmuc')->with('admin.binhluan', $manager_product);
+
 }  
 public function traloi_comment(Request $request){
     $data=$request->all();
@@ -225,7 +260,7 @@ public function send_comment(Request $request){
     $binhluan->binhluan=$comment_content;
     $binhluan->binhluan_name=$comment_name;
     $binhluan->idsanpham=$idsanpham;
-    $binhluan->binhluan_status=1;
+    $binhluan->binhluan_status=0;
     $binhluan->binhluan_traloi=0;
     $binhluan->save();
 
@@ -251,12 +286,12 @@ public function load_commnet(Request $request){
     </div><p></p>';
 
 foreach($binhluan_traloi as $key => $traloi_comm){
-  
+    // <img width="80%" src="" class="img img-responsive img-thumbnail">
 if($traloi_comm->binhluan_traloi==$comm->binhluan_id){
     
     $output.=' <div class="row style_comment" style="margin:5px 40px;color:red;">
     <div class="col-md-2">
-    <img width="80%" src="" class="img img-responsive img-thumbnail">
+   
     </div>
     <div class="col-md-10">
     <p style="color: green;">@Admin</p>

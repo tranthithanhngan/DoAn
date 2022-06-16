@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">size</label>
-                                    <input type="text" data-validation="length"  name="size" class="form-control " id="slug" placeholder="Tên danh mục" value="{{$pro->size}}"> 
+                                    <input type="text"   name="size" class="form-control " id="slug" placeholder="Tên danh mục" value="{{$pro->size}}"> 
                                 </div>
                                      <div class="form-group">
                                     <label for="exampleInputEmail1">Giá sản phẩm</label>

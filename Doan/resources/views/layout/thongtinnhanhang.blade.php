@@ -50,7 +50,7 @@
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
                                 <li><a href="#"><i class="fa fa-phone"></i> 0932023992</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> webextrasite.com</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> webmevabe.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -74,31 +74,22 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="index.html"><img src="{{('image/ngan.jpg')}}" alt="" /></a>
+                            <a href="/"><img src="{{('http://127.0.0.1:8000/image/ngan.jpg')}}" alt="" /></a>
                         </div>
-                        {{-- <div class="btn-group pull-right">
+                        <div class="btn-group pull-right">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    USA
+                                 @lang('lang.languge')
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Canada</a></li>
-                                    <li><a href="#">UK</a></li>
+                                    <li><a href="{{URL::to('lang/en')}}">Tiếng Anh</a></li>
+                                    <li><a href="{{URL::to('lang/vi')}}">Tiếng Việt</a></li>
                                 </ul>
                             </div>
                             
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                    DOLLAR
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Canadian Dollar</a></li>
-                                    <li><a href="#">Pound</a></li>
-                                </ul>
-                            </div>
-                        </div> --}}
+                           
+                        </div>
                     </div>
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
@@ -119,26 +110,44 @@
                               <?php 
                              }else{
                              ?>
-                              <li><a href="{{URL::to('login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                              <?php
                               }
                              ?>
-                             
+                             <style type="text/css">
+                                span#show-cart li{
+                                    margin-top: 9px;
+                                }
+                                </style>
+                               <span id="show-cart"></span>
 
-                             <li><a href="{{URL::to('/giohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                             {{-- <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li> --}}
                              <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
                               ?>
-                            <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
-                             
+                               <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-lock"></i> Lịch sử đơn hàng</a></li>
+                          
                              <?php
-                         }else{
+                         }
                               ?>
-                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
-                              <?php 
-                          }
-                              ?>
+
+
+                            <?php
+                            $customer_id = Session::get('customer_id');
+                            if($customer_id!=NULL){ 
+                            ?>
+                            <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
+
+                            <?php
+                            }else{
+                            ?>
+                            <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                            <?php 
+                            }
+                            ?>
+
+                    {{-- <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li> --}}
                             </ul>
                         </div>
                     </div>
@@ -160,7 +169,7 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="/" class="active">Trang chủ</a></li>
+                                <li><a href="/" >Trang chủ</a></li>
                                 <li class="dropdown"><a href="#">Danh mục <i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($danhmuc as $key => $cate)
@@ -175,19 +184,19 @@
                                         @endforeach
                                     </ul>
                                 </li> 
-                                <li><a href="">Giỏ hàng</a></li>
-                                <li><a href="">Liên hệ</a></li>
+                                <li><a href="/gio-hang" class="{{Request::segment(1) == 'checkout' ? 'active' : ''}}">Giỏ hàng</a></li>
+                                <li><a href="/lienhe">Liên hệ</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-5">
-                        {{-- <form action="{{URL::to('/tim-kiem')}}" method="POST">
-                            {{csrf_field()}} --}}
+                        <form action="{{URL::to('/tim-kiem')}}" method="POST">
+                            {{csrf_field()}}
                         <div class="search_box pull-right">
                             <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm"/>
                             <input type="submit" style="margin-top:0;color:#666" name="search_items" class="btn btn-primary btn-sm" value="Tìm kiếm">
                         </div>
-                        {{-- </form> --}}
+                        </form>
                     </div>
                 </div>
             </div>
@@ -329,10 +338,163 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <a href="/showgiohang">
-                                                        <input style="background-color:#FE980F" type="submit" class="btn btn-default check_coupon" name="check_coupon"  value="Xem giỏ hàng"></a>
-                                                    <input type="button" value="Xác nhận đơn hàng" name="send_order" class="btn btn-primary btn-sm send_order">
+                                                  
+                                                        <input style="background-color:#4caf50" type="submit" class="btn btn-default check_coupon" name="check_coupon"  value="Xác nhận thông tin nhận hàng">
+                                                 
                                                 </form>
+                                                <div class="container" style="margin-top: 0;pa">
+                                                    
+                                            
+                                                    
+                                                    <div class="review-payment">
+                                                        <h2>Xem lại giỏ hàng</h2>
+                                                    </div>
+                                                    <div class="table-responsive cart_info">
+                                                        
+                                                        <form action="{{url('/update-cart1')}}" method="POST">
+                                                            @csrf
+                                                        <table class="table table-condensed">
+                                                            <thead>
+                                                                <tr class="cart_menu">
+                                                                    <td class="image">Hình ảnh</td>
+                                                                    <td class="description">Tên sản phẩm</td> 
+                                                                    <td class="description">Số lượng tồn</td>         
+                                                                    <td class="price">Giá sản phẩm</td>
+                                                                    <td class="quantity">Số lượng</td>
+                                                                    <td class="total">Thành tiền</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if($cart==true)
+                                                                @php
+                                                                        $total = 0;
+                                                                @endphp
+                                                                @foreach($cart as $key )
+                                                                    @php
+                                                                        $subtotal = (int)$key['price']*(int)$key['qty'];
+                                                                        $total+=$subtotal;
+                                                                    @endphp
+                                        
+                                                                <tr>
+                                                                    <td class="cart_product">
+                                                                        {{-- <img src="{{asset('image/'.$cart['image'])}}" width="90" alt="{{$cart['name']}}" /> --}}
+                                                                    </td>
+                                                                    <td class="cart_description">
+                                                                        <h4><a href=""></a></h4>
+                                                                        <p>{{$key['name']}}</p>
+                                                                    </td>
+                                                                   
+                                                                    <td class="cart_description">
+                                                                        <h4><a href=""></a></h4>
+                                                                        <p>{{$key['weight']}}</p>
+                                                                    </td>
+                                                                    <td class="cart_price">
+                                                                        <p>{{(int)number_format((int)$key['price'],0,',','.')}}.000VNĐ</p>
+                                                                    </td>
+                                                                    <td class="cart_quantity">
+                                                                        <div class="cart_quantity_button">
+                                                                        
+                                                                            <input class="cart_quantity" type="number" min="1" name="cart_qty[{{$key['session_id']}}]" value="{{$key['qty']}}"  >
+                                                                        
+                                                                            
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="cart_total">
+                                                                        <p class="cart_total_price">
+                                                                            {{(int)number_format($subtotal,0,',','.')}}.000VNĐ
+                                                                            
+                                                                        </p>
+                                                                    </td>
+                                                                    <td class="cart_delete">
+                                                                        <a class="cart_quantity_delete" href="{{url('/del-product/'.$key['session_id'])}}"><i class="fa fa-times"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                                
+                                                                @endforeach
+                                                                <tr>
+                                                                    <td>
+                                                                        <form action="{{URL::to('/vnpay')}}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="total_vnpay" value="{{Cart::priceTotal(0).' '.'vnđ'}}">
+                                                                        <button type="submit" name =" redirect" class="btn btn-default check_out">Thanh toán VNPAY</button>
+                                                                    </form>
+                                                                    </td>
+                                                                    <td>
+                                                                        <form action="{{URL::to('/momo')}}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="total_momo" value="{{number_format($total,0,',','.')}}">
+                                                                        <button type="submit" name ="payUrl" class="btn btn-default check_out">Thanh toán MOMO</button>
+                                                                    </form>
+                                                                    </td>
+{{--                                         
+                                                                    <td>
+                                                                        @if(Session::get('customer_id'))
+                                                                          <a class="btn btn-default check_out" href="{{url('/checkout')}}">Đặt hàng</a>
+                                                                          @else 
+                                                                          <a class="btn btn-default check_out" href="{{url('/login-checkout')}}">Đặt hàng</a>
+                                                                        @endif
+                                                                    </td> --}}
+                                        
+                                                                    
+                                                                    <td colspan="2">
+                                                                    <li>Tổng tiền :<span>{{number_format($total,0,',','.')}}.000VNĐ</span></li>
+                                                                    @if(Session::get('coupon'))
+                                                                    <li>
+                                                                        
+                                                                            @foreach(Session::get('coupon') as $key => $cou)
+                                                                                @if($cou['coupon_condition']==1)
+                                                                                    Mã giảm : {{$cou['coupon_number']}} %
+                                                                                    <p>
+                                                                                        @php 
+                                                                                        $total_coupon = ($total*$cou['coupon_number'])/100;
+                                                                                        echo '<p><li>Tổng giảm:'.number_format($total_coupon,0,',','.').'đ</li></p>';
+                                                                                        @endphp
+                                                                                    </p>
+                                                                                    <p><li>Tổng đã giảm :{{number_format($total-$total_coupon,0,',','.')}}đ</li></p>
+                                                                                @elseif($cou['coupon_condition']==2)
+                                                                                    Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}} k
+                                                                                    <p>
+                                                                                        @php 
+                                                                                        $total_coupon = $total - $cou['coupon_number'];
+                                                                        
+                                                                                        @endphp
+                                                                                    </p>
+                                                                                    <p><li>Tổng đã giảm :{{number_format($total_coupon,0,',','.')}}đ</li></p>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        
+                                        
+                                        
+                                                                    </li>
+                                                                    @endif 
+                                                                {{-- 	<li>Thuế <span></span></li>
+                                                                    <li>Phí vận chuyển <span>Free</span></li> --}}
+                                                                    
+                                                                    
+                                                                </td>
+                                                                </tr>
+                                                                @else 
+                                                                <tr>
+                                                                    <td colspan="5"><center>
+                                                                    @php 
+                                                                    echo 'Làm ơn thêm sản phẩm vào giỏ hàng';
+                                                                    @endphp
+                                                                    </center></td>
+                                                                </tr>
+                                                                @endif
+                                                            </tbody>
+                                        
+                                                            
+                                                        </table>
+                                                        </form>
+                                                   
+                                                    </div>
+                                                    
+                                              
+                                                    <input type="button" style="margin-top: 0;width:200px;height:35px;background-color:#4caf50;border-radius:2px" value="Xác nhận đơn hàng" name="send_order" class="btn btn-primary btn-sm send_order">
+                                                   
+                                                </div>
                                                 <form>
                                                     @csrf 
                                              
@@ -563,14 +725,15 @@
         </div>
     </section>
     
+   
     <footer id="footer"><!--Footer-->
         <div class="footer-top">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="companyinfo">
-                            <h2><span>e</span>-shopper</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                            <h2><span>MẸ</span>-BÉ</h2>
+                            <p>Chuyên cung cấp đồ dùng chính hãng cho mẹ và trẻ nhỏ</p>
                         </div>
                     </div>
                     <div class="col-sm-7">
@@ -578,7 +741,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                        {{-- <img src="{{('public/frontend/images/iframe1.png')}}" alt="" /> --}}
+                                        <img src="image/mebeg.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -593,7 +756,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe2.png')}}" alt="" />
+                                         <img src="image/mevabe.png" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -608,7 +771,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe3.png')}}" alt="" />
+                                         <img src="image/mebe1.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -623,7 +786,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="{{('public/frontend/images/iframe4.png')}}" alt="" />
+                                         <img src="image/mebe2.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -647,61 +810,15 @@
         <div class="footer-widget">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Service</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Online Help</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Order Status</a></li>
-                                <li><a href="#">Change Location</a></li>
-                                <li><a href="#">FAQ’s</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Quock Shop</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">T-Shirt</a></li>
-                                <li><a href="#">Mens</a></li>
-                                <li><a href="#">Womens</a></li>
-                                <li><a href="#">Gift Cards</a></li>
-                                <li><a href="#">Shoes</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>Policies</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Privecy Policy</a></li>
-                                <li><a href="#">Refund Policy</a></li>
-                                <li><a href="#">Billing System</a></li>
-                                <li><a href="#">Ticket System</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="single-widget">
-                            <h2>About Shopper</h2>
-                            <ul class="nav nav-pills nav-stacked">
-                                <li><a href="#">Company Information</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Store Location</a></li>
-                                <li><a href="#">Affillate Program</a></li>
-                                <li><a href="#">Copyright</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
+                   
                     <div class="col-sm-3 col-sm-offset-1">
                         <div class="single-widget">
-                            <h2>About Shopper</h2>
+                            <h2>Ý kiến cho shop</h2>
                             <form action="#" class="searchform">
                                 <input type="text" placeholder="Your email address" />
                                 <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-                                <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                                <p>Đóng góp ý kiến của bạn cho chúng tôi...</p>
                             </form>
                         </div>
                     </div>
@@ -710,17 +827,16 @@
             </div>
         </div>
         
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row">
-                    <p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-                    <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+        <div class="footer-bottom"style="text-align: center">
+            <div class="container"style="text-align: center">
+                <div  style="text-align: center">
+                    <p class="pull-left"style="text-align: center">Copyright © mevabe. All rights reserved.</p>
+                   
                 </div>
             </div>
         </div>
         
     </footer><!--/Footer-->
-    
 
   
     <script src="{{asset('frontend/js/jquery.js')}}"></script>
@@ -780,21 +896,37 @@
                                swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
                             }
                            });
-                        // window.setTimeout(function(){ 
-                        //     location.reload();
-                        // } ,10000);
+                        window.setTimeout(function(){ 
+                            window.location.href = "{{url('/payment')}}";
+                        } ,5000);
                       } else {
                           
                         swal("Đóng", "Đơn hàng chưa được gửi, làm ơn hoàn tất đơn hàng", "error");
                       }
               
                 });
+                
                
             });
         });
     
     </script>
     <script type="text/javascript">
+    
+show_cart();
+              function show_cart(){
+                  $.ajax({
+                          url: '{{url('/showgiohangmenu')}}',
+                          method:"GET",
+                         
+                          success:function(data){
+  
+                           $('#show-cart').html(data);
+  
+                          }
+  
+                      });
+              }
         $(document).ready(function(){
             $('.add-to-cart').click(function(){
                 var id = $(this).data('id_product');
@@ -824,7 +956,7 @@
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    window.location.href = "{{url('/showgiohang')}}";
+                                    window.location.href = "{{url('/gio-hang')}}";
                                 });
                         }
                     });

@@ -28,7 +28,7 @@
               <th>Tên người nhận</th>
               <th>Ngày tháng đặt hàng</th>
               <th>Tình trạng đơn hàng</th>
-  
+              <th>Lí do hủy đơn hàng</th>
               <th style="width:30px;"></th>
             </tr>
           </thead>
@@ -48,12 +48,18 @@
               
               <td>{{ $dh->ngaydat }}</td>
               <td>@if($dh->order_status==1)
-                      Đơn hàng mới
-                  @else 
-                      Đã xử lý
+                <span class="text text-success">Đơn hàng mới </span>
+                  @elseif($dh->order_status==2)
+                  <span class="text text-warning"> Đã xử lý - Đã giao hàng </span>
+                      @else 
+                     <span class="text text-danger"> Đã hủy đơn hàng</span>
                   @endif
               </td>
-             
+             <td>
+               @if($dh->order_status==3)
+              {{ $dh->lidohuy }}
+              @endif
+             </td>
              
               <td>
                 <a href="{{URL::to('/xemdonhang/'.$dh->order_id)}}" class="active styling-edit" ui-toggle-class="">

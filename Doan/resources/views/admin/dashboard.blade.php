@@ -25,6 +25,7 @@ p.title_thongke{
                 <p>Lọc theo
                 <select class="dashboard-filter form-control" name="" id="">
                     <option value="">Chọn</option>
+                    <option value="1ngay">1 Ngày qua</option>
                     <option value="7ngay">7 Ngày qua</option>
                     <option value="thangtruoc">Tháng trước</option>
                     <option value="thangnay">Tháng này</option>
@@ -50,7 +51,7 @@ p.title_thongke{
     }
     </style>
     
-<p class="title_thongke">Thống kê truy cập</p>
+{{-- <p class="title_thongke">Thống kê truy cập</p>
 <table>
     <thead>
         <tr>
@@ -66,7 +67,7 @@ p.title_thongke{
             <td></td>
         </tr>
     </tbody>
-</table>
+</table> --}}
   
    </div>
   

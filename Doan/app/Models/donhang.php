@@ -10,7 +10,7 @@ class donhang extends Model
     use HasFactory;
     public $timestamps = false; //set time to false
     protected $fillable = [
-    	'customer_id', 'shipping_id', 'order_status','order_id','created_at','ngaydat'
+    	'customer_id', 'shipping_id', 'order_status','order_id','created_at','ngaydat','lidohuy'
     ];
     protected $primaryKey = 'order_id';
  	protected $table = 'donhangs';
