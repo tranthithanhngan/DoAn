@@ -46,7 +46,7 @@ class AdminController extends Controller
             return view('admin.loginadmin');
     }
     public function dashboard(Request $request){
-      
+       
         $this->validate($request,[
             'admin_email'=>'required|email|max:255',
              'admin_password'=>'required|max:255',
@@ -54,7 +54,8 @@ class AdminController extends Controller
 
       
         if(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password])){
-          
+           
+       
             return Redirect::to('/trangadmin');
         }
         else {

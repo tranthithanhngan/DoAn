@@ -69,7 +69,7 @@ Route::get('/show' , 'App\Http\Controllers\AdminController@show');
 Route::get('/logout','App\Http\Controllers\AdminController@logout');
 Route::get('/login', 'App\Http\Controllers\AdminController@login');
 Route::post('/trangchuaadmin', 'App\Http\Controllers\AdminController@dashboard');
-Route::get('/trangadmin','App\Http\Controllers\AdminController@show_dashboard');
+Route::get('/trangadmin','App\Http\Controllers\AdminController@show_dashboard')->name('admin');
 
 //login fb
 Route::get('/login-facebook','App\Http\Controllers\AdminController@login_facebook');
@@ -183,11 +183,16 @@ Route::post('/update-new-password','App\Http\Controllers\CheckoutController@upda
 
 
 //phân quyền
-
+Route::group(['middleware'=>'auth.roles'],function(){
 Route::get('/users','App\Http\Controllers\PhanquyenController@lietkeusers');
+});
 Route::get('/logindangki','App\Http\Controllers\PhanquyenController@logindangki');
 Route::post('/dangki','App\Http\Controllers\PhanquyenController@dangki');
-Route::get('/assign-roles','App\Http\Controllers\PhanquyenController@assign_roles');
+Route::post('/assign-roles','App\Http\Controllers\PhanquyenController@assign_roles');
+Route::get('/xoa_roles/{admin_id}','App\Http\Controllers\PhanquyenController@xoa_roles');
+Route::get('/chuyen_roles/{admin_id}','App\Http\Controllers\PhanquyenController@chuyen_roles');
+Route::get('/themusers','App\Http\Controllers\PhanquyenController@themusers');
+Route::post('/luuuser','App\Http\Controllers\PhanquyenController@luuuser');
 
 
 //lịch sử đơn hàng
@@ -226,3 +231,13 @@ Route::get('/customer/facebook/callback','App\Http\Controllers\DoanController@cu
 Route::get('/show_quick_cart','App\Http\Controllers\DoanController@show_quick_cart');
 Route::get('/del-product/{session_id}','App\Http\Controllers\GiohangController@delete_product');
 Route::post('/update-cart1','App\Http\Controllers\GiohangController@update_cart1');
+
+//vận chuyển
+Route::get('/vanchuyen','App\Http\Controllers\VanchuyenController@vanchuyen');
+Route::post('/select-delivery','App\Http\Controllers\VanchuyenController@select_delivery');
+Route::post('/insert-delivery','App\Http\Controllers\VanchuyenController@insert_delivery');
+Route::post('/select-feeship','App\Http\Controllers\VanchuyenController@select_feeship');
+Route::post('/update-delivery','App\Http\Controllers\VanchuyenController@update_delivery');
+Route::post('/select-delivery-home','App\Http\Controllers\VanchuyenController@select_delivery_home');
+Route::post('/calculate-fee','App\Http\Controllers\VanchuyenController@calculate_fee');
+Route::get('/del-fee','App\Http\Controllers\VanchuyenController@del_fee');

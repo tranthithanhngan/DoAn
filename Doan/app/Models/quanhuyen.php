@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class rolesAdmin extends Model
+class quanhuyen extends Model
 {
     use HasFactory;
     public $timestamps = false; //set time to false
     protected $fillable = [
-    	'name_id','roles_id'
+    	'name', 'type', 'matp'
     ];
-    protected $primaryKey = 'id_admin_roles';
- 	protected $table = 'adminroles';
-    
-     
+    protected $primaryKey = 'maqh';
+ 	protected $table = 'quanhuyens';
 }

@@ -64,7 +64,9 @@ class DonhangController extends Controller
     public function xemdonhang($order_id){
 
         $donhang_chitiet = donhangchitiet::with('sanpham')->where('order_id',$order_id)->get();
+		
 		$donhang = donhang::where('order_id',$order_id)->get();
+		
 		foreach($donhang as $key => $ord){
 			$customer_id = $ord->customer_id;
 			$shipping_id = $ord->shipping_id;
@@ -87,9 +89,9 @@ class DonhangController extends Controller
 		// 	$coupon_condition = 2;
 		// 	$coupon_number = 0;
 		// }
-       
+		$a=Session::get('fee');
 		
-        return view('admin.xemdonhang')->with(compact('donhang_chitiet','nguoidung','ship','donhang_chitiet_sanpham','donhang','order_status'));
+        return view('admin.xemdonhang')->with(compact('a','donhang_chitiet','nguoidung','ship','donhang_chitiet_sanpham','donhang','order_status'));
     	
       
     }
@@ -332,7 +334,7 @@ class DonhangController extends Controller
 				<td colspan="2">
 					
 					<p>Phí ship: '.number_format($product->product_feeship,0,',','.').'đ'.'</p>
-					<p>Thanh toán : '.number_format($total,0,',','.').'.000VNĐ'.'</p>
+					<p>Thanh toán : '.number_format($total+$product->product_feeship,0,',','.').'VNĐ'.'</p>
 				</td>
 		</tr>';
 		$output.='				

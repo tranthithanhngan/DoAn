@@ -323,13 +323,13 @@
                     @endphp
                     @foreach($cart as $key )
                         @php
-                            $subtotal =(int)$key['price']*(int)$key['qty'];
+                            $subtotal =(float)$key['price']*(float)$key['qty'];
                             $total+=$subtotal;
                         @endphp
 
                     <tr>
                         <td class="cart_product">
-                            {{-- <img src="{{asset('image/'.$cart['image'])}}" width="90" alt="{{$cart['name']}}" /> --}}
+                            <img src="{{asset('image/'.$key['options']['image'])}}" width="90" alt="{{$key['name']}}" />
                         </td>
                         <td class="cart_description">
                             <h4><a href=""></a></h4>
@@ -353,7 +353,7 @@
                         </td>
                         <td class="cart_total">
                             <p class="cart_total_price">
-                                {{(int)number_format($subtotal,0,',','.')}}.000VNĐ
+                                {{(float)number_format($subtotal,0,',','.')}}.000VNĐ
                                 
                             </p>
                         </td>
@@ -366,7 +366,7 @@
                     <tr>
                         
                         <td colspan="2">
-                        <li>Tổng tiền :<span>{{number_format($total,0,',','.')}}.000VNĐ</span></li>
+                        <li>Tổng tiền :<span>{{(float)number_format($total,0,',','.')}}.000VNĐ</span></li>
                         @if(Session::get('coupon'))
                         <li>
                             
@@ -396,8 +396,12 @@
 
                         </li>
                         @endif 
-                    {{-- 	<li>Thuế <span></span></li>
-                        <li>Phí vận chuyển <span>Free</span></li> --}}
+                    {{-- 	<li>Thuế <span></span></li> --}}
+                       
+                        
+                                      
+                        <li>  <a class="cart_quantity_delete" href="{{url('/del-fee/'.$key['session_id'])}}"><i class="fa fa-times"></i></a> Phí vận chuyển <span>{{number_format(Session::get('fee'))}} VNĐ</span></li> 
+                     
                         
                         
                     </td>
@@ -423,7 +427,7 @@
             {{ csrf_field() }}
         <div class="payment-options">
                 <span>
-                    <label><input name="payment_option" name1="redirect" value="1" type="checkbox">
+                    <label><input name ="redirect"  value="1" type="checkbox">
                        <a >Trả bằng VNPAY</a> </label>
                 </span>
                 <span>

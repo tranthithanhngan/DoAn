@@ -10,7 +10,7 @@ class Admin extends Authenticatable
 {
     use HasFactory;
     protected $fillable = [
-        'admin_email','admin_password','admin_name','admin_phone'
+        'admin_email','admin_password','admin_name','admin_phone','idroles'
     ];
     protected $primaryKey = 'admin_id';
     protected $table = 'admins';
@@ -28,4 +28,6 @@ class Admin extends Authenticatable
     public function hasRole($role){
         return null !== $this->roles()->where('name_roles',$role)->first();
     }
+
+    
 }

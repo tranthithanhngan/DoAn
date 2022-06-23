@@ -59,23 +59,23 @@ class DoanController extends Controller
         </thead>
         <tbody>';
         if($cart==true){
-            // <img src="'.url('image/'.$key['image']).'" width="90" alt="'.$key['name'].'" /> 
+           
         $total=0;            
            foreach($cart as $key =>$val){
-             $subtotal = (int)$val['price']*(int)$val['qty'];
+             $subtotal = (float)$val['price']*(float)$val['qty'];
               $total+=$subtotal;
                                           
                                      $output.='<tr>
                                             <td class="">
                                         
-                                                
+                                            <img src="'.url('image/'.$val['options']['image']).'" width="90" alt="'.$val['name'].'" /> 
                                             </td>
                                             <td class="cart_description">
                                                 <h4><a href=""></a></h4>
                                                 <p>'.$val['name'].'</p>
                                             </td>
                                             <td class="cart_price">
-                                                <p>'.(int)number_format((int)$val['price'],0,',','.').'.000 VNĐ</p>
+                                                <p>'.(float)number_format((float)$val['price'],0,',','.').'.000 VNĐ</p>
                                             </td>
                                             
                                            
@@ -89,7 +89,7 @@ class DoanController extends Controller
 							</td>
                                             <td class="cart_total">
                                                 <p class="cart_total_price">
-                                                    '.(int)number_format($subtotal,0,',','.').'.000VNĐ
+                                                    '.(float)number_format((float)$subtotal,0,',','.').'.000VNĐ
                                                     
                                                 </p>
                                             </td>
@@ -254,9 +254,9 @@ class DoanController extends Controller
        $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
 
        $timkiem_sp = DB::table('sanphams')->where('tensanpham','like','%'.$keywords.'%')->get(); 
-
-
-       return view('layout.timkiem')->with('baivietpost', $baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('timkiem_sp',$timkiem_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        
+            return view('layout.timkiem')->with('baivietpost', $baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('timkiem_sp',$timkiem_sp)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+        
 
    }
     /**

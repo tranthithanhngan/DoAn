@@ -277,14 +277,22 @@
                             <h2>Thương hiệu sản phẩm</h2>
                             <div class="brands-name">
                                 <ul class="nav nav-pills nav-stacked">
-                                    @foreach($thuonghieu as $key => $th)
+                                    {{-- @foreach($thuonghieu as $key => $th)
                                     <li><a href="{{URL::to('/thuong-hieu/'.$th->idthuonghieu)}}"> <span class="pull-right"></span>{{$th->tenthuonghieu}}</a></li>
-                                    @endforeach
+                                    @endforeach --}}
                                 </ul>
                             </div>
                         </div><!--/brands_products-->
                         
-                     
+                        <div class="Yeuthich_products row">
+                            <h2>Sản phẩm yêu thích</h2>
+                            <div class="yeuthich-name">
+                               <div id="row_wishlist" class="row">
+                                   
+                               </div>
+                            </div>
+                            
+                        </div>
                     
                     </div>
                 </div>
@@ -461,6 +469,7 @@
 		                                            <img src="{{URL::to('image/'.$lienquan->hinhsanpham)}}" alt="" />
 		                                            <h2>{{number_format($lienquan->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
 		                                            <p>{{$lienquan->tensanpham}}</p>
+                                                    <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$lienquan->idsanpham}}" name="add-to-cart">
                                                     </a>
 		                                        </div>
 		                                      
@@ -497,7 +506,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                        <img src="image/mebeg.jpg" alt="" />
+                                        <img src="http://127.0.0.1:8000/image/mebeg.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -512,7 +521,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mevabe.png" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mevabe.png" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -527,7 +536,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mebe1.jpg" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mebe1.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -542,7 +551,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mebe2.jpg" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mebe2.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -611,6 +620,74 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
+
+<script  type="text/javascript">
+    $(document).ready(function(){
+        $('#sort').on('change',function(){
+    var url=$(this).val();
+    
+    if(url){
+        window.location=url;
+    }
+    return false;
+        });
+    });
+    </script>
+    <script type="text/javascript">
+        function view(){
+            if(localStorage.getItem('data')!=null){
+                var data= JSON.parse(localStorage.getItem('data'));
+                data.reverse();
+                document.getElementById('row_wishlist').style.overflow='scroll';
+                document.getElementById('row_wishlist').style.height='400px';
+        
+                for(i=0; i<data.length;i++){
+                    var ten= data[i].ten;
+                    var gia= data[i].gia;
+                    var hinh= data[i].hinhsanpham;
+                    var url= data[i].url;
+                    $("#row_wishlist").append('<div class="row" style="margin:10px 0;"><div class="col-md-4"><img src="'+hinh+'" width="100%"></div><div class="col-md-8 info_wishlist"><p>'+ten+'</p><p style="color:#FE980F">'+gia+'</p><a href="'+url+'">Đặt hàng</a></div></div>');
+        
+        
+                }
+            }
+        }
+        view();
+        function add_wishlist(click_id)
+        {
+            var id=click_id;
+        
+            var ten= document.getElementById('wishlist_tensanpham'+id).value;
+            var gia= document.getElementById('wishlist_giasanpham'+id).value;
+            var hinhsanpham= document.getElementById('wishlist_hinhsanpham'+id).src;
+            var url= document.getElementById('wishlist_url'+id).href;
+           
+            var newItem={
+                'url':url,
+                'id':id,
+                'ten':ten,
+                'gia':gia,
+                'hinhsanpham':hinhsanpham
+            }
+             if(localStorage.getItem('data')==null){
+                localStorage.setItem('data','[]');
+            }
+            var old_data=JSON.parse(localStorage.getItem('data'));
+           
+            var matches= $.grep(old_data,function(obj){
+                return obj.id==id;
+            })
+            if(matches.length){
+                alert('Sản phẩm bạn đã yêu thích nên không thể thêm');
+        
+            }else{
+                old_data.push(newItem);
+                $("#row_wishlist").append('<div class="row" style="margin:10px 0;"><div class="col-md-4"><img src="'+newItem.hinhsanpham+'" width="100%"></div><div class="col-md-8 info_wishlist"><p>'+newItem.ten+'</p><p style="color:#FE980F">'+newItem.gia+'</p><a href="'+newItem.url+'">Đặt hàng</a></div></div>');
+            }
+            localStorage.setItem('data',JSON.stringify(old_data));
+        }
+        </script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 // alert(idsp);

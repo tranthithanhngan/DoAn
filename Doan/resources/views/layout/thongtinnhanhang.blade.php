@@ -342,6 +342,39 @@
                                                         <input style="background-color:#4caf50" type="submit" class="btn btn-default check_coupon" name="check_coupon"  value="Xác nhận thông tin nhận hàng">
                                                  
                                                 </form>
+                                                <form>
+                                                    @csrf 
+                                             
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Chọn thành phố</label>
+                                                      <select name="city" id="city" class="form-control input-sm m-bot15 choose city">
+                                                    
+                                                            <option value="">--Chọn tỉnh thành phố--</option>
+                                                        @foreach($city as $key => $ci)
+                                                            <option value="{{$ci->matp}}">{{$ci->name}}</option>
+                                                        @endforeach
+                                                            
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Chọn quận huyện</label>
+                                                      <select name="province" id="province" class="form-control input-sm m-bot15 province choose">
+                                                            <option value="">--Chọn quận huyện--</option>
+                                                           
+                                                    </select>
+                                                </div> 
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Chọn xã phường</label>
+                                                      <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
+                                                            <option value="">--Chọn xã phường--</option>   
+                                                    </select>
+                                                </div>
+                                               
+                                               
+                                                 <input type="button" value="Tính phí vận chuyển" name="calculate_order" class="btn btn-primary btn-sm calculate_delivery">
+                
+                
+                                                </form>
                                                 <div class="container" style="margin-top: 0;pa">
                                                     
                                             
@@ -372,13 +405,14 @@
                                                                 @endphp
                                                                 @foreach($cart as $key )
                                                                     @php
-                                                                        $subtotal = (int)$key['price']*(int)$key['qty'];
+                                                                        $subtotal = (float)$key['price']*(float)$key['qty'];
                                                                         $total+=$subtotal;
+                                                                    //  dd($key['options']['image']);
                                                                     @endphp
                                         
-                                                                <tr>
+                                                                 <tr>
                                                                     <td class="cart_product">
-                                                                        {{-- <img src="{{asset('image/'.$cart['image'])}}" width="90" alt="{{$cart['name']}}" /> --}}
+                                                                       <img src="{{asset('image/'.$key['options']['image'])}}" width="90" alt="{{$key['name']}}" /> 
                                                                     </td>
                                                                     <td class="cart_description">
                                                                         <h4><a href=""></a></h4>
@@ -402,14 +436,14 @@
                                                                     </td>
                                                                     <td class="cart_total">
                                                                         <p class="cart_total_price">
-                                                                            {{(int)number_format($subtotal,0,',','.')}}.000VNĐ
+                                                                            {{(float)number_format((float)$subtotal,0,',','.')}}.000VNĐ
                                                                             
                                                                         </p>
                                                                     </td>
                                                                     <td class="cart_delete">
                                                                         <a class="cart_quantity_delete" href="{{url('/del-product/'.$key['session_id'])}}"><i class="fa fa-times"></i></a>
-                                                                    </td>
-                                                                </tr>
+                                                                    </td> 
+                                                                </tr> 
                                                                 
                                                                 @endforeach
                                                                 <tr>
@@ -417,7 +451,7 @@
                                                                         <form action="{{URL::to('/vnpay')}}" method="POST">
                                                                             @csrf
                                                                             <input type="hidden" name="total_vnpay" value="{{Cart::priceTotal(0).' '.'vnđ'}}">
-                                                                        <button type="submit" name =" redirect" class="btn btn-default check_out">Thanh toán VNPAY</button>
+                                                                        <button type="submit" name ="redirect" class="btn btn-default check_out">Thanh toán VNPAY</button>
                                                                     </form>
                                                                     </td>
                                                                     <td>
@@ -438,7 +472,7 @@
                                         
                                                                     
                                                                     <td colspan="2">
-                                                                    <li>Tổng tiền :<span>{{number_format($total,0,',','.')}}.000VNĐ</span></li>
+                                                                    <li>Tổng tiền :<span>{{(float)number_format((float)$total,0,',','.')}}.000VNĐ</span></li>
                                                                     @if(Session::get('coupon'))
                                                                     <li>
                                                                         
@@ -468,8 +502,12 @@
                                         
                                                                     </li>
                                                                     @endif 
-                                                                {{-- 	<li>Thuế <span></span></li>
-                                                                    <li>Phí vận chuyển <span>Free</span></li> --}}
+                                                              	{{-- <li>Thuế <span></span></li> --}}
+                                                                    @if(Session::get('fee'))
+                                      
+                                            <li>  <a class="cart_quantity_delete" href="{{url('/del-fee/'.$key['session_id'])}}"><i class="fa fa-times"></i></a> Phí vận chuyển <span>{{number_format(Session::get('fee'))}}</span></li> 
+
+                                            @endif
                                                                     
                                                                     
                                                                 </td>
@@ -495,39 +533,7 @@
                                                     <input type="button" style="margin-top: 0;width:200px;height:35px;background-color:#4caf50;border-radius:2px" value="Xác nhận đơn hàng" name="send_order" class="btn btn-primary btn-sm send_order">
                                                    
                                                 </div>
-                                                <form>
-                                                    @csrf 
-                                             
-                                                <div class="form-group">
-                                                    {{-- <label for="exampleInputPassword1">Chọn thành phố</label>
-                                                      <select name="city" id="city" class="form-control input-sm m-bot15 choose city">
-                                                    
-                                                            <option value="">--Chọn tỉnh thành phố--</option>
-                                                        @foreach($city as $key => $ci)
-                                                            <option value="{{$ci->matp}}">{{$ci->name_city}}</option>
-                                                        @endforeach
-                                                            
-                                                    </select> --}}
-                                                </div>
-                                                {{-- <div class="form-group">
-                                                    <label for="exampleInputPassword1">Chọn quận huyện</label>
-                                                      <select name="province" id="province" class="form-control input-sm m-bot15 province choose">
-                                                            <option value="">--Chọn quận huyện--</option>
-                                                           
-                                                    </select>
-                                                </div> --}}
-                                                  {{-- <div class="form-group">
-                                                    <label for="exampleInputPassword1">Chọn xã phường</label>
-                                                      <select name="wards" id="wards" class="form-control input-sm m-bot15 wards">
-                                                            <option value="">--Chọn xã phường--</option>   
-                                                    </select>
-                                                </div> --}}
-                                               
-                                               
-                                                  {{-- <input type="button" value="Tính phí vận chuyển" name="calculate_order" class="btn btn-primary btn-sm calculate_delivery"> --}}
-                
-                
-                                                </form>
+                                              
                 
                                             </div>
                                             
@@ -853,7 +859,31 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
-
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.choose').on('change',function(){
+        var action = $(this).attr('id');
+        var ma_id = $(this).val();
+        var _token = $('input[name="_token"]').val();
+        var result = '';
+       
+        if(action=='city'){
+            result = 'province';
+        }else{
+            result = 'wards';
+        }
+        $.ajax({
+            url : '{{url('/select-delivery-home')}}',
+            method: 'POST',
+            data:{action:action,ma_id:ma_id,_token:_token},
+            success:function(data){
+               $('#'+result).html(data);     
+            }
+        });
+    });
+    });
+      
+</script>
 
     <script type="text/javascript">
           $(document).ready(function(){
@@ -965,31 +995,7 @@ show_cart();
             });
         });
     </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.choose').on('change',function(){
-            var action = $(this).attr('id');
-            var ma_id = $(this).val();
-            var _token = $('input[name="_token"]').val();
-            var result = '';
-           
-            if(action=='city'){
-                result = 'province';
-            }else{
-                result = 'wards';
-            }
-            $.ajax({
-                url : '{{url('/select-delivery-home')}}',
-                method: 'POST',
-                data:{action:action,ma_id:ma_id,_token:_token},
-                success:function(data){
-                   $('#'+result).html(data);     
-                }
-            });
-        });
-        });
-          
-    </script>
+    
     <script type="text/javascript">
         $(document).ready(function(){
             $('.calculate_delivery').click(function(){

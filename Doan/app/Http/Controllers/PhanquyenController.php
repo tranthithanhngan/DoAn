@@ -7,6 +7,7 @@ use App\Models\roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use DB;
+use Session;
 class PhanquyenController extends Controller
 {
     //
@@ -25,30 +26,74 @@ class PhanquyenController extends Controller
     public function lietkeusers()
     {
         $this->AuthLogin();
-   
-        $admin = DB::table('adminroles')
-   ->join('admins','admins.admin_id','=','adminroles.name_id')
-   ->join('phanquyens','phanquyens.id_roles','=','adminroles.roles_id')
-   ->select('adminroles.*','admins.*','phanquyens.*')->orderby('adminroles.name_id','desc')->get();
+        $admin = Admin::with('roles')->orderBy('admin_id','DESC')->paginate(5);   
    $manager_product  = view('admin.lietkeusers')->with('admin',$admin);
    return view('admin.danhmuc')->with('admin.lietkeusers', $manager_product);
        
     }
+    public function xoa_roles($admin_id)
+    {
+        if(Auth::id()==$admin_id)
+        {
+            return redirect()->back()->with('message','Bạn không được quyền xóa chính mình');
+        }
+        
+            $admin=Admin::find($admin_id);
+            if($admin){
+                $admin->roles()->detach();
+                $admin->delete();
+            }
+          
+            return redirect()->back()->with('message','Xóa user thành công');
+    }
     public function logindangki(Request $request){
         return view('admin.dangki');
     }
+
+    public function themusers(){
+        $this->AuthLogin();
+    	return view('admin.themuser');
+    }
+    public function chuyen_roles($admin_id){
+        $this->AuthLogin();
+    $user=Admin::where('admin_id',$admin_id)->first();
+    if($user){
+        session()->put('chuyen_roles',$user->admin_id);
+    }
+    return redirect('/user');
+    }
+   
+    public function luuuser(Request $request){
+        $this->AuthLogin();
+        $data= $request->all();
+        $admin=new Admin();
+        $admin->admin_name=$data['admin_name'];
+        $admin->admin_phone=$data['admin_phone'];
+        $admin->admin_email=$data['admin_email'];
+        $admin->admin_password=$data['admin_password'];
+       
+        $admin->roles()->attach(roles::where('name_roles','user')->first());
+        $admin->save();
+        Session::put('message','Thêm user thành công');
+        return Redirect::to('users');
+    }
     public function assign_roles(Request $request){
-        $data = $request->all();
+        if(Auth::id()==$request->admin_id)
+        {
+            return redirect()->back()->with('message','Bạn không được phân quyền chính mình');
+        }
+        // $data = $request->all();
         $user = Admin::where('admin_email',$data['admin_email'])->first();
-        $user->roles()->detach();
+        
+        $user->roles()->detach();    
         if($request['author_role']){
-           $user->roles()->attach(Roles::where('name','author')->first());     
+           $user->roles()->attach(roles::where('name_roles','author')->first());     
         }
         if($request['user_role']){
-           $user->roles()->attach(Roles::where('name','user')->first());     
+           $user->roles()->attach(roles::where('name_roles','user')->first());     
         }
         if($request['admin_role']){
-           $user->roles()->attach(Roles::where('name','admin')->first());     
+           $user->roles()->attach(roles::where('name_roles','admin')->first());     
         }
         return redirect()->back()->with('message','Cấp quyền thành công');
     }

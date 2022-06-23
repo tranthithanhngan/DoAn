@@ -43,19 +43,21 @@
                 <td>{{ $user->admin_name }}</td>
                 <td>{{ $user->admin_email }} 
                   <input type="hidden" name="admin_email" value="{{ $user->admin_email }}"></td>
-                <td>{{ $user->admin_phone }}</td>
+                  <input type="hidden" name="admin_id" value="{{ $user->admin_id }}"></td>
+                <td>{{ $user->admin_phone }} </td>
                 <td>{{ $user->admin_password }}</td>
-                <td><input type="checkbox" name="author_role" {{$user->name_roles==('author') ? 'checked' : ''}}></td>
-                <td><input type="checkbox" name="admin_role"  {{$user->name_roles==('admin') ? 'checked' : ''}}></td>
-                <td><input type="checkbox" name="user_role"  {{$user->name_roles==('user') ? 'checked' : ''}}></td>
+                <td><input type="radio" name="author_role" {{$user->hasRole('author') ? 'checked' : ''}}></td>
+                <td><input type="radio" name="admin_role"  {{$user->hasRole('admin') ? 'checked' : ''}}></td>
+                <td><input type="radio" name="user_role"  {{$user->hasRole('user') ? 'checked' : ''}}></td>
 <td></td>
 <td></td>
 <td></td>
               <td>
                   
                     
-                 <input type="submit" value="Assign roles" class="btn btn-sm btn-default">
-                
+                <p> <input type="submit" value="Trao quyền" class="btn btn-sm btn-default"></p>
+              <p><a class="btn btn-sma btn-danger"href="{{url('/xoa_roles/'.$user->admin_id)}}">Xóa user</a></p>
+              <p><a class="btn btn-sma btn-success"href="{{url('/chuyen_roles/'.$user->admin_id)}}">Đổi user</a></p>
               </td> 
 
               </tr>

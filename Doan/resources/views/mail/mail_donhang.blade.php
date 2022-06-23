@@ -88,18 +88,19 @@
         @endphp
         @foreach($cart_array as $cart)
         @php
-        $sub_total=(int)$cart['slsanpham']*(int)$cart['giasanpham'];
+        $sub_total=(float)$cart['slsanpham']*(float)$cart['giasanpham'];
         $total+=$sub_total;
         @endphp
     <tr>
         <td>{{$cart['tensanpham']}} </td>
-        <td>{{(int)number_format((int)$cart['giasanpham'],0,',','.')}}vnđ </td>
+        <td>{{(float)number_format((float)$cart['giasanpham'],0,',','.')}}.000vnđ </td>
         <td> {{$cart['slsanpham']}}</td>
-        <td>{{number_format($sub_total,0,',','.')}}vnđ </td>
+        <td>{{(float)number_format($sub_total,0,',','.')}}.000vnđ </td>
         </tr> 
         @endforeach
         <tr>
-            <td colspan="4" align="right">Tổng tiền thanh toán: {{number_format($total,0,',','.')}}vnđ </td>
+          
+            <td colspan="4" align="right">Tổng tiền thanh toán: {{(float)number_format($total,0,',','.')}}.000vnđ </td>
         </tr>   
     </tbody>
     </table>

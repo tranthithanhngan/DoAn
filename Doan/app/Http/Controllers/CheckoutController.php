@@ -8,6 +8,7 @@ use Mail;
 use Carbon\Carbon;
 use App\Models\nguoidung;
 use App\Models\Nguoidungs;
+use App\Models\tinhthanhpho;
 use App\Models\ship;
 use App\Models\Slider;
 use App\Models\donhangchitiet;
@@ -190,9 +191,10 @@ public function checkout(Request $request){
 
    $danhmuc = DB::table('danhmucs')->orderby('id')->get();
    $thuonghieu = DB::table('thuonghieus')->orderby('idthuonghieu')->get(); 
-// $city = City::orderby('matp','ASC')->get();
+$city = tinhthanhpho::orderby('matp','ASC')->get();
 $cart = Session::get('cart');
-   return view('layout.thongtinnhanhang')->with('cart',$cart)->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
+
+   return view('layout.thongtinnhanhang')->with('cart',$cart)->with('baivietpost',$baivietpost)->with('city',$city)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 }
 
 public function dangkithongtin(Request $request){
@@ -394,6 +396,7 @@ public function vnpay(Request $request){
     $CartShop=Session::get('cart');
   
     foreach($CartShop as $v_content){
+       
         $order_d_data['order_id'] = $order_id;
         $order_d_data['idsanpham'] = $v_content['id'];  
         $order_d_data['tensanpham'] = $v_content['name'];
@@ -406,76 +409,77 @@ public function vnpay(Request $request){
 
     if($data['payment_method']==1){
 
-    $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    $vnp_Returnurl = "http://127.0.0.1:8000/checkout";
-    $vnp_TmnCode = "TZIKCEOY";//Mã website tại VNPAY 
-    $vnp_HashSecret = "ZFVVHVKWMZZTRFNYZXHWQLQAMOWMMLZC"; //Chuỗi bí mật
-
-    $vnp_TxnRef = '123'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-    $vnp_OrderInfo = 'Thanh toán đơn hàng';
-    $vnp_OrderType = 'billpayment';
-    $vnp_Amount = 100000 * 100;
-    $vnp_Locale = 'vn';
-    $vnp_BankCode = 'NCB';
-    $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-    //Add Params of 2.0.1 Version
-    // $vnp_ExpireDate = $_POST['txtexpire'];
-    //Billing
-   
-    $inputData = array(
-    "vnp_Version" => "2.1.0",
-    "vnp_TmnCode" => $vnp_TmnCode,
-    "vnp_Amount" => $vnp_Amount,
-    "vnp_Command" => "pay",
-    "vnp_CreateDate" => date('YmdHis'),
-    "vnp_CurrCode" => "VND",
-    "vnp_IpAddr" => $vnp_IpAddr,
-    "vnp_Locale" => $vnp_Locale,
-    "vnp_OrderInfo" => $vnp_OrderInfo,
-    "vnp_OrderType" => $vnp_OrderType,
-    "vnp_ReturnUrl" => $vnp_Returnurl,
-    "vnp_TxnRef" => $vnp_TxnRef
-    // "vnp_ExpireDate"=>$vnp_ExpireDate
-  
-    );
-
-    if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-        $inputData['vnp_BankCode'] = $vnp_BankCode;
-    }
-    if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-        $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-    }
-
-    //var_dump($inputData);
-    ksort($inputData);
-    $query = "";
-    $i = 0;
-    $hashdata = "";
-    foreach ($inputData as $key => $value) {
-        if ($i == 1) {
-            $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-        } else {
-            $hashdata .= urlencode($key) . "=" . urlencode($value);
-            $i = 1;
-        }
-        $query .= urlencode($key) . "=" . urlencode($value) . '&';
-      }
-
-        $vnp_Url = $vnp_Url . "?" . $query;
-        if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
-            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
-        }
-        $returnData = array('code' => '00'
-        , 'message' => 'success'
-        , 'data' => $vnp_Url);
-        
-        if (isset($_POST['redirect'])) {
-            header('Location: ' . $vnp_Url);
-            die();
-        } else {
-            echo json_encode($returnData);
-        }
+        // $data= $request->all();
+        // $code = rand(00,9999);
+        // $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        // $vnp_Returnurl = "http://127.0.0.1:8000/checkout";
+        // $vnp_TmnCode = "TZIKCEOY";//Mã website tại VNPAY 
+        // $vnp_HashSecret = "ZFVVHVKWMZZTRFNYZXHWQLQAMOWMMLZC"; //Chuỗi bí mật
+    
+        // $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        // $vnp_OrderInfo = 'Thanh toán đơn hàng';
+        // $vnp_OrderType = 'billpayment';
+        // $vnp_Amount = 2000000*100;
+        // $vnp_Locale = 'vn';
+        // $vnp_BankCode = 'NCB';
+        // $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        // //Add Params of 2.0.1 Version
+        // // $vnp_ExpireDate = $_POST['txtexpire'];
+        // //Billing
+       
+        // $inputData = array(
+        // "vnp_Version" => "2.1.0",
+        // "vnp_TmnCode" => $vnp_TmnCode,
+        // "vnp_Amount" => $vnp_Amount,
+        // "vnp_Command" => "pay",
+        // "vnp_CreateDate" => date('YmdHis'),
+        // "vnp_CurrCode" => "VND",
+        // "vnp_IpAddr" => $vnp_IpAddr,
+        // "vnp_Locale" => $vnp_Locale,
+        // "vnp_OrderInfo" => $vnp_OrderInfo,
+        // "vnp_OrderType" => $vnp_OrderType,
+        // "vnp_ReturnUrl" => $vnp_Returnurl,
+        // "vnp_TxnRef" => $vnp_TxnRef
+        // // "vnp_ExpireDate"=>$vnp_ExpireDate
+      
+        // );
+    
+        // if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+        //     $inputData['vnp_BankCode'] = $vnp_BankCode;
+        // }
+        // if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+        //     $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        // }
+    
+        // //var_dump($inputData);
+        // ksort($inputData);
+        // $query = "";
+        // $i = 0;
+        // $hashdata = "";
+        // foreach ($inputData as $key => $value) {
+        //     if ($i == 1) {
+        //         $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+        //     } else {
+        //         $hashdata .= urlencode($key) . "=" . urlencode($value);
+        //         $i = 1;
+        //     }
+        //     $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        //   }
+    
+        //     $vnp_Url = $vnp_Url . "?" . $query;
+        //     if (isset($vnp_HashSecret)) {
+        //         $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);//  
+        //         $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        //     }
+        //     $returnData = array('code' => '00'
+        //     , 'message' => 'success'
+        //     , 'data' => $vnp_Url);
+        //     if (isset($_POST['redirect'])) {
+        //         header('Location: ' . $vnp_Url);
+        //         die();
+        //     } else {
+        //         echo json_encode($returnData);
+        //     }
     }elseif($data['payment_method']==2){
         Cart::destroy();
 
@@ -485,7 +489,8 @@ public function vnpay(Request $request){
     if($cart==true){
         
         Session::forget('cart');
-        Session::forget('coupon');
+          Session::forget('fee');
+        // Session::forget('coupon');
     }
         return view('layout.dathangxong')->with('baivietpost',$baivietpost)->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider);
 
@@ -510,15 +515,22 @@ public function logout_checkout(){
     public function confirm_order(Request $request){
         $data = $request->all();
 
-        $shipping = new ship();
-        $shipping->shipping_name = $data['shipping_name'];
-        $shipping->shipping_email = $data['shipping_email'];
-        $shipping->shipping_phone = $data['shipping_phone'];
-        $shipping->shipping_address = $data['shipping_address'];
-        $shipping->shipping_notes = $data['shipping_notes'];
-        $shipping->shipping_method = $data['shipping_method'];
-        // $shipping->save();
-        $shipping_id = $shipping->shipping_id;
+$idship=Session::get('shipping_id');
+$tatca_ship=ship::where('shipping_id',$idship)->select('ships.*')->get();
+foreach($tatca_ship as $key)
+{
+    $shipping = new ship();
+    $shipping->shipping_name = $key['shipping_name'];
+    $shipping->shipping_email = $key['shipping_email'];
+    $shipping->shipping_phone = $key['shipping_phone'];
+    $shipping->shipping_address = $key['shipping_address'];
+    $shipping->shipping_notes = $key['shipping_notes'];
+    $shipping->shipping_method = $key['shipping_method'];
+    $shipping->save();
+    
+}
+
+$shipping_id = $shipping->shipping_id;
 
         $checkout_code = substr(md5(microtime()),rand(0,26),5);
 
@@ -535,7 +547,7 @@ public function logout_checkout(){
 
         $order->created_at = $today;
         $order->ngaydat = $ngaydat;
-        // $order->save();
+        $order->save();
         if(Session::get('cart')==true){
             $CartShop=Session::get('cart');
            foreach($CartShop as $cart=>$val){
@@ -545,7 +557,8 @@ public function logout_checkout(){
                $order_details->tensanpham = $val['name'];
                $order_details->giasanpham = $val['price'];
                $order_details->product_sales_quantity = $val['qty'];
-            //    $order_details->save();
+               $order_details->product_feeship = $data['order_fee'];
+               $order_details->save();
            }
         }
 
@@ -587,7 +600,7 @@ public function logout_checkout(){
             $message->to($data['email'])->subject($title_mail);
             $message->from($data['email'],$title_mail);
         });
-        // Session::forget('coupon');
+        Session::forget('coupon');
         // Session::forget('fee');
         // Session::forget('cart');
    }

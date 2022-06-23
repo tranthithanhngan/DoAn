@@ -138,13 +138,13 @@ class GiohangController extends Controller
                 // }
              
                 // $cart[$key] = array(
-                //     'id' => (int)$val['id'],
-                //     'name' => $val['name'],
-                //     'weight' => $val['weight'],
-                //     'qty' =>$val['qty']+ $data['cart_product_qty'],
-                //     'price' => $val['price'],
+                //     'id' => (int)$key['id'],
+                //     'name' => $key['name'],
+                //     'weight' => $key['weight'],
+                //     'qty' =>$key['qty']+ $data['cart_product_qty'],
+                //     'price' => $key['price'],
                 //     'options' => array(
-                //        "image"=> $val['image'],
+                //        "image"=> $data['cart_product_image'],
                 //     ) 
                    
                   

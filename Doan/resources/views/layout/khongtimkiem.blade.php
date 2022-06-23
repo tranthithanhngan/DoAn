@@ -51,7 +51,7 @@
                         <div class="contactinfo">
                             <ul class="nav nav-pills">
                                 <li><a href="#"><i class="fa fa-phone"></i> 0932023992</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i>webmevabe.com</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> webmevabe.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -126,28 +126,31 @@
 
                              {{-- <li><a href="{{URL::to('/showgiohang')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li> --}}
                              <?php
-                             $customer_id = Session::get('customer_id');
-                             if($customer_id!=NULL){ 
-                           ?>
-                            <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử đơn hàng</a></li>
-                       
-                          <?php
-                      }
-                           ?>
-                            <?php
                                 $customer_id = Session::get('customer_id');
                                 if($customer_id!=NULL){ 
                               ?>
-                               <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
-                             
+                               <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-lock"></i> Lịch sử đơn hàng</a></li>
+                          
                              <?php
-                         }else{
+                         }
                               ?>
-                              <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
-                              <?php 
-                          }
-                              ?>
-                                  {{-- <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li> --}}
+
+
+                            <?php
+                            $customer_id = Session::get('customer_id');
+                            if($customer_id!=NULL){ 
+                            ?>
+                            <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
+
+                            <?php
+                            }else{
+                            ?>
+                            <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                            <?php 
+                            }
+                            ?>
+
+                    {{-- <li><a href="{{URL::to('/lichsu')}}"><i class="fa fa-shopping-cart"></i> Lịch sử</a></li> --}}
                             </ul>
                         </div>
                     </div>
@@ -169,7 +172,7 @@
                         </div>
                         <div class="mainmenu pull-left">
                             <ul class="nav navbar-nav collapse navbar-collapse">
-                                <li><a href="/" class="">Trang chủ</a></li>
+                                <li><a href="/" >Trang chủ</a></li>
                                 <li class="dropdown"><a href="#">Danh mục <i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         @foreach($danhmuc as $key => $cate)
@@ -178,9 +181,13 @@
                                     </ul>
                                 </li> 
                                 <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-                                    
+                                    <ul role="menu" class="sub-menu">
+                                        @foreach($baivietpost as $key => $cate)
+                                        <li><a href="{{URL::to('/baiviet/'.$cate->baiviet_id)}}">{{$cate->baiviet_name}}</a></li>
+                                        @endforeach
+                                    </ul>
                                 </li> 
-                                <li><a href="/gio-hang"class ="{{Request::segment(1) == 'gio-hang' ? 'active' : ''}}">Giỏ hàng</a></li>
+                                <li><a href="/gio-hang" class="{{Request::segment(1) == 'dathang'  ? 'active' : ''}}">Giỏ hàng</a></li>
                                 <li><a href="/lienhe">Liên hệ</a></li>
                             </ul>
                         </div>
@@ -197,8 +204,7 @@
                 </div>
             </div>
         </div><!--/header-bottom-->
-    </header><!--/header-->
-    
+    </header><!--/slider-->
     <section id="slider"><!--slider-->
         <div class="container">
             <div class="row">
@@ -282,174 +288,17 @@
                 <div class="col-sm-9 padding-right">
                     <section id="cart_items">
                         <div class="container">
-                            <div class="breadcrumbs">
-                                <ol class="breadcrumb">
-                                  <li><a href="{{URL::to('/')}}">Trang chủ</a></li>
-                                  <li class="active">Giỏ hàng của bạn</li>
-                                </ol>
+                            
+                            <div class="review-payment">
+                                <h2>
+                               Không tim thấy sản phẩm bạn cần tìm!!!</h2>
                             </div>
-                              @if(session()->has('message'))
-                                    <div class="alert alert-success">
-                                        {!! session()->get('message') !!}
-                                    </div>
-                                @elseif(session()->has('error'))
-                                     <div class="alert alert-danger">
-                                        {!! session()->get('error') !!}
-                                    </div>
-                                @endif
-                            <div class="table-responsive cart_info">
-                
-                                <form action="{{url('/update-cart1')}}" method="POST">
-                                    @csrf
-                                <table class="table table-condensed">
-                                    <thead>
-                                        <tr class="cart_menu">
-                                            <td class="image">Hình ảnh</td>
-                                            <td class="description">Tên sản phẩm</td> 
-                                            <td class="description">Số lượng tồn</td>         
-                                            <td class="price">Giá sản phẩm</td>
-                                            <td class="quantity">Số lượng</td>
-                                            <td class="total">Thành tiền</td>
-                                            <td></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if($cart==true)
-                                        @php
-                                                $total = 0;
-                                        @endphp
-                                        @foreach($cart as $key )
-                                            @php
-                                                $subtotal = (float)$key['price']*(float)$key['qty'];
-                                                $total+=$subtotal;
-                                            @endphp
-                
-                                        <tr>
-                                            <td class="cart_product">
-                                                {{-- <img src="{{asset('image/'.$cart['image'])}}" width="90" alt="{{$cart['name']}}" /> --}}
-                                            </td>
-                                            <td class="cart_description">
-                                                <h4><a href=""></a></h4>
-                                                <p>{{$key['name']}}</p>
-                                            </td>
-                                           
-                                            <td class="cart_description">
-                                                <h4><a href=""></a></h4>
-                                                <p>{{$key['weight']}}</p>
-                                            </td>
-                                            <td class="cart_price">
-                                              
-                                                <p>{{(float)number_format((float)$key['price'],0,',','.')}}.000VNĐ</p>
-                                            </td>
-                                            <td class="cart_quantity">
-                                                <div class="cart_quantity_button">
-                                                
-                                                    <input class="cart_quantity" type="number" min="1" name="cart_qty[{{$key['session_id']}}]" value="{{$key['qty']}}"  >
-                                                
-                                                    
-                                                </div>
-                                            </td>
-                                            <td class="cart_total">
-                                                <p class="cart_total_price">
-                                               
-                                                    {{(float)number_format((float)$subtotal,0,',','.')}}.000VNĐ
-                                                </p>
-                                            </td>
-                                            <td class="cart_delete">
-                                                <a class="cart_quantity_delete" href="{{url('/del-product/'.$key['session_id'])}}"><i class="fa fa-times"></i></a>
-                                            </td>
-                                        </tr>
-                                        
-                                        @endforeach
-                                        <tr>
-                                            <td><input type="submit" value="Cập nhật giỏ hàng" name="update_qty" class="check_out btn btn-default btn-sm"></td>
-                                            <td><a class="btn btn-default check_out" href="{{url('/del-all-product')}}">Xóa tất cả</a></td>
-                                            <td>
-                                                @if(Session::get('coupon'))
-                                                  <a class="btn btn-default check_out" href="{{url('/unset-coupon')}}">Xóa mã khuyến mãi</a>
-                                                @endif
-                                            </td>
-                
-                                            <td>
-                                                @if(Session::get('customer_id'))
-                                                  <a class="btn btn-default check_out" href="{{url('/checkout')}}">Đặt hàng</a>
-                                                  @else 
-                                                  <a class="btn btn-default check_out" href="{{url('/login-checkout')}}">Đặt hàng</a>
-                                                @endif
-                                            </td>
-                
-                                            
-                                            <td colspan="2">
-                                            <li>Tổng tiền :<span>
-                                                {{(int)number_format((int)$total,0,',','.')}}.000VNĐ
-                                            </span></li>
-                                            @if(Session::get('coupon'))
-                                            <li>
-                                                
-                                                    @foreach(Session::get('coupon') as $key => $cou)
-                                                        @if($cou['coupon_condition']==1)
-                                                            Mã giảm : {{$cou['coupon_number']}} %
-                                                            <p>
-                                                                @php 
-                                                                $total_coupon = ($total*$cou['coupon_number'])/100;
-                                                                echo '<p><li>Tổng giảm:'.number_format($total_coupon,0,',','.').'đ</li></p>';
-                                                                @endphp
-                                                            </p>
-                                                            <p><li>Tổng đã giảm :{{number_format($total-$total_coupon,0,',','.')}}đ</li></p>
-                                                        @elseif($cou['coupon_condition']==2)
-                                                            Mã giảm : {{number_format($cou['coupon_number'],0,',','.')}} k
-                                                            <p>
-                                                                @php 
-                                                                $total_coupon = $total - $cou['coupon_number'];
-                                                
-                                                                @endphp
-                                                            </p>
-                                                            <p><li>Tổng đã giảm :{{number_format($total_coupon,0,',','.')}}đ</li></p>
-                                                        @endif
-                                                    @endforeach
-                                                
-                
-                
-                                            </li>
-                                            @endif 
-                                        {{-- 	<li>Thuế <span></span></li> --}}
-                                       
-                                            
-                                        </td>
-                                        </tr>
-                                        @else 
-                                        <tr>
-                                            <td colspan="5"><center>
-                                            @php 
-                                            echo 'Làm ơn thêm sản phẩm vào giỏ hàng';
-                                            @endphp
-                                            </center></td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                
-                                    
-                
-                                </form>
-                                    {{-- @if($cart)
-                                    <tr><td>
-                
-                                            <form method="POST" action="{{url('/check-coupon')}}">
-                                                @csrf
-                                                    <input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá"><br>
-                                                      <input type="submit" class="btn btn-default check_coupon" name="check_coupon" value="Tính mã giảm giá">
-                                                  
-                                                  </form>
-                                              </td>
-                                    </tr>
-                                    @endif --}}
-                
-                                </table>
-                
-                            </div>
+                            
+                            
+                            
                         </div>
                     </section> <!--/#cart_items-->
-                
+                      
       
                     
                 </div>
@@ -584,7 +433,7 @@
     <script>paypal.Buttons().render('body');</script> --}}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v13.0" nonce="X1XOHBox"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1"></script>
 
 
     <script type="text/javascript">
@@ -661,7 +510,7 @@ show_cart();
             $('.add-to-cart').click(function(){
 
                 var id = $(this).data('id_product');
-              
+                // alert(id);
                 var cart_product_id = $('.cart_product_id_' + id).val();
                 var cart_product_name = $('.cart_product_name_' + id).val();
                 var cart_product_image = $('.cart_product_image_' + id).val();
@@ -669,7 +518,6 @@ show_cart();
                 var cart_product_price = $('.cart_product_price_' + id).val();
                 var cart_product_qty = $('.cart_product_qty_' + id).val();
                 var _token = $('input[name="_token"]').val();
-                console.log(cart_product_qty );
                 if(parseInt(cart_product_qty)>parseInt(cart_product_quantity)){
                     alert('Làm ơn đặt nhỏ hơn ' + cart_product_quantity);
                 }else{
@@ -690,8 +538,6 @@ show_cart();
                                     closeOnConfirm: false
                                 },
                                 function() {
-                                    
-                              
                                     window.location.href = "{{url('/gio-hang')}}";
                                 });
 

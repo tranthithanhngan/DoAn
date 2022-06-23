@@ -14,8 +14,9 @@ class roles extends Model
     ];
     protected $primaryKey = 'id_roles';
  	protected $table = 'phanquyens';
+     
      public function admin(){
-        return $this->belongsToMany('App\Models\Admin');
+        return $this->hasMany('App\Models\Admin');
     }
      
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminroles extends Migration
+class CreateQuanhuyens extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateAdminroles extends Migration
      */
     public function up()
     {
-        Schema::create('adminroles', function (Blueprint $table) {
-            $table->bigIncrements('id_admin_roles');
-            $table->integer('name_id')->nullable();
-            $table->integer('roles_id')->nullable();
+        Schema::create('quanhuyens', function (Blueprint $table) {
+            $table->bigIncrements('maqh');
+            $table->text('name')->nullable();
+            $table->text('type')->nullable();
+            $table->integer('matp')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateAdminroles extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('adminroles');
+        Schema::dropIfExists('quanhuyens');
     }
 }

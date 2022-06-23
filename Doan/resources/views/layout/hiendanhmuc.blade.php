@@ -356,7 +356,7 @@
                                         </style>
                                         <li><a href="#">
                                             <i class="fa fa-plus-square"></i> <button class="button_wishlist" id="{{$sp->idsanpham}}" onclick="add_wishlist(this.id);"><span>Yêu thích</span> </button></a></li>
-                                        <li><a href="#"><i class="fa fa-plus-square"></i>So sánh</a></li>
+                                        {{-- <li><a href="#"><i class="fa fa-plus-square"></i>So sánh</a></li> --}}
                                     </ul>
                                 </div>
                             </div>
@@ -383,7 +383,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                        <img src="image/mebeg.jpg" alt="" />
+                                        <img src="http://127.0.0.1:8000/image/mebeg.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -398,7 +398,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mevabe.png" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mevabe.png" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -413,7 +413,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mebe1.jpg" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mebe1.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>
@@ -428,7 +428,7 @@
                             <div class="video-gallery text-center">
                                 <a href="#">
                                     <div class="iframe-img">
-                                         <img src="image/mebe2.jpg" alt="" />
+                                         <img src="http://127.0.0.1:8000/image/mebe2.jpg" alt="" />
                                     </div>
                                     <div class="overlay-icon">
                                         <i class="fa fa-play-circle-o"></i>

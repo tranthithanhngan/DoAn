@@ -333,8 +333,9 @@
                                                 <img id="wishlist_hinhsanpham{{$sp->idsanpham}}" src="{{URL::to('image/'.$sp->hinhsanpham )}}" alt="" />
                                                 <h2>{{number_format($sp->giasanpham,0,',','.').' '.'VNĐ'}}</h2>
                                                 <p>{{$sp->tensanpham }}</p>
+                                                <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart">
                                             </a>
-                                            {{-- <input type="button" value="Thêm giỏ hàng" class="btn btn-default add-to-cart" data-id_product="{{$sp->idsanpham}}" name="add-to-cart"></a> --}}
+                                           
                                             </form>
 
                                         </div>
