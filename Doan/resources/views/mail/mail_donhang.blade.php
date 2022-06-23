@@ -13,7 +13,7 @@
 
 <div class="col-md-12">
 <p style="text-align: center; color:#fff">Đây là email tự động. Qúy khách vui lòng không trả lời email này.</p>
-<div class="row" style="background: cadetblue;padding:15px;">
+<div class="row" style="background: rgb(160, 95, 160);padding:15px;">
 <div class="col-md-6" style="text-align: center; color:#fff;font-weight:bold;font-size:30px;">
 <h4 style="margin: 0">CÔNG TY TNHH MẸ VÀ BÉ</h4>
 </div>
@@ -24,7 +24,7 @@
     <p style="color: #fff;font-size:17px;">Bạn đã đăng kí dịch vụ tại shop với thông tin như sau:</p>
     <h4 style="text-transform:uppercase;color:#000">Thông tin đơn hàng  </h4>
     <p >Mã đơn hàng: <strong style="text-transform:uppercase;color:#fff">{{$code['order_id']}}</strong></p>
-    {{-- <p >Mã khuyến mãi áp dụng: <strong style="text-transform:uppercase;color:#fff">....</strong></p> --}}
+    <p >Phí Ship: <strong style="text-transform:uppercase;color:#fff">{{$shipping_array['fee']}}</strong></p>
     <p >Dịch vụ: <strong style="text-transform:uppercase;color:#fff">Đặt hàng trực tuyến</strong></p>
     <h4 style="text-transform:uppercase;color:#000">Thông tin người nhận  </h4>
     <p>Email:
@@ -36,7 +36,7 @@
     </p>
     <p>Họ và tên người gửi:
         @if($shipping_array['shipping_name']=='')
-        Không có
+        <span style="color: #fff"> Không có
         @else
         <span style="color: #fff">{{$shipping_array['shipping_name']}}</span>
         @endif

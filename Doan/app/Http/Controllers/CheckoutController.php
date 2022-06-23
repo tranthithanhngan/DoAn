@@ -580,8 +580,14 @@ $shipping_id = $shipping->shipping_id;
          
        }
     }
+    if(Session::get('fee')==true){
+        $fee=Session::get('fee');
 
+    }else{
+        $fee='25.000';
+    }
             $shipping_array= array(
+            'fee'=>$fee,
             'customer_name'=> $customer->customer_name,
             'shipping_name'=>$data['shipping_name'],
             'shipping_email'=>$data['shipping_email'],

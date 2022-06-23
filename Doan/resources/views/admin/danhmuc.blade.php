@@ -216,13 +216,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </a>
                     <ul class="sub">
                         <li><a href="{{URL::to('/vanchuyen')}}">Quản lý vận chuyển</a></li>
-                        
-                        
-                      
                     </ul>
                 </li>
-              
-               
+                @chuyen_roles
+                <li class="sub-menu">
+                   
+                        <i class="fa fa-book"></i>
+                        <span><a href="{{URL::to('/stopusser')}}">Ngừng đổi user</span>
+                </li>
+               @endchuyen_roles
               
                 @hasrole('admin')
 

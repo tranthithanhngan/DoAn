@@ -35,8 +35,15 @@ class BladeServiceProvider extends ServiceProvider
        
         return true;
     }
-}
-return false;
+    }
+        return false;
         }); 
-        }
+        Blade::if('chuyen_roles',function(){
+            if(session()->get('chuyen_roles')){
+                return true;
+            }
+            return false;
+        });
+        
+    }
 }

@@ -54,13 +54,18 @@ class PhanquyenController extends Controller
         $this->AuthLogin();
     	return view('admin.themuser');
     }
+    public function stopusser(){
+      
+       session()->forget('chuyen_roles');
+       return redirect('/users');
+    }
     public function chuyen_roles($admin_id){
         $this->AuthLogin();
     $user=Admin::where('admin_id',$admin_id)->first();
     if($user){
         session()->put('chuyen_roles',$user->admin_id);
     }
-    return redirect('/user');
+    return redirect('/users');
     }
    
     public function luuuser(Request $request){
@@ -83,16 +88,16 @@ class PhanquyenController extends Controller
             return redirect()->back()->with('message','Bạn không được phân quyền chính mình');
         }
         // $data = $request->all();
-        $user = Admin::where('admin_email',$data['admin_email'])->first();
+        $user = Admin::where('admin_email',$request->admin_email)->first();
         
         $user->roles()->detach();    
-        if($request['author_role']){
+        if($request->author_role){
            $user->roles()->attach(roles::where('name_roles','author')->first());     
         }
-        if($request['user_role']){
+        if($request->user_role){
            $user->roles()->attach(roles::where('name_roles','user')->first());     
         }
-        if($request['admin_role']){
+        if($request->admin_role){
            $user->roles()->attach(roles::where('name_roles','admin')->first());     
         }
         return redirect()->back()->with('message','Cấp quyền thành công');

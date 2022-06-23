@@ -26,8 +26,8 @@ class UsersTableSeeder extends Seeder
             'admin_password'=>'123456'
         ]);
         $user=Admin::create([
-            'admin_name'=>'Ngân',
-            'admin_email'=>'thanhngan@gmail.com',
+            'admin_name'=>'Huệ',
+            'admin_email'=>'nganhue@gmail.com',
             'admin_phone'=>'0987654321',
             'admin_password'=>'123456'
         ]);

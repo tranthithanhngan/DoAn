@@ -193,6 +193,8 @@ Route::get('/xoa_roles/{admin_id}','App\Http\Controllers\PhanquyenController@xoa
 Route::get('/chuyen_roles/{admin_id}','App\Http\Controllers\PhanquyenController@chuyen_roles');
 Route::get('/themusers','App\Http\Controllers\PhanquyenController@themusers');
 Route::post('/luuuser','App\Http\Controllers\PhanquyenController@luuuser');
+Route::get('/stopusser','App\Http\Controllers\PhanquyenController@stopusser');
+
 
 
 //lịch sử đơn hàng

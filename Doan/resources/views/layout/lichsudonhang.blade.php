@@ -456,7 +456,7 @@
                                         Không mã
                                       @endif
                                   </td>
-                                  <td>{{number_format($details->product_feeship ,0,',','.')}}đ</td>
+                                  <td>{{number_format($details->product_feeship ,0,',','.')}}.000VNĐ</td>
                                   <td>
                       
                                     <input type="number" readonly min="1" {{$order_status==2 ? 'disabled' : ''}} class="order_qty_{{$details->idsanpham}}" value="{{$details->product_sales_quantity}}" name="product_sales_quantity">
