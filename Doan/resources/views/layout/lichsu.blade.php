@@ -336,7 +336,7 @@
                                   @endphp
                                 <tr>
                                   <td><i>{{$i}}</i></label></td>
-                                  <td>{{ $dh->order_id }}</td>
+                                  <td>{{ $dh->order_id}}</td>
                                  
                                   
                                   <td>{{ $dh->ngaydat }}</td>
@@ -368,14 +368,14 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                                            <button type="button"   onclick="Huydonhang({{$dh->order_id}}) " class="btn btn-success" >Gửi lí do hủy</button>
+                                            <button type="button"   onclick="Huydonhang({{$dh->order_id-1}}) " class="btn btn-success" >Gửi lí do hủy</button>
                                         </div>
                                         </div>
                                     </form>
                                     </div>
                                     </div>
 
-                                    <a href="{{URL::to('/view-lichsudonhang/'.$dh->order_id)}}" class="active styling-edit" ui-toggle-class="">
+                                    <a href="{{URL::to('/view-lichsudonhang/'.($dh->order_id))}}" class="active styling-edit" ui-toggle-class="">
                                      Xem đơn hàng</a>
                                   </td>
                                 </tr>

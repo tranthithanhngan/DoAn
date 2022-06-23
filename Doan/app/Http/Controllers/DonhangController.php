@@ -54,7 +54,7 @@ class DonhangController extends Controller
     	
         $tatca_donhang = DB::table('donhangs')
         ->join('nguoidungs','donhangs.customer_id','=','nguoidungs.customer_id')
-        ->join('ships','donhangs.shipping_id','=','ships.shipping_id')
+        ->join('ships','donhangs.shipping_id','=','ships.shipping_id')->whereNotNull('donhangs.created_at')
         ->select('donhangs.*','nguoidungs.customer_name','ships.shipping_name')
         ->orderby('donhangs.order_id','desc')->get();
      
@@ -229,7 +229,7 @@ class DonhangController extends Controller
 		}
 		</style>
 		<h1><centerCông ty TNHH một thành viên ABCD</center></h1>
-		<h4><center>Độc lập - Tự do - Hạnh phúc</center></h4>
+		<h4><center>PHIẾU ĐƠN HÀNG</center></h4>
 		<p>Người đặt hàng</p>
 		<table class="table-styling">
 				<thead>
@@ -255,7 +255,7 @@ class DonhangController extends Controller
 			
 		</table>
 
-		<p>Ship hàng tới</p>
+		<p>Thông tin người nhận</p>
 			<table class="table-styling">
 				<thead>
 					<tr>
@@ -333,8 +333,8 @@ class DonhangController extends Controller
 		$output.= '<tr>
 				<td colspan="2">
 					
-					<p>Phí ship: '.number_format($product->product_feeship,0,',','.').'đ'.'</p>
-					<p>Thanh toán : '.number_format($total+$product->product_feeship,0,',','.').'VNĐ'.'</p>
+					<p>Phí ship: '.number_format($product->product_feeship,0,',','.').'000VNĐ'.'</p>
+					<p>Thanh toán : '.number_format($total+$product->product_feeship,0,',','.').'000VNĐ'.'</p>
 				</td>
 		</tr>';
 		$output.='				
@@ -370,7 +370,7 @@ class DonhangController extends Controller
 		}
 		else{
 
-			$tatca_donhang=donhang::where('customer_id',Session::get('customer_id'))->orderby('order_id','desc')->get();
+			$tatca_donhang=donhang::where('customer_id',Session::get('customer_id'))->whereNotNull('created_at')->orderby('order_id','desc')->get();
 
 			$baiviet = DB::table('baiviets')->orderby('baiviet_id')->get(); 
 		

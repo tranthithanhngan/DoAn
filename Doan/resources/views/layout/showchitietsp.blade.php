@@ -339,8 +339,8 @@
 
                                             <input type="hidden" value="{{$value->hinhsanpham}}" class="cart_product_image_{{$value->idsanpham}}">
 
-
-                                            <input type="hidden" value="{{$value->giasanpham}}" class="cart_product_price_{{$value->idsanpham}}">
+                                            
+                                            <input type="hidden" value="{{number_format($value->giasanpham,0,',','.')}}" class="cart_product_price_{{$value->idsanpham}}">
                                           
 								<span>
 									<span>{{number_format($value->giasanpham,0,',','.').'VNĐ'}}</span>

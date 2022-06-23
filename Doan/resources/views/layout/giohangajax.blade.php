@@ -326,7 +326,7 @@
                 
                                         <tr>
                                             <td class="cart_product">
-                                                {{-- <img src="{{asset('image/'.$cart['image'])}}" width="90" alt="{{$cart['name']}}" /> --}}
+                                                <img src="{{asset('image/'.$key['options']['image'])}}" width="90" alt="{{$key['name']}}" />
                                             </td>
                                             <td class="cart_description">
                                                 <h4><a href=""></a></h4>

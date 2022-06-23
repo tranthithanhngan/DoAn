@@ -140,9 +140,9 @@
   
             @php 
             $i++;
-            $subtotal = (int)$details->giasanpham*(int)$details->product_sales_quantity;
+            $subtotal = (float)$details->giasanpham*(float)$details->product_sales_quantity;
             $total= $total+ $subtotal;
-             
+           
             @endphp
             <tr class="color_qty_{{$details->idsanpham}}">
              
@@ -155,7 +155,7 @@
                     Không mã
                   @endif
               </td>
-              <td>{{(int)number_format((int)$details->product_feeship ,0,',','.')}}.000VNĐ</td>
+              <td>{{(float)number_format((float)$details->product_feeship ,0,',','.')}}.000VNĐ</td>
               <td>
   
                 <input type="number" min="1" {{$order_status==2 ? 'disabled' : ''}} class="order_qty_{{$details->idsanpham}}" value="{{$details->product_sales_quantity}}" name="product_sales_quantity">
@@ -173,8 +173,8 @@
               @endif
   
               </td>
-              <td>{{(int)number_format((int)$details->giasanpham ,0,',','.')}}.000VNĐ</td>
-              <td>{{(int)number_format((int)$subtotal ,0,',','.')}}.000VNĐ</td>
+              <td>{{(float)number_format((float)$details->giasanpham ,0,',','.')}}.000VNĐ</td>
+              <td>{{(float)number_format((float)$subtotal ,0,',','.')}}.000VNĐ</td>
             </tr>
             @endforeach
             <tr>
@@ -196,8 +196,8 @@
                     @endphp
                 @endif --}}
                 
-               <p> Phí ship : {{(int)number_format((int)$details->product_feeship ,0,',','.')}}.000VNĐ </br></p>
-               <p>Thanh toán :<strong> {{(int)number_format($total_coupon = $total + $details->product_feeship,0,',','.')}}.000VNĐ</strong> </p> 
+               <p> Phí ship : {{(float)number_format($details->product_feeship ,0,',','.')}}.000VNĐ </br></p>
+               <p>Thanh toán :<strong> {{(float)number_format($total_coupon = $details->product_feeship+$total ,0,',','.')}}.000VNĐ</strong> </p> 
               
               </td>
             </tr>

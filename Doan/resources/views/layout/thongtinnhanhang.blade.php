@@ -314,7 +314,7 @@
                                                     <textarea name="shipping_notes" class="shipping_notes" placeholder="Ghi chú đơn hàng của bạn" rows="5"></textarea>
                                                     
                                                     @if(Session::get('fee'))
-                                                        <input type="hidden" name="order_fee" class="order_fee" value="{{Session::get('fee')}}">
+                                                        <input type="hidden" name="order_fee" class="order_fee" value="{{number_format(Session::get('fee'),0,',','.')}}">
                                                     @else 
                                                         <input type="hidden" name="order_fee" class="order_fee" value="10000">
                                                     @endif

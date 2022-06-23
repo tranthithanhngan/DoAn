@@ -442,7 +442,8 @@
                                 $i++;
                                 $subtotal = (int)$details->giasanpham*(int)$details->product_sales_quantity;
                                 $total= $total+ $subtotal;
-                                 
+                            
+                             
                                 @endphp
                                 <tr class="color_qty_{{$details->idsanpham}}">
                                  
@@ -468,8 +469,8 @@
                       
                                   
                                   </td>
-                                  <td>{{(int)number_format((int)$details->giasanpham ,0,',','.')}}.000VNĐ</td>
-                                  <td>{{(int)number_format($subtotal ,0,',','.')}}.000VNĐ</td>
+                                  <td>{{number_format((float)$details->giasanpham ,0,',','.')}}.000VNĐ</td>
+                                  <td>{{number_format($subtotal ,0,',','.')}}.000VNĐ</td>
                                 </tr>
                                 @endforeach
                                 <tr>
@@ -479,8 +480,8 @@
                                     @endphp
                                    
                                     
-                                   <p> Phí ship : {{number_format($details->product_feeship,0,',','.')}}đ </br></p>
-                                   <p>Thanh toán :<strong> {{(int)number_format($total_coupon = $total + $details->product_feeship,0,',','.')}}.000VNĐ</strong> </p> 
+                                   <p> Phí ship : {{number_format($details->product_feeship,0,',','.')}}.000VNĐ </br></p>
+                                   <p>Thanh toán :<strong> {{(float)number_format((float)$total_coupon = $total + $details->product_feeship,0,',','.')}}.000VNĐ</strong> </p> 
                                   
                                   </td>
                                 </tr>

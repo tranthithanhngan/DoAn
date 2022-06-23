@@ -167,7 +167,7 @@ class GiohangController extends Controller
                        "image"=> $data['cart_product_image'],
                     ) 
                 );
-               
+              
                 // Cart::add($cart);
           
                 Session::put('cart',$cart);
@@ -186,6 +186,7 @@ class GiohangController extends Controller
                    "image"=> $data['cart_product_image'],
                 ) 
             );
+            
             //   Cart::add($cart);
          
             Session::put('cart',$cart);

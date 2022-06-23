@@ -173,7 +173,7 @@ class DoanController extends Controller
                             <input type="hidden" value="'.$pro->slsanpham.'" class="cart_product_quantity_'.$pro->idsanpham.'">
                             
                             <input type="hidden"  value="'.$pro->hinhsanpham.'" class="cart_product_image_'.$pro->idsanpham.'">
-                            <input type="hidden" value="'.number_format($pro->giasanpham,0,',','.').'VNĐ" id="wishlist_giasanpham'.$pro->idsanpham.'" class="cart_product_price_'.$pro->idsanpham.'">
+                            <input type="hidden" value="'.number_format($pro->giasanpham,0,',','.').'" id="wishlist_giasanpham'.$pro->idsanpham.'" class="cart_product_price_'.$pro->idsanpham.'">
                             <input type="hidden" value="1" class="cart_product_qty_'.$pro->idsanpham.'">
                            
                             <a id="wishlist_url'.$pro->idsanpham.'" href="'.url('chi-tiet/'.$pro->idsanpham).'">
