@@ -325,10 +325,10 @@
                                             margin: 5px;
                                         }
                                         </style>
-                                        <ul class="list-login">
-                                            <li> <a href="{{URL::to('/logingg')}}"><img width="10%" src="{{asset('image/gg.png')}}" alt="Đăng nhập bằng tài khoản google"></a></li>
-                                            <li> <a href="{{URL::to('/loginfb')}}"><img width="10%" src="{{asset('image/fb.png')}}" alt="Đăng nhập bằng tài khoản facebook"></a></li>
-                                        </ul>
+                                        {{-- <ul class="list-login"> --}}
+                                            {{-- <li> <a href="{{URL::to('/logingg')}}"><img width="10%" src="{{asset('image/gg.png')}}" alt="Đăng nhập bằng tài khoản google"></a></li> --}}
+                                            {{-- <li> <a href="{{URL::to('/loginfb')}}"><img width="10%" src="{{asset('image/fb.png')}}" alt="Đăng nhập bằng tài khoản facebook"></a></li> --}}
+                                        {{-- </ul> --}}
                                     </div><!--/login form-->
                                 </div>
                                 <div class="col-sm-1">
@@ -337,7 +337,7 @@
                                 <div class="col-sm-4">
                                     <div class="signup-form"><!--sign up form-->
                                         <h2>Đăng ký</h2>
-                                        <form action="{{URL::to('/dangki')}}" method="POST">
+                                        <form action="{{URL::to('/dangkinguoidung')}}" method="POST">
                                             {{ csrf_field() }}
                                             <input type="text" name="customer_name" placeholder="Họ và tên"/>
                                             <input type="email" name="customer_email" placeholder="Địa chỉ email"/>
@@ -426,10 +426,10 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="address">
+                        {{-- <div class="address">
                             <img src="images/home/map.png" alt="" />
                             <p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

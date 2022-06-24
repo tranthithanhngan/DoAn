@@ -427,18 +427,21 @@
             {{ csrf_field() }}
         <div class="payment-options">
                 <span>
-                    <label><input name ="redirect"  value="1" type="checkbox">
-                       <a >Trả bằng VNPAY</a> </label>
+                    <label><input name ="payment_option"  value="1" type="radio">
+                        Thanh toán bằng VNPAY </label>
                 </span>
-                <span>
-                    <label><input name="payment_option" value="2" type="checkbox"> Nhận tiền mặt</label>
+                <span><input name="payment_option" value="2" type="radio"> 
+                    <label>Nhận tiền mặt</label>
                 </span>
-                <span>
-                    <label><input name="payment_option" value="3" type="checkbox"> Thanh toán bằng momo</label>
-                </span>
-                <input type="submit" value="Đặt hàng" name="send_order_place" class="btn btn-primary btn-sm">
+                {{-- <span>
+                    <label><input name="payment_option" value="3" type="radio"> Thanh toán bằng momo</label>
+                </span> --}}
+                <input type="submit" value="Đặt hàng" name="redirect" id="redirect" class="btn btn-primary btn-sm">
+               
         </div>
+        {{-- send_order_place --}}
         </form>
+        
     </div>
 </section> <!--/#cart_items-->
                       

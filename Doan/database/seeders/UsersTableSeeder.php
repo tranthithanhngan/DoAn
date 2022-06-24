@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     {
         Admin::truncate();
         $adminRoles=roles::where('name_roles','admin')->first();
-        $authorRoles=roles::where('name_roles','author')->first();
+        // $authorRoles=roles::where('name_roles','author')->first();
         $userRoles=roles::where('name_roles','user')->first();
 
         $admin=Admin::create([
@@ -31,14 +31,14 @@ class UsersTableSeeder extends Seeder
             'admin_phone'=>'0987654321',
             'admin_password'=>'123456'
         ]);
-        $author=Admin::create([
-            'admin_name'=>'Thanh Ngân',
-            'admin_email'=>'thanhngan2000@gmail.com',
-            'admin_phone'=>'0987654321',
-            'admin_password'=>'123456'
-        ]);
+        // $author=Admin::create([
+        //     'admin_name'=>'Thanh Ngân',
+        //     'admin_email'=>'thanhngan2000@gmail.com',
+        //     'admin_phone'=>'0987654321',
+        //     'admin_password'=>'123456'
+        // ]);
         $admin->roles()->attach($adminRoles);
-        $author->roles()->attach($authorRoles);
+        // $author->roles()->attach($authorRoles);
         $user->roles()->attach($userRoles);
         //
     }

@@ -46,9 +46,9 @@
                   <input type="hidden" name="admin_id" value="{{ $user->admin_id }}"></td>
                 <td>{{ $user->admin_phone }} </td>
                 <td>{{ $user->admin_password }}</td>
-                <td><input type="radio" name="author_role" {{$user->hasRole('author') ? 'checked' : ''}}></td>
-                <td><input type="radio" name="admin_role"  {{$user->hasRole('admin') ? 'checked' : ''}}></td>
-                <td><input type="radio" name="user_role"  {{$user->hasRole('user') ? 'checked' : ''}}></td>
+                {{-- <td><input type="radio" class="radio" name="author_role" {{$user->hasRole('author') ? 'checked' : ''}}></td> --}}
+                <td><input type="radio" class="radio"name="admin_role"  {{$user->hasRole('admin') ? 'checked' : ''}}></td>
+                <td><input type="radio" class="radio" name="user_role"  {{$user->hasRole('user') ? 'checked' : ''}}></td>
 <td></td>
 <td></td>
 <td></td>

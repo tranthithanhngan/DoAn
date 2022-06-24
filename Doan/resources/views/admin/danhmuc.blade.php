@@ -218,6 +218,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li><a href="{{URL::to('/vanchuyen')}}">Quản lý vận chuyển</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Người dùng</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{URL::to('/nguoidung')}}">Quản lý gười dùng</a></li>
+                    </ul>
+                </li>
                 @chuyen_roles
                 <li class="sub-menu">
                    
@@ -343,6 +352,15 @@ $.ajax({
         });
 });
 </script>
+
+{{-- <script type="text/javascript">
+      $(document).ready(function(){
+        $('.radio').click(function(){
+            document.getElementsByClassName('radio')
+        });
+
+     });
+</script> --}}
 <script type="text/javascript">
  
     function ChangeToSlug()

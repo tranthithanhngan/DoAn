@@ -447,13 +447,7 @@
                                                                 
                                                                 @endforeach
                                                                 <tr>
-                                                                    <td>
-                                                                        <form action="{{URL::to('/vnpay')}}" method="POST">
-                                                                            @csrf
-                                                                            <input type="hidden" name="total_vnpay" value="{{Cart::priceTotal(0).' '.'vnđ'}}">
-                                                                        <button type="submit" name ="redirect" class="btn btn-default check_out">Thanh toán VNPAY</button>
-                                                                    </form>
-                                                                    </td>
+                                                                    
                                                                     <td>
                                                                         <form action="{{URL::to('/momo')}}" method="POST">
                                                                             @csrf

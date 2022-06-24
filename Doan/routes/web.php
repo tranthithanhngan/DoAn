@@ -53,13 +53,14 @@ Route::get('/gio-hang','App\Http\Controllers\GiohangController@gio_hang');
 
 //checkout
 Route::get('/login-checkout','App\Http\Controllers\CheckoutController@login_checkout');
-Route::post('/dangki','App\Http\Controllers\CheckoutController@dangki');
+Route::post('/dangkinguoidung','App\Http\Controllers\CheckoutController@dangki');
 Route::post('/dangnhap','App\Http\Controllers\CheckoutController@dangnhap');
 Route::get('/checkout','App\Http\Controllers\CheckoutController@checkout');
 Route::post('/dangkithongtin','App\Http\Controllers\CheckoutController@dangkithongtin');
 Route::get('/payment','App\Http\Controllers\CheckoutController@payment');
 Route::get('/logout-checkout','App\Http\Controllers\CheckoutController@logout_checkout');
 Route::post('/dathang','App\Http\Controllers\CheckoutController@dathang');
+Route::get('/dathangxong','App\Http\Controllers\CheckoutController@dathangxong');
 Route::post('/confirm-order','App\Http\Controllers\CheckoutController@confirm_order');
 
 Route::post('/doan/store', [App\Http\Controllers\AdminController::class, 'store'])->name('doan.store');
@@ -243,3 +244,8 @@ Route::post('/update-delivery','App\Http\Controllers\VanchuyenController@update_
 Route::post('/select-delivery-home','App\Http\Controllers\VanchuyenController@select_delivery_home');
 Route::post('/calculate-fee','App\Http\Controllers\VanchuyenController@calculate_fee');
 Route::get('/del-fee','App\Http\Controllers\VanchuyenController@del_fee');
+
+Route::get('/nguoidung','App\Http\Controllers\DonhangController@nguoidung');
+// Route::get('/suakhohang/{idsanpham}','App\Http\Controllers\DonhangController@suakhohang');
+// Route::post('/capnhatkhohang/{idsanpham}','App\Http\Controllers\DonhangController@capnhatkhohang');
+Route::get('/xoanguoidung/{idnguoidung}','App\Http\Controllers\DonhangController@xoanguoidung');

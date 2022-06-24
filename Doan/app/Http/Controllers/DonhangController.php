@@ -364,6 +364,8 @@ class DonhangController extends Controller
 		return $output;
 
 	}
+	
+
 	public function lichsu(Request $request){
 		if(!Session::get('customer_id')){
 			return redirect('login-checkout')->with('error','Vui lòng đăng nhập để xem lịch sử đơn hàng');
@@ -427,6 +429,19 @@ class DonhangController extends Controller
 
 	return view('layout.lichsudonhang')->with('danhmuc',$danhmuc)->with('thuonghieu',$thuonghieu)->with('sanpham',$sanpham)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('baiviet',$baiviet)->with('donhang_chitiet',$donhang_chitiet)->with('nguoidung',$nguoidung)->with('ship',$ship)->with('donhang',$donhang)->with('order_status',$order_status)->with('order_id',$order_id);
 		}
+	}
+	public function nguoidung(Request $request){
+		$this->AuthLogin();
+		$nguoidung = DB::table('nguoidungs')->orderby('customer_id','desc')->get(); 
+        $manager_product  = view('admin.lietkenguoidung')->with('nguoidung',$nguoidung);
+        return view('admin.danhmuc')->with('admin.lietkenguoidung', $manager_product);
+
+	}
+	public function xoanguoidung($idnguoidung){
+		$this->AuthLogin();
+		DB::table('nguoidungs')->where('customer_id',$idnguoidung)->delete();
+		Session::put('message','Xóa người dùng thành công');
+		return Redirect::to('nguoidung');
 	}
     /**
      * Show the form for creating a new resource.
