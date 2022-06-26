@@ -26,7 +26,7 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Password</th>
-            <th>Author</th>
+            
             <th>Admin</th>
             <th>User</th>
             

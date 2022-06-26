@@ -71,7 +71,7 @@ Route::get('/logout','App\Http\Controllers\AdminController@logout');
 Route::get('/login', 'App\Http\Controllers\AdminController@login');
 Route::post('/trangchuaadmin', 'App\Http\Controllers\AdminController@dashboard');
 Route::get('/trangadmin','App\Http\Controllers\AdminController@show_dashboard')->name('admin');
-
+Route::get('/trangadmin1','App\Http\Controllers\AdminController@show_dashboard1');
 //login fb
 Route::get('/login-facebook','App\Http\Controllers\AdminController@login_facebook');
 Route::get('/login/callback','App\Http\Controllers\AdminController@callback_facebook');

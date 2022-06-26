@@ -97,9 +97,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="{{Request::segment(1) == 'trangadmin'  ? 'active' : ''}}" href="{{URL::to('/trangadmin')}}">
+                    <a class="{{Request::segment(1) == 'trangadmin1'  ? 'active' : ''}}" href="{{URL::to('/trangadmin1')}}">
                         <i class="fa fa-dashboard"></i>
                         <span >Tổng quan</span>
+                    </a>
+                </li>
+                @hasrole('admin')
+                <li>
+                    <a class="{{Request::segment(1) == 'trangadmin'  ? 'active' : ''}}" href="{{URL::to('/trangadmin')}}">
+                        <i class="fa fa-dashboard"></i>
+                        <span >Doanh thu</span>
                     </a>
                 </li>
                 <li>
@@ -108,6 +115,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Liên hệ</span>
                     </a>
                 </li>
+                @endhasrole
+              
                 <li class="sub-menu">
                     <a class="{{Request::segment(1) == 'themslides' ||Request::segment(1) == 'lietkeslides'   ? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -197,7 +206,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       
                     </ul>
                 </li>
-              
+                @hasrole('admin')
                 <li class="sub-menu">
                     <a class="{{Request::segment(1) == 'showbinhluan'? 'active' : ''}}" href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -209,6 +218,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       
                     </ul>
                 </li>
+                @endhasrole
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-book"></i>
@@ -224,7 +234,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Người dùng</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="{{URL::to('/nguoidung')}}">Quản lý gười dùng</a></li>
+                        <li><a href="{{URL::to('/nguoidung')}}">Quản lý người dùng</a></li>
                     </ul>
                 </li>
                 @chuyen_roles

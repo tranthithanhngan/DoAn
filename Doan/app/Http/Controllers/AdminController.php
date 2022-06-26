@@ -56,7 +56,7 @@ class AdminController extends Controller
         if(Auth::attempt(['admin_email'=>$request->admin_email,'admin_password'=>$request->admin_password])){
            
        
-            return Redirect::to('/trangadmin');
+            return Redirect::to('/trangadmin1');
         }
         else {
             return Redirect::to('/login')->with('message','Lỗi đăng nhập');
@@ -90,7 +90,12 @@ class AdminController extends Controller
         $this->AuthLogin();
     	return view('admin.dashboard');
     }
-
+    public function show_dashboard1(){
+        $this->AuthLogin();
+    	return view('admin.dashboard1');
+    }
+   
+    
 
     public function login_facebook(){
         return Socialite::driver('facebook')->redirect();
